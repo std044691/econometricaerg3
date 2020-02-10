@@ -3,7 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package econometrica;
+package tests;
+
+import econometrica.Chart;
+import econometrica.GsonTester;
+import econometrica.RestApi;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  *
@@ -20,9 +25,17 @@ public class Ergasia3 {
         //GsonTeste2();
         //GsonTester();
         //GdpTest();
-        OilTest();
+        //OilTest();
+        ChartTest();
     }
     
+    
+    public static void ChartTest(){
+        final Chart demo = new Chart("Dual Axis Demo 2");
+        demo.pack();
+        RefineryUtilities.centerFrameOnScreen(demo);
+        demo.setVisible(true);
+    }
     
     public static void OilTest(){
         GsonTester gt= new GsonTester();
