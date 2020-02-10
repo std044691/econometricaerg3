@@ -39,7 +39,7 @@ public class GsonTester {
         //String jsonString = "{\"id\":22163003,\"dataset_code\":\"GRC_NY_GDP_MKTP_CN\",\"database_code\":\"WWDI\",\"name\":\"GDP (current LCU) - Greece\",\"description\":\"GDP (current LCU) - Greece. \",\"refreshed_at\":\"2019-06-25T21:19:10.949Z\",\"newest_available_date\":\"2017-12-31\",\"oldest_available_date\":\"1960-12-31\",\"column_names\":[\"Date\",\"Value\"],\"frequency\":\"annual\",\"type\":\"Time Series\",\"premium\":false,\"limit\":null, \"transform\":null,\"column_index\":null,\"start_date\":\"1960-12-31\",\"end_date\":\"2017-12-31\",\"data\":[[\"2017-12-31\",180217594600.0],[\"2016-12-31\",176487946700.0]]}"; 
         String jsonString = jsonValue; 
         //System.out.println(jsonValue);
-        System.out.println("-----------");
+        //System.out.println("-----------");
         GsonBuilder builder = new GsonBuilder(); 
         builder.setPrettyPrinting(); 
 
@@ -52,7 +52,7 @@ public class GsonTester {
         System.out.println(gp);
       
         jsonString = gson.toJson(gp); 
-        System.out.println(jsonString);  
+        System.out.println(jsonString);
    }
      
 }

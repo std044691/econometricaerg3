@@ -6,6 +6,16 @@
 package gui;
 
 import econometrica.RestApi;
+import java.awt.Component;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
+
 
 /**
  *
@@ -29,34 +39,149 @@ public class mainpage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         btnApiCall = new javax.swing.JButton();
+        cbCountries = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lblOil = new javax.swing.JLabel();
+        lblGdp = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        lblOilStartDate = new javax.swing.JLabel();
+        lblOilEndDate = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        lblGdpStartDate = new javax.swing.JLabel();
+        lblGdpEndDate = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblOil = new javax.swing.JTable();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblGDP = new javax.swing.JTable();
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1000, 541));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnApiCall.setText("ApiCall");
+        btnApiCall.setText("Fetch Data");
         btnApiCall.setToolTipText("");
         btnApiCall.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnApiCallActionPerformed(evt);
             }
         });
+        getContentPane().add(btnApiCall, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 11, 140, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(265, Short.MAX_VALUE)
-                .addComponent(btnApiCall)
-                .addGap(70, 70, 70))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(btnApiCall)
-                .addContainerGap(229, Short.MAX_VALUE))
-        );
+        cbCountries.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbCountries.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbCountriesActionPerformed(evt);
+            }
+        });
+        getContentPane().add(cbCountries, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 12, 271, -1));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setText("Oil Data");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 52, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setText("Dataset Name:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 72, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setText("GDP Data");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 52, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel5.setText("Dataset Name:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 72, -1, -1));
+
+        lblOil.setText("-");
+        getContentPane().add(lblOil, new org.netbeans.lib.awtextra.AbsoluteConstraints(466, 451, 207, -1));
+
+        lblGdp.setText("-");
+        getContentPane().add(lblGdp, new org.netbeans.lib.awtextra.AbsoluteConstraints(685, 451, 223, -1));
+
+        jLabel6.setText("Start Date:");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 104, -1, -1));
+
+        jLabel7.setText("End Date:");
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 129, -1, -1));
+
+        lblOilStartDate.setText("-");
+        getContentPane().add(lblOilStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(74, 104, -1, -1));
+
+        lblOilEndDate.setText("-");
+        getContentPane().add(lblOilEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(76, 129, -1, -1));
+
+        jLabel10.setText("Start Date:");
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 104, -1, -1));
+
+        jLabel11.setText("End Date:");
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 129, -1, -1));
+
+        lblGdpStartDate.setText("-");
+        getContentPane().add(lblGdpStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(363, 104, -1, -1));
+
+        lblGdpEndDate.setText("-");
+        getContentPane().add(lblGdpEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(365, 129, -1, -1));
+
+        tblOil.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Year", "Value"
+            }
+        ));
+        jScrollPane2.setViewportView(tblOil);
+        if (tblOil.getColumnModel().getColumnCount() > 0) {
+            tblOil.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 161, 271, 260));
+
+        tblGDP.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Year", "Value"
+            }
+        ));
+        jScrollPane3.setViewportView(tblGDP);
+        if (tblGDP.getColumnModel().getColumnCount() > 0) {
+            tblGDP.getColumnModel().getColumn(0).setResizable(false);
+        }
+
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 161, 271, 260));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -66,8 +191,49 @@ public class mainpage extends javax.swing.JFrame {
         RestApi ra = new RestApi("YF9riQwEK95f-FXBm8Z3");
         //https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json?api_key=YF9riQwEK95f-FXBm8Z3
         System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json"));
-        System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_GRC.json"));
+        System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_GRC.json"));        
     }//GEN-LAST:event_btnApiCallActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        // TODO add your handling code here:
+        //System.out.println("Loading window");
+        //ArrayList<String> test = new ArrayList<String>();
+        //test.add(1, "Greece");
+        cbCountries.removeAllItems();
+        //cbCountries.addItem( new ItemCountries("CA", "Canada" ));
+
+
+        //Component test2 = new Com
+//        JComboBox<ItemCountries<String>> comboBox = new JComboBox<ItemCountries<String>>();
+//        comboBox.addItem( new ItemCountries<String>("CA", "Canada" ) );
+//        comboBox.addItem( new ItemCountries<String>("GB", "United Kingdom" ) );
+//        comboBox.addItem( new ItemCountries<String>("US", "United States" ) );
+        
+        
+        
+        //cbCountries.repaint();
+        //ItemCountries<String> comboBox = new ItemCountries<String>();
+        
+        //JComboBox<ItemCountries> comboBox = new JComboBox<ItemCountries>();
+        //comboBox.addItem( new ItemCountries("CA", "Canada" ) );
+        //cbCountries.add(comboBox);
+        
+        //JComboBox<ItemCountries<String>> comboBox = new JComboBox<ItemCountries<String>>();
+        //comboBox.addItem( new Item<String>("CA", "Canada" ) );
+        //comboBox.addItem( new Item<String>("GB", "United Kingdom" ) );
+        //comboBox.addItem( new Item<String>("US", "United States" ) );
+
+        //cbCountries.add(test);
+        cbCountries.repaint();
+        //Map<Integer, String> map = new HashMap<>();
+        //map.put(1, "Greece");
+        //map.put(2, "China");
+        //cbCountries.add(new ComboBoxRenderer());
+    }//GEN-LAST:event_formWindowOpened
+
+    private void cbCountriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCountriesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbCountriesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -106,5 +272,26 @@ public class mainpage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApiCall;
+    private javax.swing.JComboBox<String> cbCountries;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lblGdp;
+    private javax.swing.JLabel lblGdpEndDate;
+    private javax.swing.JLabel lblGdpStartDate;
+    private javax.swing.JLabel lblOil;
+    private javax.swing.JLabel lblOilEndDate;
+    private javax.swing.JLabel lblOilStartDate;
+    private javax.swing.JTable tblGDP;
+    private javax.swing.JTable tblOil;
     // End of variables declaration//GEN-END:variables
 }
