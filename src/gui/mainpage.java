@@ -216,10 +216,9 @@ public class mainpage extends javax.swing.JFrame {
             BufferedReader fileReader = null;
             String line = "";
         
-            //File file = new File("C:\\Users\\themhz\\Documents\\NetBeansProjects\\ergasia3\\src\\gui\\iso-countries.csv");
-            
-
-            fileReader = new BufferedReader(new FileReader("C:\\Users\\themhz\\Documents\\NetBeansProjects\\ergasia3\\src\\gui\\iso-countries.csv"));
+            //File file = new File("C:\\Users\\themhz\\Documents\\NetBeansProjects\\ergasia3\\src\\gui\\iso-countries.csv");            
+            //fileReader = new BufferedReader(new FileReader("C:\\Users\\themhz\\Documents\\NetBeansProjects\\ergasia3\\src\\gui\\iso-countries.csv"));
+            fileReader = new BufferedReader(new FileReader("src/gui/iso-countries.csv"));
             try {
                 cbCountries.removeAllItems();
                 fileReader.readLine();
