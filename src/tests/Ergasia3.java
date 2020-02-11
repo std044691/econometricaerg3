@@ -24,9 +24,9 @@ public class Ergasia3 {
         //OkHTTPTest();
         //GsonTeste2();
         //GsonTester();
-        //GdpTest();
+        GdpTest();
         //OilTest();
-        ChartTest();
+        //ChartTest();
     }
     
     

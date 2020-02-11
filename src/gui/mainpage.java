@@ -34,7 +34,7 @@ public class mainpage extends javax.swing.JFrame {
      * Creates new form mainpage
      */
     private HashMap<String, String> hmCountries = new HashMap<String, String>();
-    
+    private String countryCode;
     public mainpage() {
         initComponents();
     }
@@ -207,8 +207,8 @@ public class mainpage extends javax.swing.JFrame {
         // TODO add your handling code here:
         RestApi ra = new RestApi("YF9riQwEK95f-FXBm8Z3");
         //https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json?api_key=YF9riQwEK95f-FXBm8Z3
-        System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json"));
-        System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_GRC.json"));        
+        System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/WWDI/"+this.countryCode+"_NY_GDP_MKTP_CN.json"));
+        System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_"+this.countryCode+".json"));        
     }//GEN-LAST:event_btnApiCallActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -246,9 +246,10 @@ public class mainpage extends javax.swing.JFrame {
     private void cbCountriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCountriesActionPerformed
         // TODO add your handling code here:
     
-        System.out.println(cbCountries.getSelectedItem());
-        //lblselectedCountry.setText(cbCountries.getSelectedItem().toString());        
-        lblselectedCountry.setText(hmCountries.get(cbCountries.getSelectedItem().toString()).toString());
+        //System.out.println(cbCountries.getSelectedItem());
+        //lblselectedCountry.setText(cbCountries.getSelectedItem().toString());   
+        this.countryCode = hmCountries.get(cbCountries.getSelectedItem().toString()).toString();
+        lblselectedCountry.setText(this.countryCode);
     }//GEN-LAST:event_cbCountriesActionPerformed
 
     /**

@@ -6,6 +6,7 @@
 package econometrica;
 import com.google.gson.Gson; 
 import com.google.gson.GsonBuilder;  
+import java.util.ArrayList;
 /**
  *
  * @author themhz
@@ -46,6 +47,9 @@ public class GsonTester {
         Gson gson = builder.create(); 
         GdpDataset gdpd = gson.fromJson(jsonString, GdpDataset.class); 
         Gdp gdp = gdpd.getDataset();
+//        for(ArrayList g:gdp.getData()){
+//            System.out.println(g.get(0)+" "+g.get(1));
+//        }
         jsonString = gson.toJson(gdp);         
 
         Gdp gp = gson.fromJson(jsonString, Gdp.class); 
