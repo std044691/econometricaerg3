@@ -7,10 +7,17 @@ package gui;
 
 import econometrica.RestApi;
 import java.awt.Component;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
@@ -26,6 +33,8 @@ public class mainpage extends javax.swing.JFrame {
     /**
      * Creates new form mainpage
      */
+    private HashMap<String, String> hmCountries = new HashMap<String, String>();
+    
     public mainpage() {
         initComponents();
     }
@@ -61,6 +70,8 @@ public class mainpage extends javax.swing.JFrame {
         tblOil = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblGDP = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        lblselectedCountry = new javax.swing.JLabel();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -91,31 +102,30 @@ public class mainpage extends javax.swing.JFrame {
                 btnApiCallActionPerformed(evt);
             }
         });
-        getContentPane().add(btnApiCall, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 11, 140, -1));
+        getContentPane().add(btnApiCall, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 40, 140, -1));
 
-        cbCountries.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbCountries.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbCountriesActionPerformed(evt);
             }
         });
-        getContentPane().add(cbCountries, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 12, 271, -1));
+        getContentPane().add(cbCountries, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 271, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Oil Data");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 52, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Dataset Name:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 72, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("GDP Data");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 52, -1, -1));
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Dataset Name:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 72, -1, -1));
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, -1, -1));
 
         lblOil.setText("-");
         getContentPane().add(lblOil, new org.netbeans.lib.awtextra.AbsoluteConstraints(466, 451, 207, -1));
@@ -124,28 +134,28 @@ public class mainpage extends javax.swing.JFrame {
         getContentPane().add(lblGdp, new org.netbeans.lib.awtextra.AbsoluteConstraints(685, 451, 223, -1));
 
         jLabel6.setText("Start Date:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 104, -1, -1));
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
 
         jLabel7.setText("End Date:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 129, -1, -1));
+        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
 
         lblOilStartDate.setText("-");
-        getContentPane().add(lblOilStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(74, 104, -1, -1));
+        getContentPane().add(lblOilStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, -1, -1));
 
         lblOilEndDate.setText("-");
-        getContentPane().add(lblOilEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(76, 129, -1, -1));
+        getContentPane().add(lblOilEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, -1, -1));
 
         jLabel10.setText("Start Date:");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 104, -1, -1));
+        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, -1, -1));
 
         jLabel11.setText("End Date:");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 129, -1, -1));
+        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, -1, -1));
 
         lblGdpStartDate.setText("-");
-        getContentPane().add(lblGdpStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(363, 104, -1, -1));
+        getContentPane().add(lblGdpStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 130, -1, -1));
 
         lblGdpEndDate.setText("-");
-        getContentPane().add(lblGdpEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(365, 129, -1, -1));
+        getContentPane().add(lblGdpEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 150, -1, -1));
 
         tblOil.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -163,7 +173,7 @@ public class mainpage extends javax.swing.JFrame {
             tblOil.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 161, 271, 260));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 271, 260));
 
         tblGDP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -181,7 +191,14 @@ public class mainpage extends javax.swing.JFrame {
             tblGDP.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 161, 271, 260));
+        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, 271, 260));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setText("Select a country:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+
+        lblselectedCountry.setText("-");
+        getContentPane().add(lblselectedCountry, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -195,44 +212,44 @@ public class mainpage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnApiCallActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        // TODO add your handling code here:
-        //System.out.println("Loading window");
-        //ArrayList<String> test = new ArrayList<String>();
-        //test.add(1, "Greece");
-        cbCountries.removeAllItems();
-        //cbCountries.addItem( new ItemCountries("CA", "Canada" ));
+        try {
+            BufferedReader fileReader = null;
+            String line = "";
+        
+            //File file = new File("C:\\Users\\themhz\\Documents\\NetBeansProjects\\ergasia3\\src\\gui\\iso-countries.csv");
+            
 
+            fileReader = new BufferedReader(new FileReader("C:\\Users\\themhz\\Documents\\NetBeansProjects\\ergasia3\\src\\gui\\iso-countries.csv"));
+            try {
+                cbCountries.removeAllItems();
+                fileReader.readLine();
+                while ((line = fileReader.readLine()) != null) {
+                    //Get all tokens available in line
+                    System.out.println(line);
+                    String[] tokens = line.split(";");
+                    hmCountries.put(tokens[0], tokens[2]);
+                    if (tokens.length > 0) {
+                        cbCountries.addItem(tokens[0]);
+                    }
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(mainpage.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
 
-        //Component test2 = new Com
-//        JComboBox<ItemCountries<String>> comboBox = new JComboBox<ItemCountries<String>>();
-//        comboBox.addItem( new ItemCountries<String>("CA", "Canada" ) );
-//        comboBox.addItem( new ItemCountries<String>("GB", "United Kingdom" ) );
-//        comboBox.addItem( new ItemCountries<String>("US", "United States" ) );
-        
-        
-        
-        //cbCountries.repaint();
-        //ItemCountries<String> comboBox = new ItemCountries<String>();
-        
-        //JComboBox<ItemCountries> comboBox = new JComboBox<ItemCountries>();
-        //comboBox.addItem( new ItemCountries("CA", "Canada" ) );
-        //cbCountries.add(comboBox);
-        
-        //JComboBox<ItemCountries<String>> comboBox = new JComboBox<ItemCountries<String>>();
-        //comboBox.addItem( new Item<String>("CA", "Canada" ) );
-        //comboBox.addItem( new Item<String>("GB", "United Kingdom" ) );
-        //comboBox.addItem( new Item<String>("US", "United States" ) );
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(mainpage.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-        //cbCountries.add(test);
-        cbCountries.repaint();
-        //Map<Integer, String> map = new HashMap<>();
-        //map.put(1, "Greece");
-        //map.put(2, "China");
-        //cbCountries.add(new ComboBoxRenderer());
     }//GEN-LAST:event_formWindowOpened
 
     private void cbCountriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCountriesActionPerformed
         // TODO add your handling code here:
+    
+        System.out.println(cbCountries.getSelectedItem());
+        //lblselectedCountry.setText(cbCountries.getSelectedItem().toString());        
+        lblselectedCountry.setText(hmCountries.get(cbCountries.getSelectedItem().toString()).toString());
     }//GEN-LAST:event_cbCountriesActionPerformed
 
     /**
@@ -273,6 +290,7 @@ public class mainpage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApiCall;
     private javax.swing.JComboBox<String> cbCountries;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
@@ -291,6 +309,7 @@ public class mainpage extends javax.swing.JFrame {
     private javax.swing.JLabel lblOil;
     private javax.swing.JLabel lblOilEndDate;
     private javax.swing.JLabel lblOilStartDate;
+    private javax.swing.JLabel lblselectedCountry;
     private javax.swing.JTable tblGDP;
     private javax.swing.JTable tblOil;
     // End of variables declaration//GEN-END:variables
