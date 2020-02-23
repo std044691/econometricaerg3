@@ -6,6 +6,7 @@
 package tests;
 
 import econometrica.Chart;
+import econometrica.Country;
 import econometrica.GsonTester;
 import econometrica.RestApi;
 import org.jfree.ui.RefineryUtilities;
@@ -24,8 +25,8 @@ public class Ergasia3 {
         //OkHTTPTest();
         //GsonTeste2();
         //GsonTester();
-        GdpTest();
-        //OilTest();
+       // GdpTest();
+        OilTest();
         //ChartTest();
     }
     
@@ -66,6 +67,10 @@ public class Ergasia3 {
         RestApi ra = new RestApi("YF9riQwEK95f-FXBm8Z3");
         System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json"));
         System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_GRC.json"));
+    }
+     public static void cCountry(){
+        Country cnt = new Country();
+
     }
  
     
