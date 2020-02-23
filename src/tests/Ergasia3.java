@@ -24,8 +24,8 @@ public class Ergasia3 {
         //OkHTTPTest();
         //GsonTeste2();
         //GsonTester();
-        GdpTest();
-        //OilTest();
+        //GdpTest();
+        OilTest();
         //ChartTest();
     }
     
@@ -67,6 +67,7 @@ public class Ergasia3 {
         System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json"));
         System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_GRC.json"));
     }
- 
+    
+    //ασδασδασδασδ
     
 }
