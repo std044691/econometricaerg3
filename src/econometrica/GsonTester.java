@@ -35,21 +35,15 @@ public class GsonTester {
         System.out.println(jsonString);  
    }     
     
-    public void testGDB(String jsonValue) { 
-        //String jsonString = "{\"name\":\"Mahesh\", \"age\":21}";      
-        //String jsonString = "{\"id\":22163003,\"dataset_code\":\"GRC_NY_GDP_MKTP_CN\",\"database_code\":\"WWDI\",\"name\":\"GDP (current LCU) - Greece\",\"description\":\"GDP (current LCU) - Greece. \",\"refreshed_at\":\"2019-06-25T21:19:10.949Z\",\"newest_available_date\":\"2017-12-31\",\"oldest_available_date\":\"1960-12-31\",\"column_names\":[\"Date\",\"Value\"],\"frequency\":\"annual\",\"type\":\"Time Series\",\"premium\":false,\"limit\":null, \"transform\":null,\"column_index\":null,\"start_date\":\"1960-12-31\",\"end_date\":\"2017-12-31\",\"data\":[[\"2017-12-31\",180217594600.0],[\"2016-12-31\",176487946700.0]]}"; 
-        String jsonString = jsonValue; 
-        //System.out.println(jsonValue);
-        //System.out.println("-----------");
+    public void testGDB(String jsonValue) {         
+        String jsonString = jsonValue;         
         GsonBuilder builder = new GsonBuilder(); 
         builder.setPrettyPrinting(); 
 
         Gson gson = builder.create(); 
         GdpDataset gdpd = gson.fromJson(jsonString, GdpDataset.class); 
         Gdp gdp = gdpd.getDataset();
-//        for(ArrayList g:gdp.getData()){
-//            System.out.println(g.get(0)+" "+g.get(1));
-//        }
+        
         jsonString = gson.toJson(gdp);         
 
         Gdp gp = gson.fromJson(jsonString, Gdp.class); 

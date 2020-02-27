@@ -5,6 +5,8 @@
  */
 package econometrica;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -41,4 +43,35 @@ public class RestApi {
         
         return null;
     }
+    
+    
+    public Oil OilToObject(String jsonValue) {         
+        String jsonString = jsonValue;                 
+        GsonBuilder builder = new GsonBuilder(); 
+        builder.setPrettyPrinting(); 
+
+        Gson gson = builder.create(); 
+        OilDataset oild = gson.fromJson(jsonString, OilDataset.class); 
+        Oil oil = oild.getDataset();
+        
+        jsonString = gson.toJson(oil);         
+
+        return gson.fromJson(jsonString, Oil.class); 
+                
+   }     
+    
+    public Gdp GDBToObject(String jsonValue) {         
+        String jsonString = jsonValue;         
+        GsonBuilder builder = new GsonBuilder(); 
+        builder.setPrettyPrinting(); 
+
+        Gson gson = builder.create(); 
+        GdpDataset gdpd = gson.fromJson(jsonString, GdpDataset.class); 
+        Gdp gdp = gdpd.getDataset();
+        
+        jsonString = gson.toJson(gdp);         
+
+        return gson.fromJson(jsonString, Gdp.class); 
+                      
+   }
 }

@@ -8,6 +8,11 @@ package tests;
 import econometrica.Chart;
 import econometrica.GsonTester;
 import econometrica.RestApi;
+import java.text.ParseException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import model.Country;
 import org.jfree.ui.RefineryUtilities;
 
 /**
@@ -19,15 +24,30 @@ public class Ergasia3 {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         // TODO code application logic here
         //OkHTTPTest();
         //GsonTeste2();
         //GsonTester();
-        GdpTest();
+        //GdpTest();
         //OilTest();
         //ChartTest();
-        //asdsadsaa
+        //asdsadsaa        
+            
+        //InsertDBTest();
+    }
+    
+    public static void InsertDBTest() throws ParseException{
+         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
+         EntityManager em = emf.createEntityManager();
+         em.getTransaction().begin();
+         Country country = new Country();
+         country.setIsoCode("CHA");
+         country.setName("CCHOU");
+         em.persist(country);
+         em.getTransaction().commit();    
+         em.clear();
+
     }
     
     

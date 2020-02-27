@@ -5,6 +5,8 @@
  */
 package gui;
 
+import econometrica.Gdp;
+import econometrica.Oil;
 import econometrica.RestApi;
 import java.awt.Component;
 import java.io.BufferedReader;
@@ -18,10 +20,17 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
+import model.Country;
 
 
 /**
@@ -48,9 +57,7 @@ public class mainpage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        btnApiCall = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
         cbCountries = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -66,34 +73,101 @@ public class mainpage extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         lblGdpStartDate = new javax.swing.JLabel();
         lblGdpEndDate = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tblOil = new javax.swing.JTable();
+        btnApiCall = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblGDP = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         lblselectedCountry = new javax.swing.JLabel();
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblOil = new javax.swing.JTable();
+        btnSave = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1000, 541));
+        setTitle("Econometrica");
+        setPreferredSize(new java.awt.Dimension(1000, 700));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
         });
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
+            public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
+            }
+            public void ancestorResized(java.awt.event.HierarchyEvent evt) {
+                jPanel1AncestorResized(evt);
+            }
+        });
+        jPanel1.setLayout(null);
+
+        cbCountries.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbCountriesActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cbCountries);
+        cbCountries.setBounds(30, 40, 150, 20);
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setText("Oil Data");
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(30, 70, 70, 30);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setText("Dataset Name:");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(300, 100, 83, 14);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setText("GDP Data");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(300, 80, 53, 14);
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel5.setText("Dataset Name:");
+        jPanel1.add(jLabel5);
+        jLabel5.setBounds(30, 100, 83, 14);
+
+        lblOil.setText("-");
+        jPanel1.add(lblOil);
+        lblOil.setBounds(30, 120, 240, 14);
+
+        lblGdp.setText("-");
+        jPanel1.add(lblGdp);
+        lblGdp.setBounds(300, 120, 240, 14);
+
+        jLabel6.setText("Start Date:");
+        jPanel1.add(jLabel6);
+        jLabel6.setBounds(30, 160, 60, 14);
+
+        jLabel7.setText("End Date:");
+        jPanel1.add(jLabel7);
+        jLabel7.setBounds(30, 180, 60, 14);
+
+        lblOilStartDate.setText("-");
+        jPanel1.add(lblOilStartDate);
+        lblOilStartDate.setBounds(110, 160, 160, 14);
+
+        lblOilEndDate.setText("-");
+        jPanel1.add(lblOilEndDate);
+        lblOilEndDate.setBounds(110, 180, 160, 14);
+
+        jLabel10.setText("Start Date:");
+        jPanel1.add(jLabel10);
+        jLabel10.setBounds(300, 160, 70, 14);
+
+        jLabel11.setText("End Date:");
+        jPanel1.add(jLabel11);
+        jLabel11.setBounds(300, 180, 60, 14);
+
+        lblGdpStartDate.setText("-");
+        jPanel1.add(lblGdpStartDate);
+        lblGdpStartDate.setBounds(370, 160, 160, 14);
+        lblGdpStartDate.getAccessibleContext().setAccessibleName("");
+
+        lblGdpEndDate.setText("-");
+        jPanel1.add(lblGdpEndDate);
+        lblGdpEndDate.setBounds(370, 180, 170, 14);
 
         btnApiCall.setText("Fetch Data");
         btnApiCall.setToolTipText("");
@@ -102,78 +176,8 @@ public class mainpage extends javax.swing.JFrame {
                 btnApiCallActionPerformed(evt);
             }
         });
-        getContentPane().add(btnApiCall, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 40, 140, -1));
-
-        cbCountries.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbCountriesActionPerformed(evt);
-            }
-        });
-        getContentPane().add(cbCountries, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 271, -1));
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setText("Oil Data");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("Dataset Name:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, -1, -1));
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel4.setText("GDP Data");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, -1, -1));
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel5.setText("Dataset Name:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, -1, -1));
-
-        lblOil.setText("-");
-        getContentPane().add(lblOil, new org.netbeans.lib.awtextra.AbsoluteConstraints(466, 451, 207, -1));
-
-        lblGdp.setText("-");
-        getContentPane().add(lblGdp, new org.netbeans.lib.awtextra.AbsoluteConstraints(685, 451, 223, -1));
-
-        jLabel6.setText("Start Date:");
-        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, -1));
-
-        jLabel7.setText("End Date:");
-        getContentPane().add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, -1, -1));
-
-        lblOilStartDate.setText("-");
-        getContentPane().add(lblOilStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, -1, -1));
-
-        lblOilEndDate.setText("-");
-        getContentPane().add(lblOilEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, -1, -1));
-
-        jLabel10.setText("Start Date:");
-        getContentPane().add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 130, -1, -1));
-
-        jLabel11.setText("End Date:");
-        getContentPane().add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, -1, -1));
-
-        lblGdpStartDate.setText("-");
-        getContentPane().add(lblGdpStartDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 130, -1, -1));
-
-        lblGdpEndDate.setText("-");
-        getContentPane().add(lblGdpEndDate, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 150, -1, -1));
-
-        tblOil.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Year", "Value"
-            }
-        ));
-        jScrollPane2.setViewportView(tblOil);
-        if (tblOil.getColumnModel().getColumnCount() > 0) {
-            tblOil.getColumnModel().getColumn(0).setResizable(false);
-        }
-
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 271, 260));
+        jPanel1.add(btnApiCall);
+        btnApiCall.setBounds(300, 40, 90, 23);
 
         tblGDP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -186,51 +190,110 @@ public class mainpage extends javax.swing.JFrame {
                 "Year", "Value"
             }
         ));
+        tblGDP.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        tblGDP.setPreferredSize(null);
+        tblGDP.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                tblGDPComponentResized(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblGDP);
         if (tblGDP.getColumnModel().getColumnCount() > 0) {
             tblGDP.getColumnModel().getColumn(0).setResizable(false);
         }
 
-        getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, 271, 260));
+        jPanel1.add(jScrollPane3);
+        jScrollPane3.setBounds(300, 210, 250, 240);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Select a country:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(30, 20, 95, 14);
 
         lblselectedCountry.setText("-");
-        getContentPane().add(lblselectedCountry, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, -1, -1));
+        jPanel1.add(lblselectedCountry);
+        lblselectedCountry.setBounds(696, 239, 4, 14);
 
-        pack();
+        tblOil.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Year", "Value"
+            }
+        ));
+        tblOil.setPreferredSize(null);
+        jScrollPane2.setViewportView(tblOil);
+        if (tblOil.getColumnModel().getColumnCount() > 0) {
+            tblOil.getColumnModel().getColumn(0).setResizable(false);
+            tblOil.getColumnModel().getColumn(0).setHeaderValue("Year");
+            tblOil.getColumnModel().getColumn(1).setHeaderValue("Value");
+        }
+
+        jPanel1.add(jScrollPane2);
+        jScrollPane2.setBounds(30, 210, 240, 240);
+
+        btnSave.setText("Save");
+        btnSave.setToolTipText("");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnSave);
+        btnSave.setBounds(30, 480, 57, 23);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE))
+        );
+
+        setSize(new java.awt.Dimension(615, 580));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnApiCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApiCallActionPerformed
         // TODO add your handling code here:
         RestApi ra = new RestApi("YF9riQwEK95f-FXBm8Z3");
-        //https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json?api_key=YF9riQwEK95f-FXBm8Z3
-        System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/WWDI/"+this.countryCode+"_NY_GDP_MKTP_CN.json"));
-        System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_"+this.countryCode+".json"));        
+        populateOil(ra);
+        populateGdp(ra);
     }//GEN-LAST:event_btnApiCallActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+                
         try {
             BufferedReader fileReader = null;
             String line = "";
-        
-            //File file = new File("C:\\Users\\themhz\\Documents\\NetBeansProjects\\ergasia3\\src\\gui\\iso-countries.csv");            
-            //fileReader = new BufferedReader(new FileReader("C:\\Users\\themhz\\Documents\\NetBeansProjects\\ergasia3\\src\\gui\\iso-countries.csv"));
+            //Ανάγνωση του csv και ποπουλάρει το ντροπντουν
             fileReader = new BufferedReader(new FileReader("src/gui/iso-countries.csv"));
             try {
                 cbCountries.removeAllItems();
                 fileReader.readLine();
                 while ((line = fileReader.readLine()) != null) {
                     //Get all tokens available in line
-                    System.out.println(line);
+                    //System.out.println(line);
                     String[] tokens = line.split(";");
                     hmCountries.put(tokens[0], tokens[2]);
                     if (tokens.length > 0) {
                         cbCountries.addItem(tokens[0]);
                     }
                 }
+                
+                //cbCountries.setSelectedIndex(84);
+                cbCountries.setSelectedItem("GREECE");
+                
             } catch (IOException ex) {
                 Logger.getLogger(mainpage.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -244,14 +307,81 @@ public class mainpage extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void cbCountriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCountriesActionPerformed
-        // TODO add your handling code here:
-    
-        //System.out.println(cbCountries.getSelectedItem());
-        //lblselectedCountry.setText(cbCountries.getSelectedItem().toString());   
+        // TODO add your handling code here:    
         this.countryCode = hmCountries.get(cbCountries.getSelectedItem().toString()).toString();
         lblselectedCountry.setText(this.countryCode);
     }//GEN-LAST:event_cbCountriesActionPerformed
 
+    private void jPanel1AncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_jPanel1AncestorResized
+        // TODO add your handling code here:
+        
+        
+        
+    }//GEN-LAST:event_jPanel1AncestorResized
+
+    private void tblGDPComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tblGDPComponentResized
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblGDPComponentResized
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        // TODO add your handling code here:
+        //System.out.println("Saving data");
+        
+         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
+         EntityManager em = emf.createEntityManager();
+         em.getTransaction().begin();         
+             
+         hmCountries.forEach((Cname,Ccode)->{
+            Country country = new Country();
+            country.setIsoCode(Ccode);
+            country.setName(Cname);
+            em.persist(country);
+            
+             System.out.println("Inserting " + country.getName());
+         });             
+         
+         em.getTransaction().commit();    
+         
+         em.clear();
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void populateOil(RestApi ra){
+        //RestApi ra = new RestApi("YF9riQwEK95f-FXBm8Z3");
+        //https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json?api_key=YF9riQwEK95f-FXBm8Z3        
+        //System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/WWDI/"+this.countryCode+"_NY_GDP_MKTP_CN.json"));
+        //System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_"+this.countryCode+".json"));        
+        //System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_"+this.countryCode+".json"));
+        
+        Oil oil = ra.OilToObject(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_"+this.countryCode+".json"));                
+        DefaultTableModel model = new DefaultTableModel();
+        String header[] = new String[] { "Year", "value" };
+        model.setColumnIdentifiers(header);
+
+        lblOil.setText(oil.getName());
+        lblOilStartDate.setText(oil.getStart_date().toString());
+        lblOilEndDate.setText(oil.getEnd_date().toString());
+        for(int i=0;i<oil.getData().size();i++){
+            model.addRow(new Object[]{oil.getData().get(i).get(0), oil.getData().get(i).get(1)});
+            tblOil.setModel(model);
+        }
+    }
+    
+    
+    private void populateGdp(RestApi ra){
+                
+        Gdp gdp = ra.GDBToObject(ra.get("https://www.quandl.com/api/v3/datasets/WWDI/"+this.countryCode+"_NY_GDP_MKTP_CN.json"));                
+        DefaultTableModel model = new DefaultTableModel();
+        String header[] = new String[] { "Year", "value" };
+        model.setColumnIdentifiers(header);
+        lblGdp.setText(gdp.getName());
+        lblGdpStartDate.setText(gdp.getStart_date().toString());
+        lblGdpEndDate.setText(gdp.getEnd_date().toString());
+        for(int i=0;i<gdp.getData().size();i++){
+            model.addRow(new Object[]{gdp.getData().get(i).get(0), gdp.getData().get(i).get(1)});
+           tblGDP.setModel(model);
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -289,6 +419,7 @@ public class mainpage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApiCall;
+    private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cbCountries;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -299,10 +430,9 @@ public class mainpage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblGdp;
     private javax.swing.JLabel lblGdpEndDate;
     private javax.swing.JLabel lblGdpStartDate;
