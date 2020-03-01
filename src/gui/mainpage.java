@@ -7,14 +7,16 @@ package gui;
 
 import econometrica.Gdp;
 import econometrica.Oil;
-import econometrica.RestApi;
+import econometrica.Quandle;
 import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -31,6 +33,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
 import model.Country;
+import model.CountryData;
+import model.CountryDataset;
 
 
 /**
@@ -43,6 +47,10 @@ public class mainpage extends javax.swing.JFrame {
      * Creates new form mainpage
      */
     private HashMap<String, String> hmCountries = new HashMap<String, String>();
+    
+    private ArrayList<CountryDataset> cdsl = new ArrayList<CountryDataset>();
+    private ArrayList<CountryData> cdl = new ArrayList<CountryData>();    
+    
     private String countryCode;
     public mainpage() {
         initComponents();
@@ -91,13 +99,6 @@ public class mainpage extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.addHierarchyBoundsListener(new java.awt.event.HierarchyBoundsListener() {
-            public void ancestorMoved(java.awt.event.HierarchyEvent evt) {
-            }
-            public void ancestorResized(java.awt.event.HierarchyEvent evt) {
-                jPanel1AncestorResized(evt);
-            }
-        });
         jPanel1.setLayout(null);
 
         cbCountries.addActionListener(new java.awt.event.ActionListener() {
@@ -106,7 +107,7 @@ public class mainpage extends javax.swing.JFrame {
             }
         });
         jPanel1.add(cbCountries);
-        cbCountries.setBounds(30, 40, 150, 20);
+        cbCountries.setBounds(30, 40, 240, 20);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel2.setText("Oil Data");
@@ -192,11 +193,6 @@ public class mainpage extends javax.swing.JFrame {
         ));
         tblGDP.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         tblGDP.setPreferredSize(null);
-        tblGDP.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                tblGDPComponentResized(evt);
-            }
-        });
         jScrollPane3.setViewportView(tblGDP);
         if (tblGDP.getColumnModel().getColumnCount() > 0) {
             tblGDP.getColumnModel().getColumn(0).setResizable(false);
@@ -266,7 +262,9 @@ public class mainpage extends javax.swing.JFrame {
 
     private void btnApiCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApiCallActionPerformed
         // TODO add your handling code here:
-        RestApi ra = new RestApi("YF9riQwEK95f-FXBm8Z3");
+        Quandle ra = new Quandle();
+        this.cdl.clear();
+        
         populateOil(ra);
         populateGdp(ra);
     }//GEN-LAST:event_btnApiCallActionPerformed
@@ -282,23 +280,19 @@ public class mainpage extends javax.swing.JFrame {
                 cbCountries.removeAllItems();
                 fileReader.readLine();
                 while ((line = fileReader.readLine()) != null) {
-                    //Get all tokens available in line
-                    //System.out.println(line);
+                    //Get all tokens available in line                 
                     String[] tokens = line.split(";");
                     hmCountries.put(tokens[0], tokens[2]);
                     if (tokens.length > 0) {
                         cbCountries.addItem(tokens[0]);
                     }
-                }
-                
+                }                
                 //cbCountries.setSelectedIndex(84);
                 cbCountries.setSelectedItem("GREECE");
                 
             } catch (IOException ex) {
                 Logger.getLogger(mainpage.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
+            }                        
 
         } catch (FileNotFoundException ex) {
             Logger.getLogger(mainpage.class.getName()).log(Level.SEVERE, null, ex);
@@ -307,26 +301,61 @@ public class mainpage extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void cbCountriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCountriesActionPerformed
-        // TODO add your handling code here:    
         this.countryCode = hmCountries.get(cbCountries.getSelectedItem().toString()).toString();
         lblselectedCountry.setText(this.countryCode);
     }//GEN-LAST:event_cbCountriesActionPerformed
 
-    private void jPanel1AncestorResized(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_jPanel1AncestorResized
-        // TODO add your handling code here:
-        
-        
-        
-    }//GEN-LAST:event_jPanel1AncestorResized
-
-    private void tblGDPComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_tblGDPComponentResized
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tblGDPComponentResized
-
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        //System.out.println("Saving data");
+        System.out.println("Saving data..");
+        //saveCountries();
         
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        saveCountryDataset(em);
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void saveCountryDataset(EntityManager em){
+        
+         //System.out.println(this.cdsl.toString());
+        for(CountryDataset countryDataset: this.cdsl){
+//            CountryDataset cds = new CountryDataset();
+//            cds.setName(countryDataset.getName());
+//            cds.setDescription(countryDataset.getDescription());
+//            cds.setStartYear(countryDataset.getStartYear());
+//            cds.setEndYear(countryDataset.getEndYear());
+//            cds.setCountryCode(countryDataset.getCountryCode());
+            //countryDataset.setCountryDataCollection(cdl);
+            em.persist(countryDataset);
+            
+            //saveCountryData(em);
+        }
+        em.getTransaction().commit();
+        em.clear();
+        
+        //cdsl.add(cds);
+        
+    }
+    
+    private void saveCountryData(EntityManager em){
+        
+        for(CountryData cdata: cdl){            
+            em.persist(cdata);
+            em.getTransaction().commit();
+//            System.out.println("----Persisting----");
+//            System.out.println(cdata.getDataset().getName());
+//            System.out.println(cdata.getValue());
+//            System.out.println(cdata.getDataYear());
+//            //System.out.println(cdata.getDataset().getName());
+//            System.out.println("--------");
+        }
+        
+    }
+    
+    
+    
+    private void saveCountries(){
          EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
          EntityManager em = emf.createEntityManager();
          em.getTransaction().begin();         
@@ -343,42 +372,105 @@ public class mainpage extends javax.swing.JFrame {
          em.getTransaction().commit();    
          
          em.clear();
-    }//GEN-LAST:event_btnSaveActionPerformed
-
-    private void populateOil(RestApi ra){
-        //RestApi ra = new RestApi("YF9riQwEK95f-FXBm8Z3");
-        //https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json?api_key=YF9riQwEK95f-FXBm8Z3        
-        //System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/WWDI/"+this.countryCode+"_NY_GDP_MKTP_CN.json"));
-        //System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_"+this.countryCode+".json"));        
-        //System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_"+this.countryCode+".json"));
+    }
+    private void populateOil(Quandle ra){        
         
-        Oil oil = ra.OilToObject(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_"+this.countryCode+".json"));                
+        Oil oil = ra.getOil(this.countryCode);
         DefaultTableModel model = new DefaultTableModel();
         String header[] = new String[] { "Year", "value" };
         model.setColumnIdentifiers(header);
 
         lblOil.setText(oil.getName());
-        lblOilStartDate.setText(oil.getStart_date().toString());
-        lblOilEndDate.setText(oil.getEnd_date().toString());
+        
+        
+        Country c = new Country();
+        CountryDataset countryDataset = new CountryDataset();
+        CountryData countryData = new CountryData();
+
+        countryDataset.setName(oil.getName());
+        countryDataset.setDescription(oil.getDescription());        
+        String pattern = "yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);  
+
+        String getStart_date = simpleDateFormat.format(oil.getStart_date());
+        String getEnd_date = simpleDateFormat.format(oil.getEnd_date());
+
+        countryDataset.setStartYear(getStart_date);
+        countryDataset.setEndYear(getEnd_date);
+        lblOilStartDate.setText(getStart_date);
+        lblOilEndDate.setText(getEnd_date);
+
+        c.setName(cbCountries.getSelectedItem().toString());
+        c.setIsoCode(this.countryCode);
+        countryDataset.setCountryCode(c);
+
+
         for(int i=0;i<oil.getData().size();i++){
-            model.addRow(new Object[]{oil.getData().get(i).get(0), oil.getData().get(i).get(1)});
+            
+            String[] oilYear = oil.getData().get(i).get(0).split("-");
+            model.addRow(new Object[]{oilYear[0], oil.getData().get(i).get(1)});
             tblOil.setModel(model);
+            
+            countryData.setId(i);
+            countryData.setDataset(countryDataset);
+            countryData.setValue(oil.getData().get(i).get(1));
+            countryData.setDataYear(oilYear[0]);
+            countryDataset.setCountryDataCollection(cdl);
+
+            cdl.add(countryData);
         }
+                
+        this.cdsl.add(countryDataset);
+                
     }
     
     
-    private void populateGdp(RestApi ra){
+    private void populateGdp(Quandle ra){
                 
-        Gdp gdp = ra.GDBToObject(ra.get("https://www.quandl.com/api/v3/datasets/WWDI/"+this.countryCode+"_NY_GDP_MKTP_CN.json"));                
+        Gdp gdp = ra.getGdp(this.countryCode);
         DefaultTableModel model = new DefaultTableModel();
         String header[] = new String[] { "Year", "value" };
         model.setColumnIdentifiers(header);
         lblGdp.setText(gdp.getName());
-        lblGdpStartDate.setText(gdp.getStart_date().toString());
-        lblGdpEndDate.setText(gdp.getEnd_date().toString());
+        
+        //String pattern = "yyyy-MM-dd";
+        String pattern = "yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);  
+        
+        String getStart_date = simpleDateFormat.format(gdp.getStart_date());
+        String getEnd_date = simpleDateFormat.format(gdp.getEnd_date());
+        
+        lblGdpStartDate.setText(getStart_date);
+        lblGdpEndDate.setText(getEnd_date);
+        //Extra code
+        
+        Country c = new Country();
+        CountryDataset cds = new CountryDataset();        
+        CountryData cd = new CountryData();
+        
+        cds.setName(gdp.getName());
+        cds.setDescription(gdp.getDescription());
+        cds.setStartYear(getStart_date);
+        cds.setEndYear(getEnd_date);
+        
+        c.setName(cbCountries.getSelectedItem().toString());
+        c.setIsoCode(this.countryCode);
+        cds.setCountryCode(c);
+         
+        cds.setCountryDataCollection(cdl);
+        this.cdsl.add(cds);
+        
+        //Extra code        
+        
         for(int i=0;i<gdp.getData().size();i++){
-            model.addRow(new Object[]{gdp.getData().get(i).get(0), gdp.getData().get(i).get(1)});
-           tblGDP.setModel(model);
+            
+            String[] gdpYear = gdp.getData().get(i).get(0).split("-");
+            model.addRow(new Object[]{gdpYear[0], gdp.getData().get(i).get(1)});
+            tblGDP.setModel(model);      
+            //cd.setDataset(cds);
+            //cd.setValue(gdp.getData().get(i).get(1));
+            //cd.setDataYear(gdpYear[0]);
+            //cdl.add(cd);
         }
     }
     

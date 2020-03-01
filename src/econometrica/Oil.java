@@ -6,7 +6,9 @@
 package econometrica;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import model.CountryData;
 
 /**
  *
@@ -32,6 +34,8 @@ public class Oil {
     private Date start_date;
     private Date end_date;
     private ArrayList<ArrayList<String>> data;
+    //private Collection<CountryData> data;
+    
     private String collapse;
     private String order;
     private Integer database_id;
@@ -203,9 +207,19 @@ public class Oil {
     public ArrayList<ArrayList<String>> getData() {
         return data;
     }
+    
+//    public Collection<CountryData> getData() {
+//        return data;
+//    }    
+        
 
     public void setData(ArrayList<ArrayList<String>> data) {
         this.data = data;
     }
+//    public void setData(Collection<CountryData> data) {
+//        this.data = data;
+//    }
+    
+    
     
 }

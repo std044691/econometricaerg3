@@ -6,8 +6,10 @@
 package tests;
 
 import econometrica.Chart;
+import econometrica.Gdp;
 import econometrica.GsonTester;
-import econometrica.RestApi;
+import econometrica.Oil;
+import econometrica.Quandle;
 import java.text.ParseException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,6 +37,7 @@ public class Ergasia3 {
         //asdsadsaa        
             
         //InsertDBTest();
+        GsonTester();
     }
     
     public static void InsertDBTest() throws ParseException{
@@ -60,34 +63,27 @@ public class Ergasia3 {
     
     public static void OilTest(){
         GsonTester gt= new GsonTester();
-        RestApi ra = new RestApi("YF9riQwEK95f-FXBm8Z3");
-        String result = ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_GRC.json");
-        System.out.println(result);
-        gt.testOil(result);
+        Quandle ra = new Quandle();
+        Oil result = ra.getOil("GRC");
+        //System.out.println(result);
+        //gt.testOil(result.toString());
     }
     
     
     public static void GdpTest(){
         GsonTester gt= new GsonTester();
-        RestApi ra = new RestApi("YF9riQwEK95f-FXBm8Z3");
-        String result = ra.get("https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json");
-        System.out.println(result);
-        gt.testGDB(result);
+        Quandle ra = new Quandle();
+        //String result = ra.getGdp("GRC");
+        //System.out.println(result);
+        //gt.testGDB(result);
     }
     
     public static void GsonTester(){
         GsonTester gt= new GsonTester();
-        RestApi ra = new RestApi("YF9riQwEK95f-FXBm8Z3");
-        String result = ra.get("https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json");
+        Quandle ra = new Quandle();
+        Gdp result = ra.getGdp("GDP");
         System.out.println(result);
-        gt.testGDB(result);
-    }
-    
-    public static void OkHTTPTest(){
-        RestApi ra = new RestApi("YF9riQwEK95f-FXBm8Z3");
-        System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json"));
-        System.out.println(ra.get("https://www.quandl.com/api/v3/datasets/BP/OIL_CONSUM_GRC.json"));
-    }
- 
+        //gt.testGDB(result);
+    }      
     
 }

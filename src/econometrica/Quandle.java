@@ -17,18 +17,36 @@ import okhttp3.Response;
  * @author themhz
  */
 
-public class RestApi {
+public class Quandle {
     private String key;
+    private String oilUrl;
+    private String gdpUrl;
 
-    public RestApi(String key) {      
+    public Quandle(String key, String oilUrl, String gdpUrl) {      
         this.key = key;
+        this.oilUrl = oilUrl;
+        this.gdpUrl = gdpUrl;
     }
     
-    public String get(String url){
-        //String urlToCall = "https://www.quandl.com/api/v3/datasets/WWDI/GRC_NY_GDP_MKTP_CN.json?api_key="+this.key;
-        String urlToCall = url+"?api_key="+this.key;
+    public Quandle(){
+        this.key = "YF9riQwEK95f-FXBm8Z3";
+        this.gdpUrl = "https://www.quandl.com/api/v3/datasets/WWDI/";        
+        this.oilUrl = "https://www.quandl.com/api/v3/datasets/BP/";       
+    }
+    
+    public Gdp getGdp(String countryCode){            
+        return this.GDBToObject(this.get(this.gdpUrl+countryCode+"_NY_GDP_MKTP_CN.json?api_key="+this.key));
+    }
+    
+    public Oil getOil(String countryCode){            
+        return this.OilToObject(this.get(this.oilUrl+"OIL_CONSUM_"+countryCode+".json?api_key="+this.key));
+    }
+        
+    
+    private String get(String url){
+        
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(urlToCall).build();
+        Request request = new Request.Builder().url(url).build();
         
         try(Response response = client.newCall(request).execute()){
             if(response.isSuccessful() && response.body() != null){
@@ -45,13 +63,13 @@ public class RestApi {
     }
     
     
-    public Oil OilToObject(String jsonValue) {         
+    private Oil OilToObject(String jsonValue) {         
         String jsonString = jsonValue;                 
         GsonBuilder builder = new GsonBuilder(); 
         builder.setPrettyPrinting(); 
 
         Gson gson = builder.create(); 
-        OilDataset oild = gson.fromJson(jsonString, OilDataset.class); 
+        OilDataset oild = gson.fromJson(jsonString, OilDataset.class);         
         Oil oil = oild.getDataset();
         
         jsonString = gson.toJson(oil);         
@@ -60,7 +78,7 @@ public class RestApi {
                 
    }     
     
-    public Gdp GDBToObject(String jsonValue) {         
+    private Gdp GDBToObject(String jsonValue) {         
         String jsonString = jsonValue;         
         GsonBuilder builder = new GsonBuilder(); 
         builder.setPrettyPrinting(); 
