@@ -41,6 +41,10 @@ public class Quandle {
     public Oil getOil(String countryCode){            
         return this.OilToObject(this.get(this.oilUrl+"OIL_CONSUM_"+countryCode+".json?api_key="+this.key));
     }
+    
+    public String getJsonData(String countryCode){
+        return this.get(this.oilUrl+"OIL_CONSUM_"+countryCode+".json?api_key="+this.key);
+    }
         
     
     private String get(String url){
@@ -70,6 +74,7 @@ public class Quandle {
 
         Gson gson = builder.create(); 
         OilDataset oild = gson.fromJson(jsonString, OilDataset.class);         
+        
         Oil oil = oild.getDataset();
         
         jsonString = gson.toJson(oil);         

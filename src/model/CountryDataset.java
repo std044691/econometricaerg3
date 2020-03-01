@@ -7,7 +7,9 @@ package model;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -58,8 +60,11 @@ public class CountryDataset implements Serializable {
     @JoinColumn(name = "COUNTRY_CODE", referencedColumnName = "ISO_CODE")
     @ManyToOne
     private Country countryCode;
-    @OneToMany(mappedBy = "dataset")
-    private Collection<CountryData> countryDataCollection;
+    @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL)
+    
+
+    //private Collection<CountryData> countryDataCollection;
+    private List<CountryData> countryDataList;
 
     public CountryDataset() {
     }
@@ -123,13 +128,23 @@ public class CountryDataset implements Serializable {
         this.countryCode = countryCode;
     }
 
+//    @XmlTransient
+//    public Collection<CountryData> getCountryDataCollection() {
+//        return countryDataCollection;
+//    }
+//
+//    public void setCountryDataCollection(Collection<CountryData> countryDataCollection) {
+//        this.countryDataCollection = countryDataCollection;
+//    }
+    
+    
     @XmlTransient
-    public Collection<CountryData> getCountryDataCollection() {
-        return countryDataCollection;
+    public List<CountryData> getCountryDataList() {
+        return countryDataList;
     }
 
-    public void setCountryDataCollection(Collection<CountryData> countryDataCollection) {
-        this.countryDataCollection = countryDataCollection;
+    public void setCountryDataList(List<CountryData> countryDataCollection) {
+        this.countryDataList = countryDataCollection;
     }
 
     @Override

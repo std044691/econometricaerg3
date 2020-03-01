@@ -343,6 +343,7 @@ public class mainpage extends javax.swing.JFrame {
         for(CountryData cdata: cdl){            
             em.persist(cdata);
             em.getTransaction().commit();
+            
 //            System.out.println("----Persisting----");
 //            System.out.println(cdata.getDataset().getName());
 //            System.out.println(cdata.getValue());
@@ -405,20 +406,20 @@ public class mainpage extends javax.swing.JFrame {
         countryDataset.setCountryCode(c);
 
 
-        for(int i=0;i<oil.getData().size();i++){
-            
-            String[] oilYear = oil.getData().get(i).get(0).split("-");
-            model.addRow(new Object[]{oilYear[0], oil.getData().get(i).get(1)});
-            tblOil.setModel(model);
-            
-            countryData.setId(i);
-            countryData.setDataset(countryDataset);
-            countryData.setValue(oil.getData().get(i).get(1));
-            countryData.setDataYear(oilYear[0]);
-            countryDataset.setCountryDataCollection(cdl);
-
-            cdl.add(countryData);
-        }
+//        for(int i=0;i<oil.getData().size();i++){
+//            
+//            String[] oilYear = oil.getData().get(i).get(0).split("-");
+//            model.addRow(new Object[]{oilYear[0], oil.getData().get(i).get(1)});
+//            tblOil.setModel(model);
+//            
+//            countryData.setId(i);
+//            countryData.setDataset(countryDataset);
+//            countryData.setValue(oil.getData().get(i).get(1));
+//            countryData.setDataYear(oilYear[0]);
+//            countryDataset.setCountryDataCollection(cdl);
+//
+//            cdl.add(countryData);
+//        }
                 
         this.cdsl.add(countryDataset);
                 
@@ -457,7 +458,7 @@ public class mainpage extends javax.swing.JFrame {
         c.setIsoCode(this.countryCode);
         cds.setCountryCode(c);
          
-        cds.setCountryDataCollection(cdl);
+        //cds.setCountryDataCollection(cdl);
         this.cdsl.add(cds);
         
         //Extra code        
