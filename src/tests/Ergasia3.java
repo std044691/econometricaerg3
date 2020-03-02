@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import econometrica.Chart;
 import econometrica.Gdp;
-import econometrica.GsonTester;
 import econometrica.Oil;
 import econometrica.OilDataset;
 import econometrica.Quandle;

@@ -3,9 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package econometrica;
+package tests;
 import com.google.gson.Gson; 
 import com.google.gson.GsonBuilder;  
+import econometrica.Gdp;
+import econometrica.GdpDataset;
+import econometrica.Oil;
+import econometrica.OilDataset;
 import java.util.ArrayList;
 /**
  *

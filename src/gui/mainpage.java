@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -48,8 +49,8 @@ public class mainpage extends javax.swing.JFrame {
      */
     private HashMap<String, String> hmCountries = new HashMap<String, String>();
     
-    private ArrayList<CountryDataset> cdsl = new ArrayList<CountryDataset>();
-    private ArrayList<CountryData> cdl = new ArrayList<CountryData>();    
+    private ArrayList<CountryDataset> countryDatasetList = new ArrayList<CountryDataset>();
+    private ArrayList<CountryData> countryDataList = new ArrayList<CountryData>();    
     
     private String countryCode;
     public mainpage() {
@@ -262,11 +263,11 @@ public class mainpage extends javax.swing.JFrame {
 
     private void btnApiCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApiCallActionPerformed
         // TODO add your handling code here:
-        Quandle ra = new Quandle();
-        this.cdl.clear();
+        Quandle quandle = new Quandle();
+        this.countryDataList.clear();
         
-        populateOil(ra);
-        populateGdp(ra);
+        populateOil(quandle);
+        //populateGdp(quandle);
     }//GEN-LAST:event_btnApiCallActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -319,40 +320,17 @@ public class mainpage extends javax.swing.JFrame {
     private void saveCountryDataset(EntityManager em){
         
          //System.out.println(this.cdsl.toString());
-        for(CountryDataset countryDataset: this.cdsl){
-//            CountryDataset cds = new CountryDataset();
-//            cds.setName(countryDataset.getName());
-//            cds.setDescription(countryDataset.getDescription());
-//            cds.setStartYear(countryDataset.getStartYear());
-//            cds.setEndYear(countryDataset.getEndYear());
-//            cds.setCountryCode(countryDataset.getCountryCode());
-            //countryDataset.setCountryDataCollection(cdl);
-            em.persist(countryDataset);
-            
-            //saveCountryData(em);
+        for(CountryDataset cdslist: this.countryDatasetList){            
+            em.persist(cdslist);            
+            em.getTransaction().commit();
         }
-        em.getTransaction().commit();
-        em.clear();
+        //em.getTransaction().commit();
+        //em.clear();
         
         //cdsl.add(cds);
         
     }
     
-    private void saveCountryData(EntityManager em){
-        
-        for(CountryData cdata: cdl){            
-            em.persist(cdata);
-            em.getTransaction().commit();
-            
-//            System.out.println("----Persisting----");
-//            System.out.println(cdata.getDataset().getName());
-//            System.out.println(cdata.getValue());
-//            System.out.println(cdata.getDataYear());
-//            //System.out.println(cdata.getDataset().getName());
-//            System.out.println("--------");
-        }
-        
-    }
     
     
     
@@ -384,9 +362,9 @@ public class mainpage extends javax.swing.JFrame {
         lblOil.setText(oil.getName());
         
         
-        Country c = new Country();
+        Country country = new Country();
         CountryDataset countryDataset = new CountryDataset();
-        CountryData countryData = new CountryData();
+        //CountryData countryData = new CountryData();
 
         countryDataset.setName(oil.getName());
         countryDataset.setDescription(oil.getDescription());        
@@ -401,31 +379,43 @@ public class mainpage extends javax.swing.JFrame {
         lblOilStartDate.setText(getStart_date);
         lblOilEndDate.setText(getEnd_date);
 
-        c.setName(cbCountries.getSelectedItem().toString());
-        c.setIsoCode(this.countryCode);
-        countryDataset.setCountryCode(c);
-
-
-//        for(int i=0;i<oil.getData().size();i++){
-//            
-//            String[] oilYear = oil.getData().get(i).get(0).split("-");
-//            model.addRow(new Object[]{oilYear[0], oil.getData().get(i).get(1)});
-//            tblOil.setModel(model);
-//            
-//            countryData.setId(i);
-//            countryData.setDataset(countryDataset);
-//            countryData.setValue(oil.getData().get(i).get(1));
-//            countryData.setDataYear(oilYear[0]);
-//            countryDataset.setCountryDataCollection(cdl);
-//
-//            cdl.add(countryData);
-//        }
+        country.setName(cbCountries.getSelectedItem().toString());
+        country.setIsoCode(this.countryCode);
+        
+        countryDataset.setCountryCode(country);
+        
+        List<CountryData> list = new ArrayList<CountryData>();
+        
+        for(ArrayList<String> oildata: oil.getData()){
+            CountryData cd = new CountryData();
+            
+            String[] gdpYear = oildata.get(0).split("-");
+            
+            cd.setDataYear(gdpYear[0]);
+            cd.setValue(oildata.get(1));     
+            cd.setDataset(countryDataset);
+            list.add(cd);
+            
+            System.out.println(oildata.get(0)+" - " + oildata.get(1));            
+        }
+        
+        countryDataset.setCountryDataList(list);
                 
-        this.cdsl.add(countryDataset);
+        this.countryDatasetList.add(countryDataset);
+        
+        
+         for(int i=0;i<oil.getData().size();i++){
+            
+            String[] oilYear = oil.getData().get(i).get(0).split("-");
+            model.addRow(new Object[]{oilYear[0], oil.getData().get(i).get(1)});
+            tblOil.setModel(model);      
+            //cd.setDataset(cds);
+            //cd.setValue(gdp.getData().get(i).get(1));
+            //cd.setDataYear(gdpYear[0]);
+            //cdl.add(cd);
+        }
                 
-    }
-    
-    
+    }    
     private void populateGdp(Quandle ra){
                 
         Gdp gdp = ra.getGdp(this.countryCode);
@@ -459,7 +449,7 @@ public class mainpage extends javax.swing.JFrame {
         cds.setCountryCode(c);
          
         //cds.setCountryDataCollection(cdl);
-        this.cdsl.add(cds);
+        this.countryDatasetList.add(cds);
         
         //Extra code        
         
