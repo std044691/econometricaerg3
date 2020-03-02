@@ -18,9 +18,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Root;
 import model.Country;
 import model.CountryData;
 import model.CountryDataset;
@@ -46,9 +47,44 @@ public class Ergasia3 {
         //asdsadsaa        
             
         //InsertDBTest();
-        testInsert();
+        //testInsert();
+        //testSelect();
+        //testCustomSelect();
+        testCountCustomSelect();
     }
     
+    public static void testCountCustomSelect(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
+        EntityManager em = emf.createEntityManager();         
+
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(c) FROM CountryDataset c WHERE c.name = 'Oil Consumption - Greece'", Long.class);        
+        long countryCount = query.getSingleResult();
+        System.out.println(countryCount);
+        
+        
+        em.clear();
+    }
+    
+    public static void testCustomSelect(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
+        EntityManager em = emf.createEntityManager();         
+
+        Query query = em.createQuery("SELECT c FROM Country c WHERE c.name = 'CHINA'");        
+        Country c = (Country)query.getSingleResult();
+        System.out.println(c.getName() + " " + c.getIsoCode());
+        em.clear();
+    }
+    
+    public static void testSelect(){
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
+        EntityManager em = emf.createEntityManager();         
+
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(c) FROM Country c", Long.class);         
+        long countryCount = query.getSingleResult();
+        System.out.println(countryCount);         
+        em.clear();
+    }
+//    
     public static void InsertDBTest() throws ParseException{
          EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
          EntityManager em = emf.createEntityManager();
