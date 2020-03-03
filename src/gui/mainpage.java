@@ -5,9 +5,11 @@
  */
 package gui;
 
+import econometrica.Chart;
 import econometrica.Gdp;
 import econometrica.Oil;
 import econometrica.Quandle;
+import handlers.Database;
 import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.File;
@@ -36,6 +38,7 @@ import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
 import model.Country;
 import model.CountryData;
 import model.CountryDataset;
+import org.jfree.ui.RefineryUtilities;
 
 
 /**
@@ -47,11 +50,10 @@ public class mainpage extends javax.swing.JFrame {
     /**
      * Creates new form mainpage
      */
-    private HashMap<String, String> hmCountries = new HashMap<String, String>();
-    
+    private HashMap<String, String> hmCountries = new HashMap<String, String>();    
     private ArrayList<CountryDataset> countryDatasetList = new ArrayList<CountryDataset>();
-    //private ArrayList<CountryData> countryOilDataList = new ArrayList<CountryData>();
-    //private ArrayList<CountryData> countryGdpDataList = new ArrayList<CountryData>();    
+    private Oil oil = null;
+    private Gdp gdp = null;
     
     private String countryCode;
     public mainpage() {
@@ -91,6 +93,8 @@ public class mainpage extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tblOil = new javax.swing.JTable();
         btnSave = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnPlot = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Econometrica");
@@ -242,7 +246,25 @@ public class mainpage extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnSave);
-        btnSave.setBounds(30, 480, 57, 23);
+        btnSave.setBounds(30, 480, 70, 23);
+
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnDelete);
+        btnDelete.setBounds(110, 480, 70, 23);
+
+        btnPlot.setText("Plot");
+        btnPlot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlotActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnPlot);
+        btnPlot.setBounds(190, 480, 51, 23);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -264,10 +286,7 @@ public class mainpage extends javax.swing.JFrame {
 
     private void btnApiCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApiCallActionPerformed
         // TODO add your handling code here:
-        Quandle quandle = new Quandle();
-        //this.countryGdpDataList.clear();
-        //this.countryOilDataList.clear();
-        
+        Quandle quandle = new Quandle();                
         populateOil(quandle);
         populateGdp(quandle);
     }//GEN-LAST:event_btnApiCallActionPerformed
@@ -310,64 +329,53 @@ public class mainpage extends javax.swing.JFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         System.out.println("Saving data..");
-        //saveCountries();
-        
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        saveCountryDataset(em);
+        saveCountries();
+        saveCountryDataset();
     }//GEN-LAST:event_btnSaveActionPerformed
 
-    private void saveCountryDataset(EntityManager em){
-        
-         //System.out.println(this.cdsl.toString());
-        for(CountryDataset cdslist: this.countryDatasetList){            
-            em.persist(cdslist);            
-            
-        }
-        em.getTransaction().commit();                
-    }
-    
-            
-    private void saveCountries(){
-         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
-         EntityManager em = emf.createEntityManager();
-         em.getTransaction().begin();         
-             
-         hmCountries.forEach((Cname,Ccode)->{
-            Country country = new Country();
-            country.setIsoCode(Ccode);
-            country.setName(Cname);
-            em.persist(country);
-            
-             System.out.println("Inserting " + country.getName());
-         });             
-         
-         em.getTransaction().commit();    
-         
-         em.clear();
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+       
+        Database.deleteAll();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnPlotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlotActionPerformed
+        // TODO add your handling code here:        
+         final Chart chart = new Chart("GDP and OIL consumtion for " + cbCountries.getSelectedItem(), this.oil, this.gdp );
+         chart.pack();
+         RefineryUtilities.centerFrameOnScreen(chart);
+         chart.setVisible(true);
+    }//GEN-LAST:event_btnPlotActionPerformed
+
+    private void saveCountryDataset(){
+                 
+        String result = Database.insertCountryDataset(this.countryDatasetList);
+        System.out.println(result);
+    }                
+    private void saveCountries(){        
+        String result = Database.insertCountries(hmCountries);
+        System.out.println(result);
     }
     private void populateOil(Quandle ra){        
         
-        Oil oil = ra.getOil(this.countryCode);
+        this.oil = ra.getOil(this.countryCode);
         DefaultTableModel model = new DefaultTableModel();
         String header[] = new String[] { "Year", "value" };
         model.setColumnIdentifiers(header);
 
-        lblOil.setText(oil.getName());
+        lblOil.setText(this.oil.getName());
         
         
         Country country = new Country();
         CountryDataset countryDataset = new CountryDataset();
         //CountryData countryData = new CountryData();
 
-        countryDataset.setName(oil.getName());
-        countryDataset.setDescription(oil.getDescription());        
+        countryDataset.setName(this.oil.getName());
+        countryDataset.setDescription(this.oil.getDescription());        
         String pattern = "yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);  
 
-        String getStart_date = simpleDateFormat.format(oil.getStart_date());
-        String getEnd_date = simpleDateFormat.format(oil.getEnd_date());
+        String getStart_date = simpleDateFormat.format(this.oil.getStart_date());
+        String getEnd_date = simpleDateFormat.format(this.oil.getEnd_date());
 
         countryDataset.setStartYear(getStart_date);
         countryDataset.setEndYear(getEnd_date);
@@ -381,61 +389,52 @@ public class mainpage extends javax.swing.JFrame {
         
         List<CountryData> list = new ArrayList<CountryData>();
         
-        for(ArrayList<String> oildata: oil.getData()){
-            CountryData cd = new CountryData();
+        for(ArrayList<String> oildata: this.oil.getData()){
+           CountryData cd = new CountryData();
             
-            String[] gdpYear = oildata.get(0).split("-");
+           String[] gdpYear = oildata.get(0).split("-");
             
-            cd.setDataYear(gdpYear[0]);
-            cd.setValue(oildata.get(1));     
-            cd.setDataset(countryDataset);
-            list.add(cd);
-            
-            //System.out.println(oildata.get(0)+" - " + oildata.get(1));            
+           cd.setDataYear(gdpYear[0]);
+           cd.setValue(oildata.get(1));     
+           cd.setDataset(countryDataset);
+           list.add(cd);                        
         }
         
-        countryDataset.setCountryDataList(list);
-                
+        countryDataset.setCountryDataList(list);                
         this.countryDatasetList.add(countryDataset);
-        
-        
-         for(int i=0;i<oil.getData().size();i++){
+                
+        for(int i=0;i<this.oil.getData().size();i++){                          
             
-            String[] oilYear = oil.getData().get(i).get(0).split("-");
-            model.addRow(new Object[]{oilYear[0], oil.getData().get(i).get(1)});
-            tblOil.setModel(model);      
-            //cd.setDataset(cds);
-            //cd.setValue(gdp.getData().get(i).get(1));
-            //cd.setDataYear(gdpYear[0]);
-            //cdl.add(cd);
+           String[] oilYear = this.oil.getData().get(i).get(0).split("-");
+           model.addRow(new Object[]{oilYear[0], this.oil.getData().get(i).get(1)});
+           tblOil.setModel(model);                
         }
                 
     }    
     private void populateGdp(Quandle ra){
                 
-        Gdp gdp = ra.getGdp(this.countryCode);
+        this.gdp = ra.getGdp(this.countryCode);
         DefaultTableModel model = new DefaultTableModel();
         String header[] = new String[] { "Year", "value" };
         model.setColumnIdentifiers(header);
-        lblGdp.setText(gdp.getName());
+        lblGdp.setText(this.gdp.getName());
         
         //String pattern = "yyyy-MM-dd";
         String pattern = "yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);  
         
-        String getStart_date = simpleDateFormat.format(gdp.getStart_date());
-        String getEnd_date = simpleDateFormat.format(gdp.getEnd_date());
+        String getStart_date = simpleDateFormat.format(this.gdp.getStart_date());
+        String getEnd_date = simpleDateFormat.format(this.gdp.getEnd_date());
         
         lblGdpStartDate.setText(getStart_date);
         lblGdpEndDate.setText(getEnd_date);
         //Extra code
         
-        Country c = new Country();
-        CountryDataset countryDataset = new CountryDataset();        
-        //CountryData countryData = new CountryData();
+        Country c = new Country();        
+        CountryDataset countryDataset = new CountryDataset();                
         
-        countryDataset.setName(gdp.getName());
-        countryDataset.setDescription(gdp.getDescription());
+        countryDataset.setName(this.gdp.getName());
+        countryDataset.setDescription(this.gdp.getDescription());
         countryDataset.setStartYear(getStart_date);
         countryDataset.setEndYear(getEnd_date);
         
@@ -445,7 +444,7 @@ public class mainpage extends javax.swing.JFrame {
          
         List<CountryData> list = new ArrayList<CountryData>();
         
-        for(ArrayList<String> gdpdata: gdp.getData()){
+        for(ArrayList<String> gdpdata: this.gdp.getData()){
             CountryData cd = new CountryData();
             
             String[] gdpYear = gdpdata.get(0).split("-");
@@ -454,27 +453,19 @@ public class mainpage extends javax.swing.JFrame {
             cd.setValue(gdpdata.get(1));     
             cd.setDataset(countryDataset);
             list.add(cd);
-            
-            //System.out.println(gdpdata.get(0)+" - " + gdpdata.get(1));            
+                        
         }
         
         countryDataset.setCountryDataList(list);
         this.countryDatasetList.add(countryDataset);
-        
-        //Extra code        
-        
-        for(int i=0;i<gdp.getData().size();i++){
+                        
+        for(int i=0;i<this.gdp.getData().size();i++){
             
-            String[] gdpYear = gdp.getData().get(i).get(0).split("-");
-            model.addRow(new Object[]{gdpYear[0], gdp.getData().get(i).get(1)});
-            tblGDP.setModel(model);      
-            //cd.setDataset(cds);
-            //cd.setValue(gdp.getData().get(i).get(1));
-            //cd.setDataYear(gdpYear[0]);
-            //cdl.add(cd);
+            String[] gdpYear = this.gdp.getData().get(i).get(0).split("-");
+            model.addRow(new Object[]{gdpYear[0], this.gdp.getData().get(i).get(1)});
+            tblGDP.setModel(model);                  
         }
     }
-    
     /**
      * @param args the command line arguments
      */
@@ -501,7 +492,7 @@ public class mainpage extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(mainpage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
+        
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -512,6 +503,8 @@ public class mainpage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnApiCall;
+    private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnPlot;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cbCountries;
     private javax.swing.JLabel jLabel1;

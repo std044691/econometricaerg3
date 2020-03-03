@@ -2,6 +2,9 @@
 package econometrica;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import model.CountryData;
+import model.CountryDataset;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -33,9 +36,15 @@ import org.jfree.ui.RefineryUtilities;
 
 public class Chart extends ApplicationFrame {
     
-    
-  public Chart(final String title) {
+  private ArrayList<CountryDataset> countryDatasetList;
+  private Oil oil;
+  private Gdp gdp;
+  
+  public Chart(final String title, Oil oil, Gdp gdp) {      
         super(title);
+        this.oil = oil;
+        this.gdp = gdp;
+        this.countryDatasetList = countryDatasetList;
         final String chartTitle = "Dual Axis Demo 2";
         final XYDataset dataset = createDataset1();
 
@@ -76,26 +85,19 @@ public class Chart extends ApplicationFrame {
 
     }
     private XYDataset createDataset1() {
+                
+        final TimeSeries s1 = new TimeSeries("Oil Data ", Month.class);
+        
+        for(ArrayList<String> oildata: this.oil.getData()){
+           CountryData cd = new CountryData();
+           
+           String[] oilYear = oildata.get(0).split("-");
 
-        final TimeSeries s1 = new TimeSeries("Random Data 1", Month.class);
-        s1.add(new Month(2, 2001), 181.8);
-        s1.add(new Month(3, 2001), 167.3);
-        s1.add(new Month(4, 2001), 153.8);
-        s1.add(new Month(5, 2001), 167.6);
-        s1.add(new Month(6, 2001), 158.8);
-        s1.add(new Month(7, 2001), 148.3);
-        s1.add(new Month(8, 2001), 153.9);
-        s1.add(new Month(9, 2001), 142.7);
-        s1.add(new Month(10, 2001), 123.2);
-        s1.add(new Month(11, 2001), 131.8);
-        s1.add(new Month(12, 2001), 139.6);
-        s1.add(new Month(1, 2002), 142.9);
-        s1.add(new Month(2, 2002), 138.7);
-        s1.add(new Month(3, 2002), 137.3);
-        s1.add(new Month(4, 2002), 143.9);
-        s1.add(new Month(5, 2002), 139.8);
-        s1.add(new Month(6, 2002), 137.0);
-        s1.add(new Month(7, 2002), 132.8);
+           System.out.println(oilYear[0] +" "+ oilYear[1] +" "+ oilYear[2]+ " oildata:"+ oildata.get(1));
+           s1.add(new Month(Integer.parseInt(oilYear[1]), Integer.parseInt(oilYear[0])), Double.parseDouble(oildata.get(1)));
+
+        }
+
 
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(s1);
@@ -105,25 +107,13 @@ public class Chart extends ApplicationFrame {
     }
     
     private XYDataset createDataset2() {
-        final TimeSeries s2 = new TimeSeries("Random Data 2", Month.class);
-        s2.add(new Month(2, 2001), 429.6);
-        s2.add(new Month(3, 2001), 323.2);
-        s2.add(new Month(4, 2001), 417.2);
-        s2.add(new Month(5, 2001), 624.1);
-        s2.add(new Month(6, 2001), 422.6);
-        s2.add(new Month(7, 2001), 619.2);
-        s2.add(new Month(8, 2001), 416.5);
-        s2.add(new Month(9, 2001), 512.7);
-        s2.add(new Month(10, 2001), 501.5);
-        s2.add(new Month(11, 2001), 306.1);
-        s2.add(new Month(12, 2001), 410.3);
-        s2.add(new Month(1, 2002), 511.7);
-        s2.add(new Month(2, 2002), 611.0);
-        s2.add(new Month(3, 2002), 709.6);
-        s2.add(new Month(4, 2002), 613.2);
-        s2.add(new Month(5, 2002), 711.6);
-        s2.add(new Month(6, 2002), 708.8);
-        s2.add(new Month(7, 2002), 501.6);
+        final TimeSeries s2 = new TimeSeries("Gdp Data ", Month.class);
+        for(ArrayList<String> gdpdata: this.gdp.getData()){
+           CountryData cd = new CountryData();           
+           String[] gdpYear = gdpdata.get(0).split("-");
+           System.out.println(gdpYear[0] +" "+ gdpYear[1] +" "+ gdpYear[2]+ " oildata:"+ gdpdata.get(1));
+           s2.add(new Month(Integer.parseInt(gdpYear[1]), Integer.parseInt(gdpYear[0])), Double.parseDouble(gdpdata.get(1)));
+        }
 
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(s2);

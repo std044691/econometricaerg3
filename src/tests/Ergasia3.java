@@ -55,10 +55,11 @@ public class Ergasia3 {
     
     public static void testCountCustomSelect(){
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
-        EntityManager em = emf.createEntityManager();         
+        EntityManager em = emf.createEntityManager();  
+        Country c = new Country("GRC");
 
-        TypedQuery<Long> query = em.createQuery("SELECT COUNT(c) FROM CountryDataset c WHERE c.name = 'Oil Consumption - Greece'", Long.class);        
-        long countryCount = query.getSingleResult();
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(c) FROM CountryDataset c WHERE c.countryCode = :code", Long.class);        
+        long countryCount = query.setParameter("code", c).getSingleResult();
         System.out.println(countryCount);
         
         
@@ -100,10 +101,10 @@ public class Ergasia3 {
     
     
     public static void ChartTest(){
-        final Chart demo = new Chart("Dual Axis Demo 2");
-        demo.pack();
-        RefineryUtilities.centerFrameOnScreen(demo);
-        demo.setVisible(true);
+//        final Chart demo = new Chart("Dual Axis Demo 2");
+//        demo.pack();
+//        RefineryUtilities.centerFrameOnScreen(demo);
+//        demo.setVisible(true);
     }
     
     public static void OilTest(){
