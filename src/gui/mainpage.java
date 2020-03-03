@@ -50,7 +50,8 @@ public class mainpage extends javax.swing.JFrame {
     private HashMap<String, String> hmCountries = new HashMap<String, String>();
     
     private ArrayList<CountryDataset> countryDatasetList = new ArrayList<CountryDataset>();
-    private ArrayList<CountryData> countryDataList = new ArrayList<CountryData>();    
+    //private ArrayList<CountryData> countryOilDataList = new ArrayList<CountryData>();
+    //private ArrayList<CountryData> countryGdpDataList = new ArrayList<CountryData>();    
     
     private String countryCode;
     public mainpage() {
@@ -264,10 +265,11 @@ public class mainpage extends javax.swing.JFrame {
     private void btnApiCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApiCallActionPerformed
         // TODO add your handling code here:
         Quandle quandle = new Quandle();
-        this.countryDataList.clear();
+        //this.countryGdpDataList.clear();
+        //this.countryOilDataList.clear();
         
         populateOil(quandle);
-        //populateGdp(quandle);
+        populateGdp(quandle);
     }//GEN-LAST:event_btnApiCallActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -287,8 +289,7 @@ public class mainpage extends javax.swing.JFrame {
                     if (tokens.length > 0) {
                         cbCountries.addItem(tokens[0]);
                     }
-                }                
-                //cbCountries.setSelectedIndex(84);
+                }                                
                 cbCountries.setSelectedItem("GREECE");
                 
             } catch (IOException ex) {
@@ -322,18 +323,12 @@ public class mainpage extends javax.swing.JFrame {
          //System.out.println(this.cdsl.toString());
         for(CountryDataset cdslist: this.countryDatasetList){            
             em.persist(cdslist);            
-            em.getTransaction().commit();
+            
         }
-        //em.getTransaction().commit();
-        //em.clear();
-        
-        //cdsl.add(cds);
-        
+        em.getTransaction().commit();                
     }
     
-    
-    
-    
+            
     private void saveCountries(){
          EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
          EntityManager em = emf.createEntityManager();
@@ -396,7 +391,7 @@ public class mainpage extends javax.swing.JFrame {
             cd.setDataset(countryDataset);
             list.add(cd);
             
-            System.out.println(oildata.get(0)+" - " + oildata.get(1));            
+            //System.out.println(oildata.get(0)+" - " + oildata.get(1));            
         }
         
         countryDataset.setCountryDataList(list);
@@ -436,20 +431,35 @@ public class mainpage extends javax.swing.JFrame {
         //Extra code
         
         Country c = new Country();
-        CountryDataset cds = new CountryDataset();        
-        CountryData cd = new CountryData();
+        CountryDataset countryDataset = new CountryDataset();        
+        //CountryData countryData = new CountryData();
         
-        cds.setName(gdp.getName());
-        cds.setDescription(gdp.getDescription());
-        cds.setStartYear(getStart_date);
-        cds.setEndYear(getEnd_date);
+        countryDataset.setName(gdp.getName());
+        countryDataset.setDescription(gdp.getDescription());
+        countryDataset.setStartYear(getStart_date);
+        countryDataset.setEndYear(getEnd_date);
         
         c.setName(cbCountries.getSelectedItem().toString());
         c.setIsoCode(this.countryCode);
-        cds.setCountryCode(c);
+        countryDataset.setCountryCode(c);
          
-        //cds.setCountryDataCollection(cdl);
-        this.countryDatasetList.add(cds);
+        List<CountryData> list = new ArrayList<CountryData>();
+        
+        for(ArrayList<String> gdpdata: gdp.getData()){
+            CountryData cd = new CountryData();
+            
+            String[] gdpYear = gdpdata.get(0).split("-");
+            
+            cd.setDataYear(gdpYear[0]);
+            cd.setValue(gdpdata.get(1));     
+            cd.setDataset(countryDataset);
+            list.add(cd);
+            
+            //System.out.println(gdpdata.get(0)+" - " + gdpdata.get(1));            
+        }
+        
+        countryDataset.setCountryDataList(list);
+        this.countryDatasetList.add(countryDataset);
         
         //Extra code        
         

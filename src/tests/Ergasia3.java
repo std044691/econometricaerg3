@@ -186,8 +186,7 @@ public class Ergasia3 {
         em.flush();
         em.getTransaction().commit();
         em.clear();
-        
-        System.out.println("ok");
+                
         
     }      
     
