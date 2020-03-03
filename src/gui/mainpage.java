@@ -89,12 +89,13 @@ public class mainpage extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tblGDP = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        lblselectedCountry = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblOil = new javax.swing.JTable();
         btnSave = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
         btnPlot = new javax.swing.JButton();
+        jCheckBox1 = new javax.swing.JCheckBox();
+        lblselectedCountry = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Econometrica");
@@ -184,7 +185,7 @@ public class mainpage extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnApiCall);
-        btnApiCall.setBounds(300, 40, 90, 23);
+        btnApiCall.setBounds(300, 37, 90, 30);
 
         tblGDP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -211,10 +212,6 @@ public class mainpage extends javax.swing.JFrame {
         jLabel1.setText("Select a country:");
         jPanel1.add(jLabel1);
         jLabel1.setBounds(30, 20, 95, 14);
-
-        lblselectedCountry.setText("-");
-        jPanel1.add(lblselectedCountry);
-        lblselectedCountry.setBounds(696, 239, 4, 14);
 
         tblOil.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -266,13 +263,22 @@ public class mainpage extends javax.swing.JFrame {
         jPanel1.add(btnPlot);
         btnPlot.setBounds(190, 480, 51, 23);
 
+        jCheckBox1.setText("Already Saved");
+        jPanel1.add(jCheckBox1);
+        jCheckBox1.setBounds(470, 480, 100, 23);
+
+        lblselectedCountry.setText("-");
+        jPanel1.add(lblselectedCountry);
+        lblselectedCountry.setBounds(140, 20, 70, 14);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 589, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(304, 304, 304))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,7 +287,7 @@ public class mainpage extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(615, 580));
+        setSize(new java.awt.Dimension(641, 580));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnApiCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApiCallActionPerformed
@@ -324,11 +330,12 @@ public class mainpage extends javax.swing.JFrame {
     private void cbCountriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCountriesActionPerformed
         this.countryCode = hmCountries.get(cbCountries.getSelectedItem().toString()).toString();
         lblselectedCountry.setText(this.countryCode);
+        System.out.println("Selected");
     }//GEN-LAST:event_cbCountriesActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
-        System.out.println("Saving data..");
+        System.out.println("Saving data...");
         saveCountries();
         saveCountryDataset();
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -357,7 +364,14 @@ public class mainpage extends javax.swing.JFrame {
     }
     private void populateOil(Quandle ra){        
         
+        //CountryDataset countrydataset = Database.getOil(this.countryCode);
+        
+        //System.exit(0);
+        //if(Database.isCountryInDb(this.countryCode)==0)
         this.oil = ra.getOil(this.countryCode);
+        //else
+            //this.oil = Database.getOil(this.countryCode);
+                    
         DefaultTableModel model = new DefaultTableModel();
         String header[] = new String[] { "Year", "value" };
         model.setColumnIdentifiers(header);
@@ -379,6 +393,7 @@ public class mainpage extends javax.swing.JFrame {
 
         countryDataset.setStartYear(getStart_date);
         countryDataset.setEndYear(getEnd_date);
+        countryDataset.setDatabaseCode(this.oil.getDatabase_id().toString());
         lblOilStartDate.setText(getStart_date);
         lblOilEndDate.setText(getEnd_date);
 
@@ -437,6 +452,8 @@ public class mainpage extends javax.swing.JFrame {
         countryDataset.setDescription(this.gdp.getDescription());
         countryDataset.setStartYear(getStart_date);
         countryDataset.setEndYear(getEnd_date);
+        
+        countryDataset.setDatabaseCode(this.gdp.getDatabase_id().toString());
         
         c.setName(cbCountries.getSelectedItem().toString());
         c.setIsoCode(this.countryCode);
@@ -507,6 +524,7 @@ public class mainpage extends javax.swing.JFrame {
     private javax.swing.JButton btnPlot;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cbCountries;
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

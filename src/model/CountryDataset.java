@@ -40,6 +40,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "CountryDataset.findByDatasetId", query = "SELECT c FROM CountryDataset c WHERE c.datasetId = :datasetId")})
 public class CountryDataset implements Serializable {
 
+    @Column(name = "DATABASE_CODE")
+    private String databaseCode;
+
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @Column(name = "START_YEAR")
@@ -63,7 +66,6 @@ public class CountryDataset implements Serializable {
     @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL)
     //@OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL)
     
-
     //private Collection<CountryData> countryDataCollection;
     private List<CountryData> countryDataList;
 
@@ -171,6 +173,14 @@ public class CountryDataset implements Serializable {
     @Override
     public String toString() {
         return "econometrica.CountryDataset[ datasetId=" + datasetId + " ]";
+    }
+
+    public String getDatabaseCode() {
+        return databaseCode;
+    }
+
+    public void setDatabaseCode(String databaseCode) {
+        this.databaseCode = databaseCode;
     }
     
 }

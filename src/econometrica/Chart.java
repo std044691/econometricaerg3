@@ -45,8 +45,8 @@ public class Chart extends ApplicationFrame {
         this.oil = oil;
         this.gdp = gdp;
         this.countryDatasetList = countryDatasetList;
-        final String chartTitle = "Dual Axis Demo 2";
-        final XYDataset dataset = createDataset1();
+        final String chartTitle = title;
+        final XYDataset dataset = createDataset1(); 
 
         final JFreeChart chart = ChartFactory.createTimeSeriesChart(
             chartTitle, 

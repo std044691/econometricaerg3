@@ -18,7 +18,26 @@ public class Database {
 
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
     private static EntityManager em = emf.createEntityManager();        
+    
+    
+    public static CountryDataset getOil(String country){
+        Country c = new Country(country);
+        //CountryDataset cd = new CountryDataset();
+        
+        TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.countryCode = :code", CountryDataset.class);
+        return query.setParameter("code", c).getSingleResult();                
+    }
 
+    public static long isCountryInDb(String country){
+        
+        Country c = new Country(country);
+        TypedQuery<Long> query = em.createQuery("SELECT COUNT(c) FROM CountryDataset c WHERE c.countryCode = :code", Long.class);        
+        long countryCount = query.setParameter("code", c).getSingleResult();                        
+        em.clear();
+        
+        return countryCount;
+    }
+    
     public static String insertCountryDataset(ArrayList<CountryDataset> countryDatasetList){
         
         try{
@@ -66,4 +85,6 @@ public class Database {
         em.clear();
                 
     }
+    
+    
 }
