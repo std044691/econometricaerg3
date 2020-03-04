@@ -5,6 +5,7 @@
  */
 package handlers;
 
+import econometrica.Oil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import javax.persistence.*;
@@ -22,17 +23,33 @@ public class Database {
     
     public static CountryDataset getOil(String country){
         Country c = new Country(country);
-        //CountryDataset cd = new CountryDataset();
         
-        TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.countryCode = :code", CountryDataset.class);
-        return query.setParameter("code", c).getSingleResult();                
+        TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.databaseCode = :dbcode AND c.countryCode = :code", CountryDataset.class);
+        query.setParameter("dbcode", "BP");
+        query.setParameter("code", c);                                
+        return query.getSingleResult();
+    }
+    
+    public static CountryDataset getGdp(String country){
+        Country c = new Country(country);
+        
+        TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.databaseCode = :dbcode AND c.countryCode = :code", CountryDataset.class);
+        query.setParameter("dbcode", "WWDI");
+        query.setParameter("code", c);                                
+        return query.getSingleResult();
     }
 
-    public static long isCountryInDb(String country){
+    public static long isCountryInDb(String country, String dataBaseCode){
         
         Country c = new Country(country);
-        TypedQuery<Long> query = em.createQuery("SELECT COUNT(c) FROM CountryDataset c WHERE c.countryCode = :code", Long.class);        
-        long countryCount = query.setParameter("code", c).getSingleResult();                        
+        String select = "SELECT COUNT(c) FROM CountryDataset c WHERE c.countryCode = :code AND c.databaseCode = :dbcode";
+        TypedQuery<Long> query = em.createQuery(select, Long.class);
+        
+        if(dataBaseCode !=null)
+            query.setParameter("dbcode", "BP");
+        
+        long countryCount = query.setParameter("code", c).getSingleResult();  
+        
         em.clear();
         
         return countryCount;

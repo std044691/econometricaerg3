@@ -43,9 +43,7 @@ public class Ergasia3 {
         //GsonTester();
         //GdpTest();
         //OilTest();
-        //ChartTest();
-        //asdsadsaa        
-            
+        //ChartTest();      
         //InsertDBTest();
         //testInsert();
         //testSelect();
@@ -158,18 +156,18 @@ public class Ergasia3 {
         
         List<CountryData> list = new ArrayList<CountryData>();
         
-        for(ArrayList<String> oildata: oil.getData()){
-            CountryData cd = new CountryData();
-            
-            String[] gdpYear = oildata.get(0).split("-");
-            
-            cd.setDataYear(gdpYear[0]);
-            cd.setValue(oildata.get(1));     
-            cd.setDataset(countrydataset);
-            list.add(cd);
-            
-            System.out.println(oildata.get(0)+" - " + oildata.get(1));            
-        }
+//        for(ArrayList<String> oildata: oil.getData()){
+//            CountryData cd = new CountryData();
+//            
+//            String[] gdpYear = oildata.get(0).split("-");
+//            
+//            cd.setDataYear(gdpYear[0]);
+//            cd.setValue(oildata.get(1));     
+//            cd.setDataset(countrydataset);
+//            list.add(cd);
+//            
+//            System.out.println(oildata.get(0)+" - " + oildata.get(1));            
+//        }
         
         //cds.setCountryDataCollection(list);
         

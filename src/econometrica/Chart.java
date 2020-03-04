@@ -17,6 +17,7 @@ import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.time.Month;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.time.Year;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
@@ -77,7 +78,7 @@ public class Chart extends ApplicationFrame {
         plot.setRenderer(1, renderer2);
         
         final DateAxis axis = (DateAxis) plot.getDomainAxis();
-        axis.setDateFormatOverride(new SimpleDateFormat("MMM-yyyy"));
+        axis.setDateFormatOverride(new SimpleDateFormat("yyyy"));
         
         final ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
@@ -86,33 +87,38 @@ public class Chart extends ApplicationFrame {
     }
     private XYDataset createDataset1() {
                 
-        final TimeSeries s1 = new TimeSeries("Oil Data ", Month.class);
+        final TimeSeries s1 = new TimeSeries("Oil Data ", Year.class);
         
-        for(ArrayList<String> oildata: this.oil.getData()){
-           CountryData cd = new CountryData();
-           
-           String[] oilYear = oildata.get(0).split("-");
-
-           System.out.println(oilYear[0] +" "+ oilYear[1] +" "+ oilYear[2]+ " oildata:"+ oildata.get(1));
-           s1.add(new Month(Integer.parseInt(oilYear[1]), Integer.parseInt(oilYear[0])), Double.parseDouble(oildata.get(1)));
+//        for(ArrayList<String> oildata: this.oil.getData()){
+//           CountryData cd = new CountryData();
+//           
+//           String[] oilYear = oildata.get(0).split("-");
+//
+//           //System.out.println(oilYear[0] +" "+ oilYear[1] +" "+ oilYear[2]+ " oildata:"+ oildata.get(1));
+//           //s1.add(new Month(Integer.parseInt(oilYear[1]), Integer.parseInt(oilYear[0])), Double.parseDouble(oildata.get(1)));
+//           s1.add(new Year(Integer.parseInt(oilYear[0])), Double.parseDouble(oildata.get(1)));
+//
+//        }
+        for(CountryData oildata: this.oil.getCountryData()){
+           CountryData cd = new CountryData();          
+           s1.add(new Year(Integer.parseInt(oildata.getDataYear())), Double.parseDouble(oildata.getValue()));
 
         }
-
 
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(s1);
 
         return dataset;
-
+ 
     }
     
     private XYDataset createDataset2() {
-        final TimeSeries s2 = new TimeSeries("Gdp Data ", Month.class);
+        final TimeSeries s2 = new TimeSeries("Gdp Data ", Year.class);
         for(ArrayList<String> gdpdata: this.gdp.getData()){
            CountryData cd = new CountryData();           
            String[] gdpYear = gdpdata.get(0).split("-");
-           System.out.println(gdpYear[0] +" "+ gdpYear[1] +" "+ gdpYear[2]+ " oildata:"+ gdpdata.get(1));
-           s2.add(new Month(Integer.parseInt(gdpYear[1]), Integer.parseInt(gdpYear[0])), Double.parseDouble(gdpdata.get(1)));
+           //System.out.println(gdpYear[0] +" "+ gdpYear[1] +" "+ gdpYear[2]+ " oildata:"+ gdpdata.get(1));
+           s2.add(new Year(Integer.parseInt(gdpYear[0])), Double.parseDouble(gdpdata.get(1)));
         }
 
         final TimeSeriesCollection dataset = new TimeSeriesCollection();

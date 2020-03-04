@@ -5,10 +5,14 @@
  */
 package econometrica;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import model.CountryData;
+import model.CountryDataset;
 
 /**
  *
@@ -32,15 +36,31 @@ public class Oil {
     private String transform;
     private String column_index;
     private Date start_date;
-    private Date end_date;
+    private Date end_date;        
     private ArrayList<ArrayList<String>> data;
-    //private Collection<CountryData> data;
+    private List<CountryData> countryData;
     
     private String collapse;
     private String order;
     private Integer database_id;
     
     public Oil() {}
+    public Oil(CountryDataset cd) {        
+        this.database_code = cd.getDatabaseCode();
+        this.name = cd.getName();
+        this.description= cd.getDescription();
+        
+        Calendar cStart = Calendar.getInstance();
+        cStart.set(Calendar.YEAR, Integer.parseInt(cd.getStartYear()));
+        this.start_date = cStart.getTime();
+        
+        Calendar cEnd = Calendar.getInstance();
+        cEnd.set(Calendar.YEAR, Integer.parseInt(cd.getEndYear()));
+        this.end_date = cEnd.getTime();        
+                
+        this.countryData = cd.getCountryDataList();
+
+    }
     
     public String getCollapse() {
         return collapse;
@@ -208,21 +228,31 @@ public class Oil {
         return data;
     }
     
-//    public Collection<CountryData> getData() {
-//        return data;
-//    }
+    public List<CountryData> getCountryData() {
+        if(this.countryData == null){
+            this.countryData = new ArrayList<CountryData>();
+            for(ArrayList<String> oildata: this.data){
+               CountryData cd = new CountryData();
+
+               String[] gdpYear = oildata.get(0).split("-");
+
+               cd.setDataYear(gdpYear[0]);
+               cd.setValue(oildata.get(1));     
+               //cd.setDataset(countryDataset);
+               countryData.add(cd);                        
+            }
+        }
+        return countryData;
+    }
     
-//    public Collection<CountryData> getData() {
-//        return data;
-//    }    
-        
+       
 
     public void setData(ArrayList<ArrayList<String>> data) {
         this.data = data;
     }
-//    public void setData(Collection<CountryData> data) {
-//        this.data = data;
-//    }
+    public void setCountryData(List<CountryData> countryData) {
+        this.countryData = countryData;
+    }
     
     
     

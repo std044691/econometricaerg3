@@ -6,8 +6,12 @@
 package econometrica;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import model.CountryData;
+import model.CountryDataset;
 
 /**
  *
@@ -31,13 +35,52 @@ public class Gdp {
     private String column_index;
     private Date start_date;
     private Date end_date;
-    private ArrayList<ArrayList<String>> data;
+    private ArrayList<ArrayList<String>> data;    
+    private List<CountryData> countryData;    
     private String collapse;
     private String order;
     private Integer database_id;
 
+    public List<CountryData> getCountryData() {
+        if(this.countryData == null){
+            this.countryData = new ArrayList<CountryData>();
+            for(ArrayList<String> gdpdata: this.data){
+               CountryData cd = new CountryData();
+
+               String[] gdpYear = gdpdata.get(0).split("-");
+
+               cd.setDataYear(gdpYear[0]);
+               cd.setValue(gdpdata.get(1));     
+               //cd.setDataset(countryDataset);
+               countryData.add(cd);                        
+            }
+        }
+        return countryData;
+    }
+
+    public void setCountryData(List<CountryData> countryData) {
+        this.countryData = countryData;
+    }
+
     public Gdp(){
         data = new ArrayList<ArrayList<String>>();
+    }
+    
+    public Gdp(CountryDataset cd) {        
+     this.database_code = cd.getDatabaseCode();
+     this.name = cd.getName();
+     this.description= cd.getDescription();
+
+     Calendar cStart = Calendar.getInstance();
+     cStart.set(Calendar.YEAR, Integer.parseInt(cd.getStartYear()));
+     this.start_date = cStart.getTime();
+
+     Calendar cEnd = Calendar.getInstance();
+     cEnd.set(Calendar.YEAR, Integer.parseInt(cd.getEndYear()));
+     this.end_date = cEnd.getTime();        
+
+     this.countryData = cd.getCountryDataList();
+
     }
     
     public Integer getId() {

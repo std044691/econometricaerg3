@@ -197,13 +197,18 @@ public class mainpage extends javax.swing.JFrame {
             new String [] {
                 "Year", "Value"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblGDP.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
         tblGDP.setPreferredSize(null);
         jScrollPane3.setViewportView(tblGDP);
-        if (tblGDP.getColumnModel().getColumnCount() > 0) {
-            tblGDP.getColumnModel().getColumn(0).setResizable(false);
-        }
 
         jPanel1.add(jScrollPane3);
         jScrollPane3.setBounds(300, 210, 250, 240);
@@ -223,14 +228,17 @@ public class mainpage extends javax.swing.JFrame {
             new String [] {
                 "Year", "Value"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblOil.setPreferredSize(null);
         jScrollPane2.setViewportView(tblOil);
-        if (tblOil.getColumnModel().getColumnCount() > 0) {
-            tblOil.getColumnModel().getColumn(0).setResizable(false);
-            tblOil.getColumnModel().getColumn(0).setHeaderValue("Year");
-            tblOil.getColumnModel().getColumn(1).setHeaderValue("Value");
-        }
 
         jPanel1.add(jScrollPane2);
         jScrollPane2.setBounds(30, 210, 240, 240);
@@ -292,6 +300,7 @@ public class mainpage extends javax.swing.JFrame {
 
     private void btnApiCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApiCallActionPerformed
         // TODO add your handling code here:
+        this.countryDatasetList.clear();
         Quandle quandle = new Quandle();                
         populateOil(quandle);
         populateGdp(quandle);
@@ -366,19 +375,26 @@ public class mainpage extends javax.swing.JFrame {
         
         //CountryDataset countrydataset = Database.getOil(this.countryCode);
         
+        long oilDataExists = Database.isCountryInDb(this.countryCode, "BP");
         //System.exit(0);
-        //if(Database.isCountryInDb(this.countryCode)==0)
-        this.oil = ra.getOil(this.countryCode);
-        //else
-            //this.oil = Database.getOil(this.countryCode);
+        if(oilDataExists==0){
+            this.oil = ra.getOil(this.countryCode);
+        }
+        else{
+            System.out.println("Oil data exists in db");
+            Oil oil = new Oil(Database.getOil(this.countryCode));
+            this.oil = oil;
+        }
                     
+        //this.oil = ra.getOil(this.countryCode);
+        
+        
         DefaultTableModel model = new DefaultTableModel();
         String header[] = new String[] { "Year", "value" };
         model.setColumnIdentifiers(header);
 
         lblOil.setText(this.oil.getName());
-        
-        
+                
         Country country = new Country();
         CountryDataset countryDataset = new CountryDataset();
         //CountryData countryData = new CountryData();
@@ -393,7 +409,7 @@ public class mainpage extends javax.swing.JFrame {
 
         countryDataset.setStartYear(getStart_date);
         countryDataset.setEndYear(getEnd_date);
-        countryDataset.setDatabaseCode(this.oil.getDatabase_id().toString());
+        countryDataset.setDatabaseCode(this.oil.getDatabase_code());
         lblOilStartDate.setText(getStart_date);
         lblOilEndDate.setText(getEnd_date);
 
@@ -404,31 +420,36 @@ public class mainpage extends javax.swing.JFrame {
         
         List<CountryData> list = new ArrayList<CountryData>();
         
-        for(ArrayList<String> oildata: this.oil.getData()){
-           CountryData cd = new CountryData();
-            
-           String[] gdpYear = oildata.get(0).split("-");
-            
-           cd.setDataYear(gdpYear[0]);
-           cd.setValue(oildata.get(1));     
+        for(CountryData oildata: this.oil.getCountryData()){
+           CountryData cd = new CountryData();                                  
+           cd.setDataYear(oildata.getDataYear());
+           cd.setValue(oildata.getValue());
            cd.setDataset(countryDataset);
+           
+           model.addRow(new Object[]{oildata.getDataYear(), oildata.getValue()});
+           tblOil.setModel(model);                
+           
            list.add(cd);                        
         }
+   
         
         countryDataset.setCountryDataList(list);                
         this.countryDatasetList.add(countryDataset);
-                
-        for(int i=0;i<this.oil.getData().size();i++){                          
-            
-           String[] oilYear = this.oil.getData().get(i).get(0).split("-");
-           model.addRow(new Object[]{oilYear[0], this.oil.getData().get(i).get(1)});
-           tblOil.setModel(model);                
-        }
-                
+    
     }    
     private void populateGdp(Quandle ra){
                 
-        this.gdp = ra.getGdp(this.countryCode);
+        //this.gdp = ra.getGdp(this.countryCode);
+        long gdpDataExists = Database.isCountryInDb(this.countryCode, "WWDI");        
+        if(gdpDataExists==0){
+            this.gdp = ra.getGdp(this.countryCode);
+        }
+        else{
+            System.out.println("GDP data exists in db");
+            Gdp gdp = new Gdp(Database.getGdp(this.countryCode));
+            this.gdp = gdp;
+        }
+        
         DefaultTableModel model = new DefaultTableModel();
         String header[] = new String[] { "Year", "value" };
         model.setColumnIdentifiers(header);
@@ -453,7 +474,8 @@ public class mainpage extends javax.swing.JFrame {
         countryDataset.setStartYear(getStart_date);
         countryDataset.setEndYear(getEnd_date);
         
-        countryDataset.setDatabaseCode(this.gdp.getDatabase_id().toString());
+        countryDataset.setDatabaseCode(this.gdp.getDatabase_code());
+        
         
         c.setName(cbCountries.getSelectedItem().toString());
         c.setIsoCode(this.countryCode);
@@ -461,27 +483,23 @@ public class mainpage extends javax.swing.JFrame {
          
         List<CountryData> list = new ArrayList<CountryData>();
         
-        for(ArrayList<String> gdpdata: this.gdp.getData()){
+        for(CountryData gdpdata: this.gdp.getCountryData()){
             CountryData cd = new CountryData();
             
-            String[] gdpYear = gdpdata.get(0).split("-");
+            //String[] gdpYear = gdpdata.get(0).split("-");
             
-            cd.setDataYear(gdpYear[0]);
-            cd.setValue(gdpdata.get(1));     
+            cd.setDataYear(gdpdata.getDataYear());
+            cd.setValue(gdpdata.getValue());
             cd.setDataset(countryDataset);
             list.add(cd);
+            
+            model.addRow(new Object[]{gdpdata.getDataYear(), gdpdata.getValue()});
+            tblGDP.setModel(model);                  
                         
         }
         
         countryDataset.setCountryDataList(list);
-        this.countryDatasetList.add(countryDataset);
-                        
-        for(int i=0;i<this.gdp.getData().size();i++){
-            
-            String[] gdpYear = this.gdp.getData().get(i).get(0).split("-");
-            model.addRow(new Object[]{gdpYear[0], this.gdp.getData().get(i).get(1)});
-            tblGDP.setModel(model);                  
-        }
+        this.countryDatasetList.add(countryDataset);                                
     }
     /**
      * @param args the command line arguments
