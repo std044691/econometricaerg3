@@ -32,6 +32,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
@@ -70,32 +71,35 @@ public class mainpage extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         cbCountries = new javax.swing.JComboBox<>();
+        btnApiCall = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        lblOil = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         lblGdp = new javax.swing.JLabel();
+        lblOil = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         lblOilStartDate = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
         lblOilEndDate = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         lblGdpStartDate = new javax.swing.JLabel();
         lblGdpEndDate = new javax.swing.JLabel();
-        btnApiCall = new javax.swing.JButton();
+        lblselectedCountry = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblGDP = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblOil = new javax.swing.JTable();
-        btnSave = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
+        btnAlreadySaved = new javax.swing.JCheckBox();
         btnPlot = new javax.swing.JButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        lblselectedCountry = new javax.swing.JLabel();
+        btnDelete = new javax.swing.JButton();
+        btnSave = new javax.swing.JButton();
+        lblAction = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Econometrica");
@@ -106,76 +110,14 @@ public class mainpage extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setLayout(null);
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel1.setText("Select a country:");
 
         cbCountries.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbCountriesActionPerformed(evt);
             }
         });
-        jPanel1.add(cbCountries);
-        cbCountries.setBounds(30, 40, 240, 20);
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel2.setText("Oil Data");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(30, 70, 70, 30);
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel3.setText("Dataset Name:");
-        jPanel1.add(jLabel3);
-        jLabel3.setBounds(300, 100, 83, 14);
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel4.setText("GDP Data");
-        jPanel1.add(jLabel4);
-        jLabel4.setBounds(300, 80, 53, 14);
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel5.setText("Dataset Name:");
-        jPanel1.add(jLabel5);
-        jLabel5.setBounds(30, 100, 83, 14);
-
-        lblOil.setText("-");
-        jPanel1.add(lblOil);
-        lblOil.setBounds(30, 120, 240, 14);
-
-        lblGdp.setText("-");
-        jPanel1.add(lblGdp);
-        lblGdp.setBounds(300, 120, 240, 14);
-
-        jLabel6.setText("Start Date:");
-        jPanel1.add(jLabel6);
-        jLabel6.setBounds(30, 160, 60, 14);
-
-        jLabel7.setText("End Date:");
-        jPanel1.add(jLabel7);
-        jLabel7.setBounds(30, 180, 60, 14);
-
-        lblOilStartDate.setText("-");
-        jPanel1.add(lblOilStartDate);
-        lblOilStartDate.setBounds(110, 160, 160, 14);
-
-        lblOilEndDate.setText("-");
-        jPanel1.add(lblOilEndDate);
-        lblOilEndDate.setBounds(110, 180, 160, 14);
-
-        jLabel10.setText("Start Date:");
-        jPanel1.add(jLabel10);
-        jLabel10.setBounds(300, 160, 70, 14);
-
-        jLabel11.setText("End Date:");
-        jPanel1.add(jLabel11);
-        jLabel11.setBounds(300, 180, 60, 14);
-
-        lblGdpStartDate.setText("-");
-        jPanel1.add(lblGdpStartDate);
-        lblGdpStartDate.setBounds(370, 160, 160, 14);
-        lblGdpStartDate.getAccessibleContext().setAccessibleName("");
-
-        lblGdpEndDate.setText("-");
-        jPanel1.add(lblGdpEndDate);
-        lblGdpEndDate.setBounds(370, 180, 170, 14);
 
         btnApiCall.setText("Fetch Data");
         btnApiCall.setToolTipText("");
@@ -184,8 +126,146 @@ public class mainpage extends javax.swing.JFrame {
                 btnApiCallActionPerformed(evt);
             }
         });
-        jPanel1.add(btnApiCall);
-        btnApiCall.setBounds(300, 37, 90, 30);
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setText("Oil Data");
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel5.setText("Dataset Name:");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel4.setText("GDP Data");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel3.setText("Dataset Name:");
+
+        lblGdp.setText("-");
+
+        lblOil.setText("-");
+
+        jLabel6.setText("Start Date:");
+
+        lblOilStartDate.setText("-");
+
+        jLabel7.setText("End Date:");
+
+        lblOilEndDate.setText("-");
+
+        jLabel11.setText("End Date:");
+
+        jLabel10.setText("Start Date:");
+
+        lblGdpStartDate.setText("-");
+
+        lblGdpEndDate.setText("-");
+
+        lblselectedCountry.setText("-");
+
+        org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jPanel1Layout.createSequentialGroup()
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .add(13, 13, 13))
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(lblOil, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .add(136, 136, 136))
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jPanel1Layout.createSequentialGroup()
+                                        .add(jLabel7, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .add(20, 20, 20))
+                                    .add(jPanel1Layout.createSequentialGroup()
+                                        .add(jLabel6, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .add(17, 17, 17)))
+                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(lblOilEndDate, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(jPanel1Layout.createSequentialGroup()
+                                        .add(lblOilStartDate, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .add(91, 91, 91))))
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jLabel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .add(26, 26, 26)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(jLabel4, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .add(187, 187, 187))
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(jLabel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .add(157, 157, 157))
+                            .add(lblGdp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(jLabel10, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .add(jLabel11, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .add(124, 124, 124)))
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(lblGdpEndDate, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .add(lblGdpStartDate, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
+                            .add(cbCountries, 0, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .add(jPanel1Layout.createSequentialGroup()
+                                .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(lblselectedCountry, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .add(136, 136, 136)
+                        .add(btnApiCall, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(20, 20, 20))))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(jLabel1)
+                    .add(lblselectedCountry))
+                .add(11, 11, 11)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, btnApiCall)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, cbCountries, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 22, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .add(lblGdpStartDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(lblGdpEndDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .add(jLabel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(0, 0, 0)
+                        .add(jLabel5, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(6, 6, 6)
+                        .add(lblOil, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(26, 26, 26)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(lblOilStartDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(6, 6, 6)
+                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jLabel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 26, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(lblOilEndDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 26, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .add(jLabel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .add(jLabel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(6, 6, 6)
+                        .add(lblGdp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(26, 26, 26)
+                        .add(jLabel10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(6, 6, 6)
+                        .add(jLabel11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(9, 9, 9))
+        );
+
+        lblGdpStartDate.getAccessibleContext().setAccessibleName("");
 
         tblGDP.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -210,14 +290,6 @@ public class mainpage extends javax.swing.JFrame {
         tblGDP.setPreferredSize(null);
         jScrollPane3.setViewportView(tblGDP);
 
-        jPanel1.add(jScrollPane3);
-        jScrollPane3.setBounds(300, 210, 250, 240);
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setText("Select a country:");
-        jPanel1.add(jLabel1);
-        jLabel1.setBounds(30, 20, 95, 14);
-
         tblOil.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null},
@@ -240,8 +312,42 @@ public class mainpage extends javax.swing.JFrame {
         tblOil.setPreferredSize(null);
         jScrollPane2.setViewportView(tblOil);
 
-        jPanel1.add(jScrollPane2);
-        jScrollPane2.setBounds(30, 210, 240, 240);
+        org.jdesktop.layout.GroupLayout jPanel2Layout = new org.jdesktop.layout.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jScrollPane2)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE)
+                    .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        btnAlreadySaved.setText("Already Saved");
+
+        btnPlot.setText("Plot");
+        btnPlot.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlotActionPerformed(evt);
+            }
+        });
+
+        btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnSave.setText("Save");
         btnSave.setToolTipText("");
@@ -250,68 +356,89 @@ public class mainpage extends javax.swing.JFrame {
                 btnSaveActionPerformed(evt);
             }
         });
-        jPanel1.add(btnSave);
-        btnSave.setBounds(30, 480, 70, 23);
 
-        btnDelete.setText("Delete");
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnDelete);
-        btnDelete.setBounds(110, 480, 70, 23);
+        lblAction.setText("-");
 
-        btnPlot.setText("Plot");
-        btnPlot.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPlotActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnPlot);
-        btnPlot.setBounds(190, 480, 51, 23);
+        org.jdesktop.layout.GroupLayout jPanel3Layout = new org.jdesktop.layout.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel3Layout.createSequentialGroup()
+                .add(38, 38, 38)
+                .add(lblAction, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 333, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .add(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(btnSave, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 131, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(btnDelete, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(btnPlot, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 135, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(312, 312, 312)
+                .add(btnAlreadySaved, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(38, 38, 38))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(jPanel3Layout.createSequentialGroup()
+                .add(50, 50, 50)
+                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(btnSave, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(btnDelete, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(btnPlot, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .add(btnAlreadySaved, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(lblAction, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 33, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
-        jCheckBox1.setText("Already Saved");
-        jPanel1.add(jCheckBox1);
-        jCheckBox1.setBounds(470, 480, 100, 23);
-
-        lblselectedCountry.setText("-");
-        jPanel1.add(lblselectedCountry);
-        lblselectedCountry.setBounds(140, 20, 70, 14);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 603, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(304, 304, 304))
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .add(layout.createSequentialGroup()
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(layout.createSequentialGroup()
+                        .add(18, 18, 18)
+                        .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 530, Short.MAX_VALUE))
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
+                .add(10, 10, 10)
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(10, 10, 10)
+                .add(jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jPanel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 96, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(65, 65, 65))
         );
 
-        setSize(new java.awt.Dimension(641, 580));
+        setSize(new java.awt.Dimension(949, 721));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnApiCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApiCallActionPerformed
         // TODO add your handling code here:
+       
+        lblAction.setText("Fetching data...");
+        System.out.println("Fetching data...");        
         this.countryDatasetList.clear();
         Quandle quandle = new Quandle();                
         populateOil(quandle);
         populateGdp(quandle);
+        
+        JOptionPane.showMessageDialog(jPanel1, "Τα δεδομένα φορτώσανε", "ΠΡΟΣΟΧΗ", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnApiCallActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-                
         try {
             BufferedReader fileReader = null;
-            String line = "";
-            //Ανάγνωση του csv και ποπουλάρει το ντροπντουν
+            String line = "";            
             fileReader = new BufferedReader(new FileReader("src/gui/iso-countries.csv"));
             try {
                 cbCountries.removeAllItems();
@@ -338,20 +465,21 @@ public class mainpage extends javax.swing.JFrame {
 
     private void cbCountriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCountriesActionPerformed
         this.countryCode = hmCountries.get(cbCountries.getSelectedItem().toString()).toString();
-        lblselectedCountry.setText(this.countryCode);
-        System.out.println("Selected");
+        lblselectedCountry.setText(this.countryCode);                
     }//GEN-LAST:event_cbCountriesActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         System.out.println("Saving data...");
+        lblAction.setText("Saving data...");
         saveCountries();
         saveCountryDataset();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-       
+        lblAction.setText("Deleting data...");
         Database.deleteAll();
+        lblAction.setText("Data deleted");
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnPlotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlotActionPerformed
@@ -363,32 +491,30 @@ public class mainpage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPlotActionPerformed
 
     private void saveCountryDataset(){
-                 
+        lblAction.setText("Saving country dataset...");
         String result = Database.insertCountryDataset(this.countryDatasetList);
-        System.out.println(result);
-    }                
-    private void saveCountries(){        
-        String result = Database.insertCountries(hmCountries);
-        System.out.println(result);
+        lblAction.setText("Saved "+ result + " records");
+        System.out.println("Saved "+ result + " records");
     }
-    private void populateOil(Quandle ra){        
+    private void saveCountries(){
+        lblAction.setText("Saving countries...");
+        String result = Database.insertCountries(hmCountries);
+        lblAction.setText("Saved "+ result + " countries");
+        //System.out.println(result);
+    }
+    private void populateOil(Quandle ra){                
         
-        //CountryDataset countrydataset = Database.getOil(this.countryCode);
-        
-        long oilDataExists = Database.isCountryInDb(this.countryCode, "BP");
-        //System.exit(0);
+        long oilDataExists = Database.isCountryInDb(this.countryCode, "BP");        
         if(oilDataExists==0){
+            btnAlreadySaved.setSelected(false);
             this.oil = ra.getOil(this.countryCode);
         }
         else{
-            System.out.println("Oil data exists in db");
+            //System.out.println("Oil data exists in db");
+            btnAlreadySaved.setSelected(true);
             Oil oil = new Oil(Database.getOil(this.countryCode));
             this.oil = oil;
-        }
-                    
-        //this.oil = ra.getOil(this.countryCode);
-        
-        
+        }                                            
         DefaultTableModel model = new DefaultTableModel();
         String header[] = new String[] { "Year", "value" };
         model.setColumnIdentifiers(header);
@@ -396,8 +522,7 @@ public class mainpage extends javax.swing.JFrame {
         lblOil.setText(this.oil.getName());
                 
         Country country = new Country();
-        CountryDataset countryDataset = new CountryDataset();
-        //CountryData countryData = new CountryData();
+        CountryDataset countryDataset = new CountryDataset();        
 
         countryDataset.setName(this.oil.getName());
         countryDataset.setDescription(this.oil.getDescription());        
@@ -415,11 +540,11 @@ public class mainpage extends javax.swing.JFrame {
 
         country.setName(cbCountries.getSelectedItem().toString());
         country.setIsoCode(this.countryCode);
-        
+
         countryDataset.setCountryCode(country);
-        
+
         List<CountryData> list = new ArrayList<CountryData>();
-        
+
         for(CountryData oildata: this.oil.getCountryData()){
            CountryData cd = new CountryData();                                  
            cd.setDataYear(oildata.getDataYear());
@@ -431,21 +556,20 @@ public class mainpage extends javax.swing.JFrame {
            
            list.add(cd);                        
         }
-   
-        
         countryDataset.setCountryDataList(list);                
         this.countryDatasetList.add(countryDataset);
     
-    }    
+    }
     private void populateGdp(Quandle ra){
-                
-        //this.gdp = ra.getGdp(this.countryCode);
+        
         long gdpDataExists = Database.isCountryInDb(this.countryCode, "WWDI");        
         if(gdpDataExists==0){
             this.gdp = ra.getGdp(this.countryCode);
+            btnAlreadySaved.setSelected(false);
         }
         else{
-            System.out.println("GDP data exists in db");
+            //System.out.println("GDP data exists in db");
+            btnAlreadySaved.setSelected(true);
             Gdp gdp = new Gdp(Database.getGdp(this.countryCode));
             this.gdp = gdp;
         }
@@ -454,8 +578,7 @@ public class mainpage extends javax.swing.JFrame {
         String header[] = new String[] { "Year", "value" };
         model.setColumnIdentifiers(header);
         lblGdp.setText(this.gdp.getName());
-        
-        //String pattern = "yyyy-MM-dd";
+
         String pattern = "yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);  
         
@@ -485,9 +608,7 @@ public class mainpage extends javax.swing.JFrame {
         
         for(CountryData gdpdata: this.gdp.getCountryData()){
             CountryData cd = new CountryData();
-            
-            //String[] gdpYear = gdpdata.get(0).split("-");
-            
+     
             cd.setDataYear(gdpdata.getDataYear());
             cd.setValue(gdpdata.getValue());
             cd.setDataset(countryDataset);
@@ -537,12 +658,12 @@ public class mainpage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox btnAlreadySaved;
     private javax.swing.JButton btnApiCall;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnPlot;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cbCountries;
-    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -553,8 +674,11 @@ public class mainpage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JLabel lblAction;
     private javax.swing.JLabel lblGdp;
     private javax.swing.JLabel lblGdpEndDate;
     private javax.swing.JLabel lblGdpStartDate;

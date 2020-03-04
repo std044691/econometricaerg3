@@ -3,6 +3,7 @@ package econometrica;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 import model.CountryData;
 import model.CountryDataset;
 import org.jfree.chart.ChartFactory;
@@ -35,7 +36,8 @@ import org.jfree.ui.RefineryUtilities;
  */
 
 
-public class Chart extends ApplicationFrame {
+//public class Chart extends ApplicationFrame {
+public class Chart extends JFrame {
     
   private ArrayList<CountryDataset> countryDatasetList;
   private Oil oil;

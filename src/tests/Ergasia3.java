@@ -12,7 +12,6 @@ import econometrica.Gdp;
 import econometrica.Oil;
 import econometrica.OilDataset;
 import econometrica.Quandle;
-import econometrica.QuandleDataset;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

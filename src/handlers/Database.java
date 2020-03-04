@@ -93,6 +93,7 @@ public class Database {
     public static void deleteAll(){
         
         System.out.println("Deleting..");
+        
         em.getTransaction().begin();                
         int deletedCountryDataCount = em.createQuery("DELETE FROM CountryData").executeUpdate();
         int deletedCountryDatasetCount = em.createQuery("DELETE FROM CountryDataset").executeUpdate();
