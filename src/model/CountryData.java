@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "CountryData.findById", query = "SELECT c FROM CountryData c WHERE c.id = :id")
     , @NamedQuery(name = "CountryData.findByDataYear", query = "SELECT c FROM CountryData c WHERE c.dataYear = :dataYear")
     , @NamedQuery(name = "CountryData.findByValue", query = "SELECT c FROM CountryData c WHERE c.value = :value")})
-public class CountryData implements Serializable {
+public class CountryData implements Serializable, Comparable<CountryData> {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -117,6 +117,11 @@ public class CountryData implements Serializable {
     @Override
     public String toString() {
         return "econometrica.CountryData[ id=" + id + " ]";
+    }
+
+    @Override
+    public int compareTo(CountryData cd) {
+        return this.dataYear.compareTo(cd.dataYear);
     }
     
 }

@@ -26,7 +26,7 @@ public class Database {
                 
         TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.name like :name AND c.countryCode = :code", CountryDataset.class);
         query.setParameter("name", "%Oil Consumption%");
-        query.setParameter("code", c);                                
+        query.setParameter("code", c);           
         return query.getSingleResult();
     }
     

@@ -1,6 +1,7 @@
 
 package econometrica;
 import java.awt.Color;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.JFrame;
@@ -62,6 +63,7 @@ public class Chart extends JFrame {
         );
         
         final XYPlot plot = chart.getXYPlot();
+        
         final NumberAxis axis2 = new NumberAxis("Secondary");
         axis2.setAutoRangeIncludesZero(false);
         plot.setRangeAxis(1, axis2);
@@ -74,16 +76,31 @@ public class Chart extends JFrame {
             rr.setShapesFilled(true);
         }
         
-        final StandardXYItemRenderer renderer2 = new StandardXYItemRenderer();
-        renderer2.setSeriesPaint(0, Color.black);
-        renderer.setToolTipGenerator(StandardXYToolTipGenerator.getTimeSeriesInstance());
-        plot.setRenderer(1, renderer2);
+        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
+        NumberFormat formatter = NumberFormat.getIntegerInstance();
+        rangeAxis.setNumberFormatOverride(formatter);
+        
+        final StandardXYItemRenderer renderer0 = new StandardXYItemRenderer();
+        renderer0.setSeriesPaint(0, Color.blue);
+        renderer0.setPlotLines(true);
+        renderer0.setBaseShapesVisible(true);
+        renderer0.setToolTipGenerator(StandardXYToolTipGenerator.getTimeSeriesInstance());
+        plot.setRenderer(0, renderer0);
+        
+        final StandardXYItemRenderer renderer1 = new StandardXYItemRenderer();
+        renderer1.setSeriesPaint(0, Color.red);
+        renderer1.setPlotLines(true);
+        renderer1.setBaseShapesVisible(true);
+        renderer1.setToolTipGenerator(StandardXYToolTipGenerator.getTimeSeriesInstance());
+        plot.setRenderer(1, renderer1);
+        
+        
         
         final DateAxis axis = (DateAxis) plot.getDomainAxis();
         axis.setDateFormatOverride(new SimpleDateFormat("yyyy"));
         
         final ChartPanel chartPanel = new ChartPanel(chart);
-        chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));
+        chartPanel.setPreferredSize(new java.awt.Dimension(800, 400));
         setContentPane(chartPanel);
 
     }
@@ -91,51 +108,30 @@ public class Chart extends JFrame {
                 
         final TimeSeries s1 = new TimeSeries("Oil Data ", Year.class);
         
-//        for(ArrayList<String> oildata: this.oil.getData()){
-//           CountryData cd = new CountryData();
-//           
-//           String[] oilYear = oildata.get(0).split("-");
-//
-//           //System.out.println(oilYear[0] +" "+ oilYear[1] +" "+ oilYear[2]+ " oildata:"+ oildata.get(1));
-//           //s1.add(new Month(Integer.parseInt(oilYear[1]), Integer.parseInt(oilYear[0])), Double.parseDouble(oildata.get(1)));
-//           s1.add(new Year(Integer.parseInt(oilYear[0])), Double.parseDouble(oildata.get(1)));
-//
-//        }
         for(CountryData oildata: this.oil.getCountryData()){
-           CountryData cd = new CountryData();          
+           CountryData cd = new CountryData();
            s1.add(new Year(Integer.parseInt(oildata.getDataYear())), Double.parseDouble(oildata.getValue()));
-
         }
-
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(s1);
+        
 
         return dataset;
  
     }
     
     private XYDataset createDataset2() {
-        final TimeSeries s2 = new TimeSeries("Gdp Data ", Year.class);
-        for(ArrayList<String> gdpdata: this.gdp.getData()){
-           CountryData cd = new CountryData();           
-           String[] gdpYear = gdpdata.get(0).split("-");
-           //System.out.println(gdpYear[0] +" "+ gdpYear[1] +" "+ gdpYear[2]+ " oildata:"+ gdpdata.get(1));
-           s2.add(new Year(Integer.parseInt(gdpYear[0])), Double.parseDouble(gdpdata.get(1)));
+        final TimeSeries timeseries = new TimeSeries("Gdp Data ", Year.class);        
+        for(CountryData gdpdata: this.gdp.getCountryData()){
+           CountryData cd = new CountryData();                      
+           timeseries.add(new Year(Integer.parseInt(gdpdata.getDataYear())), Double.parseDouble(gdpdata.getValue()));
         }
-
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
-        dataset.addSeries(s2);
+        dataset.addSeries(timeseries);
 
         return dataset;
 
     }
-//    public static void main(final String[] args) {
-//
-//        final DualAxisDemo2 demo = new DualAxisDemo2("Dual Axis Demo 2");
-//        demo.pack();
-//        RefineryUtilities.centerFrameOnScreen(demo);
-//        demo.setVisible(true);
-//
-//    }
+
             
 }

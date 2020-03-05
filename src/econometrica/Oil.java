@@ -38,13 +38,12 @@ public class Oil {
     private Date start_date;
     private Date end_date;        
     private ArrayList<ArrayList<String>> data;
-    private List<CountryData> countryData;
-    
+    private List<CountryData> countryData;    
     private String collapse;
     private String order;
     private Integer database_id;
     
-    public Oil() {}
+    public Oil(){}
     public Oil(CountryDataset cd) {                
         this.name = cd.getName();
         this.description= cd.getDescription();
@@ -61,6 +60,20 @@ public class Oil {
 
     }
     
+    public void setData(ArrayList<ArrayList<String>> data) {
+        this.data = data;
+    }
+    
+    public void setCountryData(List<CountryData> countryData) {
+        this.countryData = countryData;
+    }
+    
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }    
     public String getCollapse() {
         return collapse;
     }
@@ -83,17 +96,7 @@ public class Oil {
 
     public void setDatabase_id(Integer database_id) {
         this.database_id = database_id;
-    }
-    
-   
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    }          
 
     public String getDataset_code() {
         return dataset_code;
@@ -246,12 +249,7 @@ public class Oil {
     
        
 
-    public void setData(ArrayList<ArrayList<String>> data) {
-        this.data = data;
-    }
-    public void setCountryData(List<CountryData> countryData) {
-        this.countryData = countryData;
-    }
+
     
     
     

@@ -41,47 +41,22 @@ public class Gdp {
     private String order;
     private Integer database_id;
 
-    public List<CountryData> getCountryData() {
-        if(this.countryData == null){
-            this.countryData = new ArrayList<CountryData>();
-            for(ArrayList<String> gdpdata: this.data){
-               CountryData cd = new CountryData();
+    public Gdp(){}    
+    public Gdp(CountryDataset cd) {            
+        this.name = cd.getName();
+        this.description= cd.getDescription();
 
-               String[] gdpYear = gdpdata.get(0).split("-");
+        Calendar cStart = Calendar.getInstance();
+        cStart.set(Calendar.YEAR, Integer.parseInt(cd.getStartYear()));
+        this.start_date = cStart.getTime();
 
-               cd.setDataYear(gdpYear[0]);
-               cd.setValue(gdpdata.get(1));     
-               //cd.setDataset(countryDataset);
-               countryData.add(cd);                        
-            }
-        }
-        return countryData;
-    }
+        Calendar cEnd = Calendar.getInstance();
+        cEnd.set(Calendar.YEAR, Integer.parseInt(cd.getEndYear()));
+        this.end_date = cEnd.getTime();        
 
-    public void setCountryData(List<CountryData> countryData) {
-        this.countryData = countryData;
-    }
+        this.countryData = cd.getCountryDataList();
 
-    public Gdp(){
-        data = new ArrayList<ArrayList<String>>();
-    }
-    
-    public Gdp(CountryDataset cd) {        
-    
-     this.name = cd.getName();
-     this.description= cd.getDescription();
-
-     Calendar cStart = Calendar.getInstance();
-     cStart.set(Calendar.YEAR, Integer.parseInt(cd.getStartYear()));
-     this.start_date = cStart.getTime();
-
-     Calendar cEnd = Calendar.getInstance();
-     cEnd.set(Calendar.YEAR, Integer.parseInt(cd.getEndYear()));
-     this.end_date = cEnd.getTime();        
-
-     this.countryData = cd.getCountryDataList();
-
-    }
+    }           
     
     public Integer getId() {
         return id;
@@ -221,6 +196,27 @@ public class Gdp {
 
     public ArrayList<ArrayList<String>> getData() {
         return data;
+    }
+    
+    public List<CountryData> getCountryData() {
+        if(this.countryData == null){
+            this.countryData = new ArrayList<CountryData>();
+            for(ArrayList<String> gdpdata: this.data){
+               CountryData cd = new CountryData();
+
+               String[] gdpYear = gdpdata.get(0).split("-");
+
+               cd.setDataYear(gdpYear[0]);
+               cd.setValue(gdpdata.get(1));
+               countryData.add(cd);
+               
+            }
+        }
+        return countryData;
+    }
+
+    public void setCountryData(List<CountryData> countryData) {
+        this.countryData = countryData;
     }
 
     public void setData(ArrayList<ArrayList<String>> data) {

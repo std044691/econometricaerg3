@@ -16,8 +16,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +41,7 @@ import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
 import model.Country;
 import model.CountryData;
 import model.CountryDataset;
+import org.apache.derby.client.am.Decimal;
 import org.jfree.ui.RefineryUtilities;
 
 
@@ -474,15 +477,20 @@ public class mainpage extends javax.swing.JFrame {
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         // TODO add your handling code here:
         System.out.println("Saving data...");
-        lblAction.setText("Saving data...");
-        //saveCountries();
+        lblAction.setText("Saving data...");        
         saveCountryDataset();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        lblAction.setText("Deleting data...");
-        Database.deleteAll();
-        lblAction.setText("Data deleted");
+        int result = JOptionPane.showConfirmDialog(null, "Είστε βέβαιοι πως θέλετε να διαγράψετε τα δεδομένα από την βάση;", null, JOptionPane.YES_NO_OPTION);
+          if (result == JOptionPane.YES_OPTION) {
+            lblAction.setText("Deleting data...");
+            Database.deleteAll();
+            lblAction.setText("Data deleted");
+            btnAlreadySaved.setSelected(false);
+          }else{
+              System.out.println("Nothing deleted");
+          }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnPlotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlotActionPerformed
@@ -494,39 +502,50 @@ public class mainpage extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPlotActionPerformed
 
     private void saveCountryDataset(){
-        lblAction.setText("Saving country dataset...");
-        String result = Database.insertCountryDataset(this.countryDatasetList);
-        lblAction.setText("Saved "+ result + " records");
-        System.out.println("Saved "+ result + " records");
+        lblAction.setText("Attempting to save country dataset...");
+        String result = "";
+        long oilDataExists = Database.isCountryInDb(this.countryCode);
+        if(oilDataExists==0){
+            lblAction.setText("Saving...");
+            result = Database.insertCountryDataset(this.countryDatasetList);            
+            lblAction.setText("Saved "+ result + " records");
+            System.out.println("Saved "+ result + " records");            
+            
+        }else{
+            JOptionPane.showMessageDialog(jPanel1, "Data already saved", "ΠΡΟΣΟΧΗ", JOptionPane.WARNING_MESSAGE);
+            lblAction.setText("Data already saved");
+            System.out.println("Data already saved");
+        }        
+        btnAlreadySaved.setSelected(true);
     }
 
     private void setOilData(){
         Quandle quandle = new Quandle();
-        long oilDataExists = Database.isCountryInDb(this.countryCode);        
+        long oilDataExists = Database.isCountryInDb(this.countryCode);
         if(oilDataExists==0){
             btnAlreadySaved.setSelected(false);
             this.oil = quandle.getOil(this.countryCode);
         }
-        else{
-            //System.out.println("Oil data exists in db");
+        else{            
             btnAlreadySaved.setSelected(true);
-            Oil oil = new Oil(Database.getOil(this.countryCode));
-            this.oil = oil;
+            Oil oil = new Oil(Database.getOil(this.countryCode));                        
+            
+            Collections.sort(oil.getCountryData());
+            //Collections.sort(oil.getCountryData(),Collections.reverseOrder());
+            
+            this.oil =  oil;
         }        
     }
-    private void populateOil(Country country){                
-        
-        //Έλεγχος αν τα δεδομένα υπάρχουν στην βάση
+    private void populateOil(Country country){                                
         
         DefaultTableModel model = new DefaultTableModel();
         String header[] = new String[] { "Year", "value" };
         model.setColumnIdentifiers(header);
 
-        lblOil.setText(this.oil.getName());
-                
+        lblOil.setText(this.oil.getName());                
         
-        CountryDataset countryDataset = new CountryDataset();        
-
+        CountryDataset countryDataset = new CountryDataset();
+        
         countryDataset.setName(this.oil.getName());
         countryDataset.setDescription(this.oil.getDescription());        
         String pattern = "yyyy";
@@ -540,20 +559,25 @@ public class mainpage extends javax.swing.JFrame {
                 
         lblOilStartDate.setText(getStart_date);
         lblOilEndDate.setText(getEnd_date);
-
-        
-
+                
         countryDataset.setCountryCode(country);
-
         List<CountryData> list = new ArrayList<CountryData>();
-
+        
+        DecimalFormat df2 = new DecimalFormat("#.##");        
+        
         for(CountryData oildata: this.oil.getCountryData()){
+          
+           //System.out.println(df2.format(Float.parseFloat(oildata.getValue())));
+           String oilDataValue = df2.format(Float.parseFloat(oildata.getValue()));
+            
            CountryData cd = new CountryData();                                  
            cd.setDataYear(oildata.getDataYear());
-           cd.setValue(oildata.getValue());
+           //cd.setValue(oildata.getValue());
+           cd.setValue(oilDataValue);
            cd.setDataset(countryDataset);
            
-           model.addRow(new Object[]{oildata.getDataYear(), oildata.getValue()});
+           //model.addRow(new Object[]{oildata.getDataYear(), oildata.getValue()});
+           model.addRow(new Object[]{oildata.getDataYear(), oilDataValue});
            tblOil.setModel(model);                
            
            list.add(cd);                        
