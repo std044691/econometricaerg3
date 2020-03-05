@@ -45,8 +45,7 @@ public class Oil {
     private Integer database_id;
     
     public Oil() {}
-    public Oil(CountryDataset cd) {        
-        this.database_code = cd.getDatabaseCode();
+    public Oil(CountryDataset cd) {                
         this.name = cd.getName();
         this.description= cd.getDescription();
         

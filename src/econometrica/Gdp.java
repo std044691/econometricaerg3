@@ -67,7 +67,7 @@ public class Gdp {
     }
     
     public Gdp(CountryDataset cd) {        
-     this.database_code = cd.getDatabaseCode();
+    
      this.name = cd.getName();
      this.description= cd.getDescription();
 

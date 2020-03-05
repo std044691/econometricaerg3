@@ -39,10 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "CountryDataset.findByDescription", query = "SELECT c FROM CountryDataset c WHERE c.description = :description")
     , @NamedQuery(name = "CountryDataset.findByDatasetId", query = "SELECT c FROM CountryDataset c WHERE c.datasetId = :datasetId")})
 public class CountryDataset implements Serializable {
-
-    @Column(name = "DATABASE_CODE")
-    private String databaseCode;
-
+    
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
     @Column(name = "START_YEAR")
@@ -61,12 +58,9 @@ public class CountryDataset implements Serializable {
     @Column(name = "DATASET_ID")
     private Integer datasetId;
     @JoinColumn(name = "COUNTRY_CODE", referencedColumnName = "ISO_CODE")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Country countryCode;
-    @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL)
-    //@OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL)
-    
-    //private Collection<CountryData> countryDataCollection;
+    @OneToMany(mappedBy = "dataset", cascade = CascadeType.ALL)    
     private List<CountryData> countryDataList;
 
     public CountryDataset() {
@@ -173,14 +167,5 @@ public class CountryDataset implements Serializable {
     @Override
     public String toString() {
         return "econometrica.CountryDataset[ datasetId=" + datasetId + " ]";
-    }
-
-    public String getDatabaseCode() {
-        return databaseCode;
-    }
-
-    public void setDatabaseCode(String databaseCode) {
-        this.databaseCode = databaseCode;
-    }
-    
+    }    
 }

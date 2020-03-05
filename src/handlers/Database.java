@@ -23,9 +23,9 @@ public class Database {
     
     public static CountryDataset getOil(String country){
         Country c = new Country(country);
-        
-        TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.databaseCode = :dbcode AND c.countryCode = :code", CountryDataset.class);
-        query.setParameter("dbcode", "BP");
+                
+        TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.name like :name AND c.countryCode = :code", CountryDataset.class);
+        query.setParameter("name", "%Oil Consumption%");
         query.setParameter("code", c);                                
         return query.getSingleResult();
     }
@@ -33,22 +33,18 @@ public class Database {
     public static CountryDataset getGdp(String country){
         Country c = new Country(country);
         
-        TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.databaseCode = :dbcode AND c.countryCode = :code", CountryDataset.class);
-        query.setParameter("dbcode", "WWDI");
-        query.setParameter("code", c);                                
+        TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.name like :name AND c.countryCode = :code", CountryDataset.class);
+        query.setParameter("name", "%GDP (current LCU)%");
+        query.setParameter("code", c);
         return query.getSingleResult();
     }
 
-    public static long isCountryInDb(String country, String dataBaseCode){
+    public static long isCountryInDb(String countryCode){
+                
+        String select = "SELECT COUNT(c) FROM Country c WHERE c.isoCode = :code";
+        TypedQuery<Long> query = em.createQuery(select, Long.class);                
         
-        Country c = new Country(country);
-        String select = "SELECT COUNT(c) FROM CountryDataset c WHERE c.countryCode = :code AND c.databaseCode = :dbcode";
-        TypedQuery<Long> query = em.createQuery(select, Long.class);
-        
-        if(dataBaseCode !=null)
-            query.setParameter("dbcode", "BP");
-        
-        long countryCount = query.setParameter("code", c).getSingleResult();  
+        long countryCount = query.setParameter("code", countryCode).getSingleResult();  
         
         em.clear();
         
@@ -69,26 +65,27 @@ public class Database {
         }                
         return "Data Saved";
     }
-    public static String insertCountries(HashMap<String, String> hmCountries){            
-        try{
-            em.getTransaction().begin();
-                hmCountries.forEach((Cname,Ccode)->{
-                   Country country = new Country();
-                   country.setIsoCode(Ccode);
-                   country.setName(Cname);
-                   em.persist(country);
-
-                   System.out.println("Inserting " + country.getName());
-                });             
-            em.getTransaction().commit();
-            em.clear();
-        }
-        catch(Exception ex){
-            return "Error: "+ ex.getMessage();
-        }         
-        
-        return "Countries Inserted";
-    }
+    
+//    public static String insertCountries(HashMap<String, String> hmCountries){            
+//        try{
+//            em.getTransaction().begin();
+//                hmCountries.forEach((Cname,Ccode)->{
+//                   Country country = new Country();
+//                   country.setIsoCode(Ccode);
+//                   country.setName(Cname);
+//                   em.persist(country);
+//
+//                   System.out.println("Inserting " + country.getName());
+//                });             
+//            em.getTransaction().commit();
+//            em.clear();
+//        }
+//        catch(Exception ex){
+//            return "Error: "+ ex.getMessage();
+//        }         
+//        
+//        return "Countries Inserted";
+//    }
     
     public static void deleteAll(){
         

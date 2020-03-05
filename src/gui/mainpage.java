@@ -426,13 +426,18 @@ public class mainpage extends javax.swing.JFrame {
         // TODO add your handling code here:
        
         lblAction.setText("Fetching data...");
-        System.out.println("Fetching data...");        
-        this.countryDatasetList.clear();
-        Quandle quandle = new Quandle();                
-        populateOil(quandle);
-        populateGdp(quandle);
+        System.out.println("Fetching data...");
+        this.countryDatasetList.clear();                
+        Country country = new Country();
+        country.setName(cbCountries.getSelectedItem().toString());
+        country.setIsoCode(this.countryCode);
         
-        JOptionPane.showMessageDialog(jPanel1, "Τα δεδομένα φορτώσανε", "ΠΡΟΣΟΧΗ", JOptionPane.INFORMATION_MESSAGE);
+        setOilData();
+        setGdpData();
+        populateOil(country);
+        populateGdp(country);
+        
+        //JOptionPane.showMessageDialog(jPanel1, "Τα δεδομένα φορτώσανε", "ΠΡΟΣΟΧΗ", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnApiCallActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
@@ -472,7 +477,7 @@ public class mainpage extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.out.println("Saving data...");
         lblAction.setText("Saving data...");
-        saveCountries();
+        //saveCountries();
         saveCountryDataset();
     }//GEN-LAST:event_btnSaveActionPerformed
 
@@ -496,32 +501,32 @@ public class mainpage extends javax.swing.JFrame {
         lblAction.setText("Saved "+ result + " records");
         System.out.println("Saved "+ result + " records");
     }
-    private void saveCountries(){
-        lblAction.setText("Saving countries...");
-        String result = Database.insertCountries(hmCountries);
-        lblAction.setText("Saved "+ result + " countries");
-        //System.out.println(result);
-    }
-    private void populateOil(Quandle ra){                
-        
-        long oilDataExists = Database.isCountryInDb(this.countryCode, "BP");        
+
+    private void setOilData(){
+        Quandle quandle = new Quandle();
+        long oilDataExists = Database.isCountryInDb(this.countryCode);        
         if(oilDataExists==0){
             btnAlreadySaved.setSelected(false);
-            this.oil = ra.getOil(this.countryCode);
+            this.oil = quandle.getOil(this.countryCode);
         }
         else{
             //System.out.println("Oil data exists in db");
             btnAlreadySaved.setSelected(true);
             Oil oil = new Oil(Database.getOil(this.countryCode));
             this.oil = oil;
-        }                                            
+        }        
+    }
+    private void populateOil(Country country){                
+        
+        //Έλεγχος αν τα δεδομένα υπάρχουν στην βάση
+        
         DefaultTableModel model = new DefaultTableModel();
         String header[] = new String[] { "Year", "value" };
         model.setColumnIdentifiers(header);
 
         lblOil.setText(this.oil.getName());
                 
-        Country country = new Country();
+        
         CountryDataset countryDataset = new CountryDataset();        
 
         countryDataset.setName(this.oil.getName());
@@ -533,13 +538,12 @@ public class mainpage extends javax.swing.JFrame {
         String getEnd_date = simpleDateFormat.format(this.oil.getEnd_date());
 
         countryDataset.setStartYear(getStart_date);
-        countryDataset.setEndYear(getEnd_date);
-        countryDataset.setDatabaseCode(this.oil.getDatabase_code());
+        countryDataset.setEndYear(getEnd_date);        
+                
         lblOilStartDate.setText(getStart_date);
         lblOilEndDate.setText(getEnd_date);
 
-        country.setName(cbCountries.getSelectedItem().toString());
-        country.setIsoCode(this.countryCode);
+        
 
         countryDataset.setCountryCode(country);
 
@@ -560,11 +564,12 @@ public class mainpage extends javax.swing.JFrame {
         this.countryDatasetList.add(countryDataset);
     
     }
-    private void populateGdp(Quandle ra){
-        
-        long gdpDataExists = Database.isCountryInDb(this.countryCode, "WWDI");        
+    
+    private void setGdpData(){
+        Quandle quandle = new Quandle();
+        long gdpDataExists = Database.isCountryInDb(this.countryCode);        
         if(gdpDataExists==0){
-            this.gdp = ra.getGdp(this.countryCode);
+            this.gdp = quandle.getGdp(this.countryCode);
             btnAlreadySaved.setSelected(false);
         }
         else{
@@ -572,7 +577,10 @@ public class mainpage extends javax.swing.JFrame {
             btnAlreadySaved.setSelected(true);
             Gdp gdp = new Gdp(Database.getGdp(this.countryCode));
             this.gdp = gdp;
-        }
+        }                
+    }
+    
+    private void populateGdp(Country country){                
         
         DefaultTableModel model = new DefaultTableModel();
         String header[] = new String[] { "Year", "value" };
@@ -589,20 +597,16 @@ public class mainpage extends javax.swing.JFrame {
         lblGdpEndDate.setText(getEnd_date);
         //Extra code
         
-        Country c = new Country();        
+        
         CountryDataset countryDataset = new CountryDataset();                
         
         countryDataset.setName(this.gdp.getName());
         countryDataset.setDescription(this.gdp.getDescription());
         countryDataset.setStartYear(getStart_date);
         countryDataset.setEndYear(getEnd_date);
-        
-        countryDataset.setDatabaseCode(this.gdp.getDatabase_code());
-        
-        
-        c.setName(cbCountries.getSelectedItem().toString());
-        c.setIsoCode(this.countryCode);
-        countryDataset.setCountryCode(c);
+                        
+                
+        countryDataset.setCountryCode(country);
          
         List<CountryData> list = new ArrayList<CountryData>();
         
