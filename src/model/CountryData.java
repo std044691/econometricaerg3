@@ -121,7 +121,7 @@ public class CountryData implements Serializable, Comparable<CountryData> {
 
     @Override
     public int compareTo(CountryData cd) {
-        return this.dataYear.compareTo(cd.dataYear);
+        return Integer.parseInt(this.dataYear) - Integer.parseInt(cd.dataYear);
     }
     
 }
