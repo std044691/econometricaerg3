@@ -65,27 +65,7 @@ public class Database {
         }                
         return "Data Saved";
     }
-    
-//    public static String insertCountries(HashMap<String, String> hmCountries){            
-//        try{
-//            em.getTransaction().begin();
-//                hmCountries.forEach((Cname,Ccode)->{
-//                   Country country = new Country();
-//                   country.setIsoCode(Ccode);
-//                   country.setName(Cname);
-//                   em.persist(country);
-//
-//                   System.out.println("Inserting " + country.getName());
-//                });             
-//            em.getTransaction().commit();
-//            em.clear();
-//        }
-//        catch(Exception ex){
-//            return "Error: "+ ex.getMessage();
-//        }         
-//        
-//        return "Countries Inserted";
-//    }
+   
     
     public static void deleteAll(){
         

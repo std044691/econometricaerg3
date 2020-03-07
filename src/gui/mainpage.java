@@ -5,10 +5,8 @@
  */
 package gui;
 
-import econometrica.Chart;
-import econometrica.Gdp;
-import econometrica.Oil;
-import econometrica.Quandle;
+import econometrica.*;
+
 import handlers.Database;
 import java.awt.Component;
 import java.io.BufferedReader;
@@ -17,12 +15,14 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -46,22 +46,38 @@ import org.jfree.ui.RefineryUtilities;
 
 
 /**
- *
+ * Η κεντρική φόρμα που ανοίγει το πρόγραμμα.
+ * Είναι η κύρια κλάση που χρησιμοποιεί η εφαρμογή για να ανοίξει το πρόγραμμα.
+ * 
  * @author themhz
+ * @version 1.0
  */
 public class mainpage extends javax.swing.JFrame {
 
     /**
      * Creates new form mainpage
-     */
-    private HashMap<String, String> hmCountries = new HashMap<String, String>();    
-    private ArrayList<CountryDataset> countryDatasetList = new ArrayList<CountryDataset>();
-    private Oil oil = null;
-    private Gdp gdp = null;
+     */        
+    
+    //Κρατάει το πλήθος των χορών από το csv αρχείο που φορτώνει στο dropdown list hm = hasmap
+    private HashMap<String, String> hmCountries;
+    //Κρατάει 2 στοιχεία. Ένα για το oil ένα για το Gdp της κάθε χώρας 
+    private ArrayList<CountryDataset> countryDatasetList;
+    //Κρατάει τα δεδομένα που έρχονται από την Quandle για την χρήση λαδιού
+    private Oil oil;
+    //Κρατάει τα δεδομένα που έρχονται από την Quandle για την χρήση του ΑΕΠ
+    private Gdp gdp;    
     
     private String countryCode;
-    public mainpage() {
+    public mainpage() {        
+        //Αρχικοποίηση μεταβλητών
+        hmCountries = new HashMap<String, String>();
+        countryDatasetList = new ArrayList<CountryDataset>();
+        oil = null;
+        gdp = null;                
         initComponents();
+        
+        //Βάζω το παράθυρο στο κέντρο
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -197,9 +213,9 @@ public class mainpage extends javax.swing.JFrame {
                                 .add(jLabel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(lblselectedCountry, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .add(280, 280, 280)
+                        .add(188, 188, 188)
                         .add(btnApiCall, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 169, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(67, 67, 67))
+                        .add(159, 159, 159))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jPanel1Layout.createSequentialGroup()
@@ -229,12 +245,10 @@ public class mainpage extends javax.swing.JFrame {
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel1)
                     .add(lblselectedCountry))
-                .add(12, 12, 12)
+                .add(13, 13, 13)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
-                    .add(jPanel1Layout.createSequentialGroup()
-                        .add(1, 1, 1)
-                        .add(cbCountries, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 22, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(btnApiCall, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .add(cbCountries, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 22, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                    .add(btnApiCall))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -256,16 +270,13 @@ public class mainpage extends javax.swing.JFrame {
                             .add(jLabel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 26, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(lblOilEndDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 26, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                     .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .add(3, 3, 3)
-                        .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(jLabel10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(6, 6, 6)
-                                .add(jLabel11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(jPanel1Layout.createSequentialGroup()
-                                .add(lblGdpStartDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(lblGdpEndDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))))
+                        .add(jLabel10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(6, 6, 6)
+                        .add(jLabel11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 24, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                    .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .add(lblGdpStartDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(lblGdpEndDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
                 .add(38, 38, 38))
         );
 
@@ -347,20 +358,19 @@ public class mainpage extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(jPanel3Layout.createSequentialGroup()
-                .add(jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jPanel3Layout.createSequentialGroup()
-                        .add(38, 38, 38)
-                        .add(lblAction, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 333, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                    .add(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .add(btnSave, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 131, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(18, 18, 18)
-                        .add(btnDelete, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(18, 18, 18)
-                        .add(btnPlot, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 135, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(295, 295, 295)
-                        .add(btnAlreadySaved, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                .add(38, 38, 38)
+                .add(lblAction, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 333, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .add(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .add(btnSave, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 131, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(btnDelete, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(18, 18, 18)
+                .add(btnPlot, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 135, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .add(btnAlreadySaved, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .add(159, 159, 159))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -384,11 +394,12 @@ public class mainpage extends javax.swing.JFrame {
                 .addContainerGap()
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel2Layout.createSequentialGroup()
-                        .add(jScrollPane2)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(jScrollPane3))
+                        .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                        .add(157, 157, 157))
                     .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .add(0, 0, 0))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -414,120 +425,253 @@ public class mainpage extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(layout.createSequentialGroup()
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 200, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 200, Short.MAX_VALUE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
         );
 
-        setSize(new java.awt.Dimension(953, 636));
+        setSize(new java.awt.Dimension(810, 619));
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Είναι η μέθοδος που καλείται όταν όταν πατηθεί το κουμπί fetch
+     * Θα χρησιμοποιήσει την κλάση Quandle για να καλέσει το api της quandle προκειμένου να φέρει
+     * το json από το api και να το επεξργαστεί και να το εμφανίσει στην οθόνη του χρήστη, δηλαδή τα 2 tables
+     * 
+     * @param evt Το event του κουμπιού
+     * 
+     */
     private void btnApiCallActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnApiCallActionPerformed
-        // TODO add your handling code here:
-       
-        lblAction.setText("Fetching data...");
-        System.out.println("Fetching data...");
-        this.countryDatasetList.clear();                
+        
+        //Εμφανίζω την λεκτική περιγραφή της ενέργειας, οτι δηλαδή κάνω fetch τα data από την quandle
+        lblAction.setText("Fetching data from Quandle...");
+        System.out.println("Fetching data from Quandle...");
+        
+        //Καθαρίζω την μεταβλιτή CountryDatasetList για να υποδεχτώ τα νέα δεδομένα
+        this.countryDatasetList.clear();
+        
+        //Δημιουργώ ένα instance του Country για για να το χρησιμοποιήσω μέσα στην μέθοδο.
+        //Η τιμές που παίρνει το County αντικείμενο είναι αυτό που επιλέγει ο χρήστης από το dropdown
+        //populateOil και Gdp. Κάνω κοινή χρήση του αντικειμένου επειδή κατά ο κατέβασμα των δεδομένων 
+        //από την quandle αρχικοποιώ τα pojo όπου θέλω να έχουν την ίδια χώρα και τα 2. 
+        //Μάλλον θα μπορούσε να γίνει καλύτερα, να ήταν δηλαδή Global η μεταβλητη.. προς το παρόν παίζει και το αφήνω έτσι.
         Country country = new Country();
         country.setName(cbCountries.getSelectedItem().toString());
         country.setIsoCode(this.countryCode);
         
+        //Εδώ θα γεμίσω την μεταβλιτή oil την οποία ή θα την πάρω από την βάση ή θα την πάρω από την Quandle
+        //ανάλογα με το αν τα δεδομένα είναι αποθηκευμένα στην βάση το ίδιο θα κάνω και για το Gdp
         setOilData();
         setGdpData();
+        
+        //Τώρα θα κάνω populate τους 2 πίνακες με τα δεδομένα oil και gdp. Πάντα ανάλογα με την πηγή. 
         populateOil(country);
         populateGdp(country);
+        
+        //Απλά ενημερώνω τον χρήστη 
         lblAction.setText("Fetching Completed!");
+        //Εμφανίζω το popup στον χρήστη ότι τα δεδομένα φορτώσανε
         JOptionPane.showMessageDialog(jPanel1, "Τα δεδομένα φορτώσανε", "ΠΡΟΣΟΧΗ", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_btnApiCallActionPerformed
 
+    /**
+     * Η μέθοδος αυτή καλείται όταν ανοίγει το πρόγραμμα την πρώτη φορά
+     * Θα διαβάσει το csv και θα το φορτώσει στο dropdown list
+     * Η μέθοδος είναι εξοπλισμένη με 2 try ώστε να ελέγχει αν υπάρχει το αρχείο
+     * η αν τα δεδομένα έχουν πρόβλημα μέσα στο αρχείο
+     * 
+     * @param evt Όταν ανοίγει η φόρμα
+     */
+    
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
+            //Χρησιμοποιώ τον BufferReader για να διαβάσω το περιεχόμενο του αρχείου
             BufferedReader fileReader = null;
+            //Απλά αρχικοποιώ μια μεταβλητή προκειμένου να διαβάσω την κάθε γραμή του αρχείου
             String line = "";            
+            //Διαβάζω το αρχείου και το περνάω στο BufferedReader
             fileReader = new BufferedReader(new FileReader("src/gui/iso-countries.csv"));
             try {
+                //Αδιάζω τις χώρες από το dropdown
                 cbCountries.removeAllItems();
+                //Διαβάζω την πρώτη γραμμή
                 fileReader.readLine();
+                //Ενώσω η γραμμή δεν είναι άδεια
                 while ((line = fileReader.readLine()) != null) {
-                    //Get all tokens available in line                 
+                    //Παίρνω τα δεδομένα από την γραμμή και τα σπάω με ένα delimiter ;
                     String[] tokens = line.split(";");
+                    // Το πρώτο delimiter είναι το όνομα της χώρας ενώ το δεύτερο είναι το iso code
                     hmCountries.put(tokens[0], tokens[2]);
+                    //Αν δεν υπάρχει πρόβλημα με τα tokens θα τα καταχωρήσω στο dropdown
+                    //τα tokens εννοώ τα 2 στοιχεία που παίρνω από το αρχείο. Κάθε ένα από αυτά που σπάω με το split
+                    //Θεωρώ πως είναι token και για αυτό ονομάζω την μεταβλητή έτσι.
                     if (tokens.length > 0) {
+                        //ε.. κάθε όνομα το βάζω στο combobox
                         cbCountries.addItem(tokens[0]);
                     }
-                }                                
+                }    
+                
+                //Και κάνω μια προεπιλογή την Ελλάδα
                 cbCountries.setSelectedItem("GREECE");
                 
             } catch (IOException ex) {
+                
+                //Σε περίπτωση που σκάσει το πρόγραμμα επειδή είναι corrupted το αρχείο θα χρησιμοποιήσω τον 
+                //logger για να καταγράψω το λάθος
                 Logger.getLogger(mainpage.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(jPanel1, "Λάθος μέσα στο αρχείο!", "Σφάλμα", JOptionPane.ERROR_MESSAGE);
             }                        
 
         } catch (FileNotFoundException ex) {
+            //Σε περίπτωση που δεν υπάρχει το αρχείο, μια απο τα ίδια...
             Logger.getLogger(mainpage.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(jPanel1, "Το αρχείο δεν βρέθηκε!", "Σφάλμα", JOptionPane.ERROR_MESSAGE);
         }
 
     }//GEN-LAST:event_formWindowOpened
 
+    /**
+     * Αυτή η μέθοδος καλείται όταν αλλάζει το dropdownlistbox, προκειμένου να ενημερωθεί η εφαρμογή
+     * για την αλλαγή και να θέση την χώρα σε μια άλλη
+     * 
+     * @param evt όταν αλλάζει το dropdown
+     */
     private void cbCountriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCountriesActionPerformed
+        //Όλο αυτό το πράμα είναι για να πάρω την επιλεγμένη χώρα από το hashtable
+        //Εδώ να σημειώσω πως δεν βρήκα τρόπο να ενημερώνω το dropdwon με το key value pair. Έτσι
+        //Αποφάσισα να φτιάξω μια μεταβλητή hashmap hmCounties όπου επιλέγω το hashmap βάση του κλειδιού που 
+        //είναι το όνομα της χώρας, και απο εκεί παίρνω το iso code
         this.countryCode = hmCountries.get(cbCountries.getSelectedItem().toString()).toString();
-        lblselectedCountry.setText(this.countryCode);                
+        
+        //Εδώ θέτω το iso code στο label απλά για ενημερωτικούς σκοπούς. Παρόλα αυτά η μεταβλητή this.countryCode θα
+        //χρησιμοποιηθεί μετά σε περίπτωση που θέλουμε να καλέσουμε πάλι το API η να πάρουμε δεδομένα από την βάση
+        lblselectedCountry.setText(this.countryCode);
     }//GEN-LAST:event_cbCountriesActionPerformed
 
+    /**
+     * Η μέθοδος καλείται όταν πατηθεί το κουμπί save
+     * Θα καλέσει την SaveCountryDataset η οποία θα σώσει τα δεδομένα μέσα στην βάση μας.
+     * 
+     * @param evt όταν πατηθεί το κουμπί save
+     */
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        // TODO add your handling code here:
+        //Ενημερώνω τον χρήστη ότι σώζει τα δεδομένα
         System.out.println("Saving data...");
+        //Το ίδιο αλλά στο label
         lblAction.setText("Saving data...");        
+        //Σώζω τα δεδομένα κάνοντας κλήση της μεθόδου
         saveCountryDataset();
     }//GEN-LAST:event_btnSaveActionPerformed
 
+    /**
+     * Θα γίνει κλήση αυτής της μεθόδου όταν πατηθεί το κουμπί διαγραφή
+     * Θα ρωτηθεί ο χρήστης αν είνα βέβαιος και μετά θα προχωρήσει στην διαγραφή όλων των δεδομένων για την επιλεγμένη
+     * χώρα από την βάση δεδομένων.
+     * 
+     * @param evt όταν πατηθεί το κουμπί διαγραφή
+     */
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int result = JOptionPane.showConfirmDialog(null, "Είστε βέβαιοι πως θέλετε να διαγράψετε τα δεδομένα από την βάση;", null, JOptionPane.YES_NO_OPTION);
+        //Ερώτηση αν ο χρήστης είναι βέβαιος για την ενέργεια της διαγραφής
+          int result = JOptionPane.showConfirmDialog(null, "Είστε βέβαιοι πως θέλετε να διαγράψετε τα δεδομένα από την βάση;", null, JOptionPane.YES_NO_OPTION);
+          //Αν ναι τότε θα εκτελεστεί η διαγραφή
           if (result == JOptionPane.YES_OPTION) {
+            //Ενημέρωση για την ενέργεια
             lblAction.setText("Deleting data...");
+            //Διαγραφή των δεδομένων κάνοντας κλήση της κλάσης Databse
             Database.deleteAll();
+            //Ενημέρωση για την ενέργεια της ολοκλήρωσης            
             lblAction.setText("Data deleted");
+            //ξετσεκάρω το checkbox ότι τα δεδομένα δεν βρίσκονται πλέον στην βάση
             btnAlreadySaved.setSelected(false);
           }else{
+              //Αλλιώς ενημερώνω πως δεν υπάρχει κάτι να διαγραφεί από την βάση
+              JOptionPane.showMessageDialog(jPanel1, "Δεν υπάρχουν δεδομένα στην βάση για την "+cbCountries.getSelectedItem(), "Ενημέρωση", JOptionPane.WARNING_MESSAGE);
               System.out.println("Nothing deleted");
           }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
+    /**
+     * Η μέθοδος καλείτει για να εμφανιστέι το γράφημα για την συγκεκριμένη χώρα
+     * 
+     * @param evt όταν πατηθεί το κουμπί plot 
+     */
     private void btnPlotActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlotActionPerformed
-        // TODO add your handling code here:
+        //Αρχικοποίηση του γραφήματος περνόντας τις παραμέτρους oil και gdp
         final Chart chart = new Chart("GDP and OIL consumtion for " + cbCountries.getSelectedItem(), this.oil, this.gdp );
+        //Σύμφωνα με τον κατασκευαστή της κλάσης η chart.pack 
+        //Προκαλεί το μέγεθος αυτού του παραθύρου να ταιριάζει με το προτιμώμενο μέγεθος και τις διατάξεις του
+        //παραθύρου. Το προκύπτον πλάτος και ύψος του παραθύρου αυξάνεται αυτόματα        
         chart.pack();
+        
+        //Κεντράρει το παράθυρο του γραφήματος στο κέντρο της οθόνης
         RefineryUtilities.centerFrameOnScreen(chart);
+        
+        //Εμφανίζει το γράφημα
         chart.setVisible(true);
     }//GEN-LAST:event_btnPlotActionPerformed
 
+    /**
+     * Υλοποίηση της μεθόδου για σώσιμο των δεδομένων στην βάση δεδομένων     
+     */
     private void saveCountryDataset(){
+        //Ενημερώνει τον χρήστη ότι πρόκειται να σώσει τα δεδομένα
         lblAction.setText("Attempting to save country dataset...");
+        //Αρχικοποίηση της μεταβλητής αποτελέσματος.Πόσα δεδομένα διαγράφτηκαν από την βάση
         String result = "";
+        
+        //Έλεγχος αν τα δεδομένα υπάρχουν στην βάση
         long oilDataExists = Database.isCountryInDb(this.countryCode);
+        
+        //Αν δεν υπάρχουν το αποτέλεσμα είναι 0 και άρα πάει να τα σώσει
         if(oilDataExists==0){
+            //Ενημερώνει τον χρήστη ότι ξεκινάει η διαδικασία αποθήκευσης
             lblAction.setText("Saving...");
-            result = Database.insertCountryDataset(this.countryDatasetList);            
+            
+            //Εισάγει τα δεδομένα χρησιμοποιόντας την μέθοδο insertCountryDataset της Database
+            result = Database.insertCountryDataset(this.countryDatasetList);
+            
+            //Ενημερώνει τον χρήστη για το αποτέλεσμα της αποθήκευσης
             lblAction.setText("Saved "+ result + " records");
             System.out.println("Saved "+ result + " records");            
             
         }else{
+            //Αλλιώς τα δεδομένα υπάρχουν στην βάση και ενημερώνει τον χρήστη για αυτό.
             JOptionPane.showMessageDialog(jPanel1, "Data already saved", "ΠΡΟΣΟΧΗ", JOptionPane.WARNING_MESSAGE);
             lblAction.setText("Data already saved");
             System.out.println("Data already saved");
         }        
+        //Πάντως από την στιγμή που θα σώσει τα δεδομένα σίγουρα ήτε είναι είτε δεν είναι και τα βάζει το checkbox θα
+        //τσεκαριστεί αφού και στις 2 περιπτώσεις τα δεδομένα θα σωθούν. Βέβαια δεν εξετάζουμε την περίπτωση
+        //που η βάση δεδομένων δεν δουλεύει.
         btnAlreadySaved.setSelected(true);
     }
 
+    
+    /**
+     * Αυτή η μέθοδος θα αρχικοποιήσει τις μεταβλητές της oil ήτε από την 
+     * quandle ήτε από την βάση δεδομένων. Δεν κάνει κάτι άλλο παρά μόνο να αρχικοποιήσει τις μεταβλητές
+     */
     private void setOilData(){
+        //Δημιουργία αντικειμένου της Quandle
         Quandle quandle = new Quandle();
+        //Έλεγχος αν τα δεδομένα υπάρχουν στην βάση (θα μπορούσα να έλεγχα το checkbox ¨η κάποια μεταβλητή 
+        //αντί να ξανα καλώ την βάση, το αφήνω όμως έτσι)
         long oilDataExists = Database.isCountryInDb(this.countryCode);
+        
+        //Αν τα δεδομένα υπάρχουν δεν υπάρχουν σε περίπτωση που έχει τσεκαριστεί το checkbox
+        //θα ξετσεκαριστεί
         if(oilDataExists==0){
+            
+            //Ξετσεκάρισμα του checkbox
             btnAlreadySaved.setSelected(false);
+            //Κλήση του api
             this.oil = quandle.getOil(this.countryCode);
         }
         else{            
+            //Τσεκάρισμα του checkbox αφού υπάρχουν τα δεδομένα στην βάση
             btnAlreadySaved.setSelected(true);
+            //Μάζεμα τον δεδομένων από την βάση
             Oil oil = new Oil(Database.getOil(this.countryCode));                        
             //List<CountryData> cd = oil.getCountryData();            
             //Collections.sort(cd);
@@ -536,102 +680,139 @@ public class mainpage extends javax.swing.JFrame {
             this.oil =  oil;
         }        
     }
+    
+    /**
+     * Αυτή η μέθοδος θα κάνει populate τα δεδομένα στον πίνακα του Oil
+     * 
+     * @param country η χώρα που επιλέγει ο χρήστης
+     */
     private void populateOil(Country country){                                
         
+        //Χρησιμοποιώ ένα table model για να ενημερώσω τα δεδομένα το jtable
         DefaultTableModel model = new DefaultTableModel();
+        //Θέτω τις επικεφαίδες έτος και τιμή, Year Value αντίστοιχα
         String header[] = new String[] { "Year", "value" };
+        //Ε τις βάζω στον πίνακα..
         model.setColumnIdentifiers(header);
 
+        //Θέτω το όνομα του λαδιού στο label
         lblOil.setText(this.oil.getName());                
         
-        CountryDataset countryDataset = new CountryDataset();
-        
+        //Δημιουργώ ένα CountryDataset. Ο λόγος που ξεκινάω αυτή την διαδικασία είναι επειδή πρέπει να αποθηκευσω προσορινά τις
+        //τιμές που πήρα σε περίπτωση που χρειάζεται να τις σώσω στην βάση
+        CountryDataset countryDataset = new CountryDataset();        
         countryDataset.setName(this.oil.getName());
         countryDataset.setDescription(this.oil.getDescription());        
+        
+        //Κάνω format το έτος 
         String pattern = "yyyy";
+        //Αρχικοποιώ την SimpleDateFormat για να μορφώποιήσω την ημερομηνία στην μωρφή που την θέλουμε δηλαδήγ yyyy
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);  
-
+        //Χρησιμοποιώ την simpleDateFormat για να κάνω την μορφωποίηση και να σώσω το αποτέλεσμα σε 2 μεταβλητές
         String getStart_date = simpleDateFormat.format(this.oil.getStart_date());
         String getEnd_date = simpleDateFormat.format(this.oil.getEnd_date());
-
+        //Θέτω τις τιμές στο countryDataset
         countryDataset.setStartYear(getStart_date);
         countryDataset.setEndYear(getEnd_date);        
-                
+        
+        //Θέτω τα label start date και end date στα label πάνω στην φόρμα
         lblOilStartDate.setText(getStart_date);
         lblOilEndDate.setText(getEnd_date);
-                
+        
+        //Θέτω τον κωδικό της χώρας
         countryDataset.setCountryCode(country);
-        List<CountryData> list = new ArrayList<CountryData>();
         
-        DecimalFormat df2 = new DecimalFormat("#.##");        
         
+        //Ξεκινάω να σώσω τώρα τα CountryData Σε μια μεταβλητή ArrayList αλλά
+        //και να κάνω populate τον πίνακα
+        List<CountryData> list = new ArrayList<CountryData>();   
+        //Ε για κάθε δεδομένο του country data του oil
         for(CountryData oildata: this.oil.getCountryData()){
-          
-           //System.out.println(df2.format(Float.parseFloat(oildata.getValue())));
-           String oilDataValue = df2.format(Float.parseFloat(oildata.getValue()));
-            
-           CountryData cd = new CountryData();                                  
-           cd.setDataYear(oildata.getDataYear());
-           //cd.setValue(oildata.getValue());
+           //Κάνω format την τιμή σε 2 δεκαδικά χρησιμοποιόντας τα regional settings του συστήματος
+           String oilDataValue = Helper.formatDecimal(oildata.getValue());
+           //String oilDataValue = oildata.getValue();
+           
+           //Δημιουρώ ένα αντικέιμενο coyntryData για να σώσω τα δεδομένα
+           CountryData cd = new CountryData();                           
+           //Θέτω τις τιμές
+           cd.setDataYear(oildata.getDataYear());           
            cd.setValue(oilDataValue);
+           //Θέτω το countryDataset για το countryData
            cd.setDataset(countryDataset);
            
-           //model.addRow(new Object[]{oildata.getDataYear(), oildata.getValue()});
+           //Βάζω στο modal την γραμμή του έτους και της τιμής. Εκεί θα αποθηκευτεί και θα χρησιμοποιηθεί από τον πίνακα
            model.addRow(new Object[]{oildata.getDataYear(), oilDataValue});
+           //Θέτω το modal στον πίνακα
            tblOil.setModel(model);                
-           
+           //Αποθηκευω τα δεδεομένα countryData στην λίστα
            list.add(cd);                        
         }
-        countryDataset.setCountryDataList(list);                
+        //Θέτω στο countryDataset την λίστα με τα countryData
+        countryDataset.setCountryDataList(list);             
+        //Αποθηκεύω και τα countryDataset
         this.countryDatasetList.add(countryDataset);
     
     }
     
-    private void setGdpData(){
+    //Θέτω την μεταβλητή για το gdp.
+    private void setGdpData(){        
+        //Αρχικοποιώ την κλάση της Quandle
         Quandle quandle = new Quandle();
+        //Ελέγχω αν έχω δεδομένα για την χώρα
         long gdpDataExists = Database.isCountryInDb(this.countryCode);        
+        //Αν τα δεδομένα δεν υπάρχουν στην βαση
         if(gdpDataExists==0){
+            //Θα τα κατεβάσω από την Quandle
             this.gdp = quandle.getGdp(this.countryCode);
+            //τσεκάρω το checkbox ως μη επιλεγμένο
             btnAlreadySaved.setSelected(false);
         }
         else{
-            //System.out.println("GDP data exists in db");
+            //Τα δεδομένα είναι στην βάση και τσέκάρω το tsekbox
             btnAlreadySaved.setSelected(true);
+            //Τραβάω τα δεδομένα από την βάση
             Gdp gdp = new Gdp(Database.getGdp(this.countryCode));
+            //Τα θέτω στην μεταβλητή
             this.gdp = gdp;
         }                
     }
     
+    /**
+     * Αρχικοποιεί τον πίνακα για το GDP
+     * 
+     * @param country η χώρα που επιλέγει ο χρήστης από την φόρμα
+     */
     private void populateGdp(Country country){                
-        
-        DefaultTableModel model = new DefaultTableModel();
+        //Δημιουργώ το Model για τον πίνακα και αρχικοποιω τις κεφαλίδες του        
+        DefaultTableModel model = new DefaultTableModel();        
         String header[] = new String[] { "Year", "value" };
         model.setColumnIdentifiers(header);
+        
+        //Αρχικοποιώ το label όνομα
         lblGdp.setText(this.gdp.getName());
 
+        //Θέτω τις ημερομηνίες με το σωστή μορφοποίηση
         String pattern = "yyyy";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);  
-        
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);          
         String getStart_date = simpleDateFormat.format(this.gdp.getStart_date());
         String getEnd_date = simpleDateFormat.format(this.gdp.getEnd_date());
         
+        //Θέτω τα label για την αρχική και τελική ημερομηνία
         lblGdpStartDate.setText(getStart_date);
-        lblGdpEndDate.setText(getEnd_date);
-        //Extra code
+        lblGdpEndDate.setText(getEnd_date);                
         
-        
-        CountryDataset countryDataset = new CountryDataset();                
-        
+        //Αρχικοποιώ τις μεταβλητές για το CountryDataset που θα καταχωρήσω στην βάση
+        CountryDataset countryDataset = new CountryDataset();
         countryDataset.setName(this.gdp.getName());
         countryDataset.setDescription(this.gdp.getDescription());
         countryDataset.setStartYear(getStart_date);
-        countryDataset.setEndYear(getEnd_date);
-                        
-                
+        countryDataset.setEndYear(getEnd_date);                                        
         countryDataset.setCountryCode(country);
          
+        //Δημιουργώ την λίστα με τα CountryData
         List<CountryData> list = new ArrayList<CountryData>();
         
+        //Αποθηκεύω το κάθε coyntryData στην λίστα
         for(CountryData gdpdata: this.gdp.getCountryData()){
             CountryData cd = new CountryData();
      
@@ -640,12 +821,16 @@ public class mainpage extends javax.swing.JFrame {
             cd.setDataset(countryDataset);
             list.add(cd);
             
+            //Η Αποθήκευση
             model.addRow(new Object[]{gdpdata.getDataYear(), gdpdata.getValue()});
+            
+            //Θέτω στον πίνακα το μοντέλο
             tblGDP.setModel(model);                  
                         
         }
-        
+        //Αποθήκευση των data στο coyntryDataset
         countryDataset.setCountryDataList(list);
+        //Αποθήκευση του CountryDataset στην λίστα τελικά
         this.countryDatasetList.add(countryDataset);                                
     }
     /**

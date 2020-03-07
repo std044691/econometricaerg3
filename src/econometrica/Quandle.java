@@ -48,7 +48,7 @@ public class Quandle {
         
     
     private String get(String url){
-        
+        System.out.println(url);
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         
