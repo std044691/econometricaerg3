@@ -466,8 +466,11 @@ public class mainpage extends javax.swing.JFrame {
         setGdpData();
         
         //Τώρα θα κάνω populate τους 2 πίνακες με τα δεδομένα oil και gdp. Πάντα ανάλογα με την πηγή. 
-        populateOil(country);
-        populateGdp(country);
+        if(this.oil!=null)
+            populateOil(country);
+        
+        if(this.gdp!=null)
+            populateGdp(country);
         
         //Απλά ενημερώνω τον χρήστη 
         lblAction.setText("Fetching Completed!");
@@ -513,7 +516,8 @@ public class mainpage extends javax.swing.JFrame {
                 }    
                 
                 //Και κάνω μια προεπιλογή την Ελλάδα
-                cbCountries.setSelectedItem("GREECE");
+                //cbCountries.setSelectedItem("GREECE");
+                cbCountries.setSelectedItem("GEORGIA");
                 
             } catch (IOException ex) {
                 

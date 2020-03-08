@@ -35,17 +35,26 @@ public class Quandle {
     }
     
     public Gdp getGdp(String countryCode){            
-        return this.GDBToObject(this.get(this.gdpUrl+countryCode+"_NY_GDP_MKTP_CN.json?api_key="+this.key));
-    }
-    
-    public Oil getOil(String countryCode){            
-        return this.OilToObject(this.get(this.oilUrl+"OIL_CONSUM_"+countryCode+".json?api_key="+this.key));
-    }
-    
-    public String getJsonData(String countryCode){
-        return this.get(this.oilUrl+"OIL_CONSUM_"+countryCode+".json?api_key="+this.key);
-    }
         
+        
+        String result = this.get(this.gdpUrl+countryCode+"_NY_GDP_MKTP_CN.json?api_key="+this.key);
+        if (result!= null){
+            return this.GDPToObject(result);
+        }else{
+            return null;
+        }
+    }
+    
+    public Oil getOil(String countryCode){      
+        String result = this.get(this.oilUrl+"OIL_CONSUM_"+countryCode+".json?api_key="+this.key);
+        if (result!= null){
+            return this.OilToObject(result);
+        }else{
+            return null;
+        }
+        
+    }
+      
     
     private String get(String url){
         System.out.println(url);
@@ -59,7 +68,7 @@ public class Quandle {
                 return responseString;
             }
         }catch(IOException e){
-            e.printStackTrace();
+            return null;
             
         }
         
@@ -67,34 +76,42 @@ public class Quandle {
     }
     
     
-    private Oil OilToObject(String jsonValue) {         
-        String jsonString = jsonValue;                 
-        GsonBuilder builder = new GsonBuilder(); 
-        builder.setPrettyPrinting(); 
+    private Oil OilToObject(String jsonValue) {   
+        if(!jsonValue.equals(null)){        
+            String jsonString = jsonValue;                 
+            GsonBuilder builder = new GsonBuilder(); 
+            builder.setPrettyPrinting(); 
 
-        Gson gson = builder.create(); 
-        OilDataset oild = gson.fromJson(jsonString, OilDataset.class);         
-        
-        Oil oil = oild.getDataset();
-        
-        jsonString = gson.toJson(oil);         
+            Gson gson = builder.create(); 
+            OilDataset oild = gson.fromJson(jsonString, OilDataset.class);         
 
-        return gson.fromJson(jsonString, Oil.class); 
+            Oil oil = oild.getDataset();
+
+            jsonString = gson.toJson(oil);         
+
+            return gson.fromJson(jsonString, Oil.class); 
+        }else{
+            return null;
+        }
                 
    }     
     
-    private Gdp GDBToObject(String jsonValue) {         
-        String jsonString = jsonValue;         
-        GsonBuilder builder = new GsonBuilder(); 
-        builder.setPrettyPrinting(); 
+    private Gdp GDPToObject(String jsonValue) {         
+        if(!jsonValue.equals(null)){   
+            String jsonString = jsonValue;         
+            GsonBuilder builder = new GsonBuilder(); 
+            builder.setPrettyPrinting(); 
 
-        Gson gson = builder.create(); 
-        GdpDataset gdpd = gson.fromJson(jsonString, GdpDataset.class); 
-        Gdp gdp = gdpd.getDataset();
-        
-        jsonString = gson.toJson(gdp);         
+            Gson gson = builder.create(); 
+            GdpDataset gdpd = gson.fromJson(jsonString, GdpDataset.class); 
+            Gdp gdp = gdpd.getDataset();
 
-        return gson.fromJson(jsonString, Gdp.class); 
+            jsonString = gson.toJson(gdp);         
+
+            return gson.fromJson(jsonString, Gdp.class); 
+        }else{
+            return null;
+        }
                       
    }
 }

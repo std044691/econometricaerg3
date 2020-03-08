@@ -104,20 +104,20 @@ public class Ergasia3 {
 //        demo.setVisible(true);
     }
     
-    public static void OilTest(){
-        GsonTester gt= new GsonTester();
-        Quandle quandle = new Quandle();
-        String jsonString = quandle.getJsonData("GRC");
-        GsonBuilder builder = new GsonBuilder(); 
-        builder.setPrettyPrinting(); 
-        Gson gson = builder.create(); 
-        CountryDataset cd = gson.fromJson(jsonString, CountryDataset.class);         
-
-        //System.out.println(cd);
-        //Oil result = ra.getOil("GRC");
-        //System.out.println(result);
-        //gt.testOil(result.toString());
-    }
+//    public static void OilTest(){
+//        GsonTester gt= new GsonTester();
+//        Quandle quandle = new Quandle();
+//        String jsonString = quandle.getJsonData("GRC");
+//        GsonBuilder builder = new GsonBuilder(); 
+//        builder.setPrettyPrinting(); 
+//        Gson gson = builder.create(); 
+//        CountryDataset cd = gson.fromJson(jsonString, CountryDataset.class);         
+//
+//        //System.out.println(cd);
+//        //Oil result = ra.getOil("GRC");
+//        //System.out.println(result);
+//        //gt.testOil(result.toString());
+//    }
     
     
     public static void GdpTest(){
