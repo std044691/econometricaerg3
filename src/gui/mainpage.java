@@ -466,11 +466,23 @@ public class mainpage extends javax.swing.JFrame {
         setGdpData();
         
         //Τώρα θα κάνω populate τους 2 πίνακες με τα δεδομένα oil και gdp. Πάντα ανάλογα με την πηγή. 
-        if(this.oil!=null)
+        if(this.oil!=null){
             populateOil(country);
+        }else{
+            lblOil.setText("-");
+            lblOilEndDate.setText("-");
+            lblOilStartDate.setText("-"); 
+            tblOil.setModel(new DefaultTableModel());
+        }
         
-        if(this.gdp!=null)
+        if(this.gdp!=null){
             populateGdp(country);
+        }else{
+            lblGdp.setText("-");
+            lblGdpEndDate.setText("-");
+            lblGdpStartDate.setText("-"); 
+            tblGDP.setModel(new DefaultTableModel());
+        }
         
         //Απλά ενημερώνω τον χρήστη 
         lblAction.setText("Fetching Completed!");
