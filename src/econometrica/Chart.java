@@ -107,10 +107,11 @@ public class Chart extends JFrame {
     private XYDataset createDataset1() {
                 
         final TimeSeries s1 = new TimeSeries("Oil Data ", Year.class);
-        
-        for(CountryData oildata: this.oil.getCountryData()){
-           CountryData cd = new CountryData();
-           s1.add(new Year(Integer.parseInt(oildata.getDataYear())), Double.parseDouble(oildata.getValue()));
+        if(this.oil!=null){
+            for(CountryData oildata: this.oil.getCountryData()){
+               CountryData cd = new CountryData();
+               s1.add(new Year(Integer.parseInt(oildata.getDataYear())), Double.parseDouble(oildata.getValue()));
+            }
         }
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(s1);
@@ -121,10 +122,12 @@ public class Chart extends JFrame {
     }
     
     private XYDataset createDataset2() {
-        final TimeSeries timeseries = new TimeSeries("Gdp Data ", Year.class);        
-        for(CountryData gdpdata: this.gdp.getCountryData()){
-           CountryData cd = new CountryData();                      
-           timeseries.add(new Year(Integer.parseInt(gdpdata.getDataYear())), Double.parseDouble(gdpdata.getValue()));
+        final TimeSeries timeseries = new TimeSeries("Gdp Data ", Year.class);   
+        if(this.gdp !=null){
+            for(CountryData gdpdata: this.gdp.getCountryData()){
+               CountryData cd = new CountryData();                      
+               timeseries.add(new Year(Integer.parseInt(gdpdata.getDataYear())), Double.parseDouble(gdpdata.getValue()));
+            }
         }
         final TimeSeriesCollection dataset = new TimeSeriesCollection();
         dataset.addSeries(timeseries);
