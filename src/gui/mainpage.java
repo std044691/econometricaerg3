@@ -14,6 +14,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -24,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +50,7 @@ import model.Country;
 import model.CountryData;
 import model.CountryDataset;
 import org.apache.derby.client.am.Decimal;
+import org.apache.derby.drda.NetworkServerControl;
 import org.jfree.ui.RefineryUtilities;
 
 
@@ -68,16 +77,21 @@ public class mainpage extends javax.swing.JFrame {
     private Gdp gdp;    
     
     private String countryCode;
-    public mainpage() {        
+    public mainpage() {   
+        System.out.println("starting econometrica please wait...");
         //Αρχικοποίηση μεταβλητών
         hmCountries = new HashMap<String, String>();
         countryDatasetList = new ArrayList<CountryDataset>();
         oil = null;
-        gdp = null;                
+        gdp = null;                            
+        
         initComponents();
         
         //Βάζω το παράθυρο στο κέντρο
         setLocationRelativeTo(null);
+        
+        //Ρυθμίζει τον έλεγχο των κουμπιών
+        buttonController(false, false, false, false);
     }
 
     /**
@@ -128,6 +142,8 @@ public class mainpage extends javax.swing.JFrame {
                 formWindowOpened(evt);
             }
         });
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Select a country:");
@@ -214,8 +230,8 @@ public class mainpage extends javax.swing.JFrame {
                                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                                 .add(lblselectedCountry, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .add(188, 188, 188)
-                        .add(btnApiCall, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 169, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(159, 159, 159))
+                        .add(btnApiCall, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 125, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(63, 63, 63))
                     .add(jPanel1Layout.createSequentialGroup()
                         .add(jPanel1Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jPanel1Layout.createSequentialGroup()
@@ -327,6 +343,9 @@ public class mainpage extends javax.swing.JFrame {
         tblOil.setPreferredSize(null);
         jScrollPane2.setViewportView(tblOil);
 
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        btnAlreadySaved.setBackground(new java.awt.Color(255, 255, 255));
         btnAlreadySaved.setText("Already Saved");
 
         btnPlot.setText("Plot");
@@ -368,7 +387,7 @@ public class mainpage extends javax.swing.JFrame {
                 .add(btnDelete, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 142, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(18, 18, 18)
                 .add(btnPlot, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 135, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED, 46, Short.MAX_VALUE)
                 .add(btnAlreadySaved, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 130, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .add(159, 159, 159))
         );
@@ -395,9 +414,9 @@ public class mainpage extends javax.swing.JFrame {
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                     .add(jPanel2Layout.createSequentialGroup()
                         .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
+                        .add(18, 18, 18)
                         .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .add(157, 157, 157))
+                        .add(12, 12, 12))
                     .add(jPanel3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .add(0, 0, 0))
         );
@@ -419,8 +438,9 @@ public class mainpage extends javax.swing.JFrame {
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
             .add(org.jdesktop.layout.GroupLayout.TRAILING, jPanel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .add(layout.createSequentialGroup()
-                .add(18, 18, 18)
-                .add(jPanel1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap()
+                .add(jPanel1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -468,20 +488,27 @@ public class mainpage extends javax.swing.JFrame {
         //Τώρα θα κάνω populate τους 2 πίνακες με τα δεδομένα oil και gdp. Πάντα ανάλογα με την πηγή. 
         if(this.oil!=null){
             populateOil(country);
+            buttonController(true,false,true,true);
         }else{
             lblOil.setText("-");
             lblOilEndDate.setText("-");
             lblOilStartDate.setText("-"); 
             tblOil.setModel(new DefaultTableModel());
+            
+            buttonController(false,false,false,false);
         }
         
         if(this.gdp!=null){
             populateGdp(country);
+            buttonController(true,false,true,true);
         }else{
             lblGdp.setText("-");
             lblGdpEndDate.setText("-");
             lblGdpStartDate.setText("-"); 
             tblGDP.setModel(new DefaultTableModel());
+            
+            if(this.oil==null)
+                buttonController(false,false,false,false);
         }
         
         //Απλά ενημερώνω τον χρήστη 
@@ -578,6 +605,7 @@ public class mainpage extends javax.swing.JFrame {
         lblAction.setText("Saving data...");        
         //Σώζω τα δεδομένα κάνοντας κλήση της μεθόδου
         saveCountryDataset();
+        buttonController(false,true,true,true);
     }//GEN-LAST:event_btnSaveActionPerformed
 
     /**
@@ -605,6 +633,8 @@ public class mainpage extends javax.swing.JFrame {
               JOptionPane.showMessageDialog(jPanel1, "Δεν υπάρχουν δεδομένα στην βάση για την "+cbCountries.getSelectedItem(), "Ενημέρωση", JOptionPane.WARNING_MESSAGE);
               System.out.println("Nothing deleted");
           }
+          
+          buttonController(true,false,true,false);
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
@@ -848,6 +878,45 @@ public class mainpage extends javax.swing.JFrame {
         countryDataset.setCountryDataList(list);
         //Αποθήκευση του CountryDataset στην λίστα τελικά
         this.countryDatasetList.add(countryDataset);                                
+    }
+    
+    
+    private void buttonController(Boolean btnsave, Boolean btndelete, Boolean btnplot, Boolean btnalreadysaved){
+        Boolean enableSave = false;
+        Boolean enableDelete = false;
+        Boolean enablePlot = false;
+        Boolean enableAlreadySaved = false;
+        long num = Database.isCountryInDb(this.countryCode);
+        
+        if(btnsave==false){            
+            enableSave = (num>0)? true:false;
+        }else{
+            enableSave = btnsave;
+        }
+        
+        if(btndelete==false){            
+            enableDelete = (num>0)? true:false;
+        }else{
+            enableDelete = btndelete;
+        }
+        
+        if(btnplot==false){            
+            enablePlot = (num>0)? true:false;
+        }else{
+            enablePlot = btnplot;
+        }
+        
+        if(enableAlreadySaved==false){           
+            enableAlreadySaved = (num>0)? true:false;
+        }else{
+            enableAlreadySaved = btnalreadysaved;
+        }
+        
+        
+        btnSave.setEnabled(enableSave);
+        btnDelete.setEnabled(enableDelete);
+        btnPlot.setEnabled(enablePlot);
+        btnAlreadySaved.setEnabled(enableAlreadySaved);
     }
     /**
      * @param args the command line arguments

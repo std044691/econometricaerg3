@@ -5,11 +5,10 @@
  */
 package handlers;
 
-import econometrica.Oil;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.persistence.*;
 import model.*;
+import java.sql.Connection;
 
 /**
  *
@@ -18,12 +17,12 @@ import model.*;
 public class Database {
 
     private static EntityManagerFactory emf = Persistence.createEntityManagerFactory("ergasia3PU");
-    private static EntityManager em = emf.createEntityManager();        
-    
-    
+    private static EntityManager em = emf.createEntityManager();            
+    private static Connection connection= null;
+      
     public static CountryDataset getOil(String country){
         Country c = new Country(country);
-                
+       
         TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.name like :name AND c.countryCode = :code", CountryDataset.class);
         query.setParameter("name", "%Oil Consumption%");
         query.setParameter("code", c);           
@@ -75,7 +74,7 @@ public class Database {
         int deletedCountryDataCount = em.createQuery("DELETE FROM CountryData").executeUpdate();
         int deletedCountryDatasetCount = em.createQuery("DELETE FROM CountryDataset").executeUpdate();
         int deletedCountryCount = em.createQuery("DELETE FROM Country").executeUpdate();                
-        System.out.println("Deleted (" + deletedCountryDataCount + ") rows from CountryData and (" + deletedCountryDatasetCount+ ") rows from CountryDataset tables");
+        System.out.println("Deleted rows from("+ deletedCountryCount +") countries and (" + deletedCountryDataCount + ") rows from CountryData and (" + deletedCountryDatasetCount+ ") rows from CountryDataset tables");
         em.getTransaction().commit();
         em.clear();
                 
