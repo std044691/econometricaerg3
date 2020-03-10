@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package view;
 
 import econometrica.*;
 
@@ -78,6 +78,7 @@ public class mainpage extends javax.swing.JFrame {
     
     private String countryCode;
     public mainpage() {   
+        
         System.out.println("starting econometrica please wait...");
         //Αρχικοποίηση μεταβλητών
         hmCountries = new HashMap<String, String>();
@@ -92,6 +93,7 @@ public class mainpage extends javax.swing.JFrame {
         
         //Ρυθμίζει τον έλεγχο των κουμπιών
         buttonController(false, false, false, false);
+        
     }
 
     /**
@@ -138,7 +140,6 @@ public class mainpage extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Econometrica");
         setBackground(new java.awt.Color(255, 255, 255));
-        setPreferredSize(new java.awt.Dimension(1000, 700));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -156,6 +157,7 @@ public class mainpage extends javax.swing.JFrame {
             }
         });
 
+        btnApiCall.setBackground(new java.awt.Color(255, 255, 255));
         btnApiCall.setText("Fetch Data");
         btnApiCall.setToolTipText("");
         btnApiCall.addActionListener(new java.awt.event.ActionListener() {
@@ -246,14 +248,14 @@ public class mainpage extends javax.swing.JFrame {
             .add(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
+                    .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
                     .add(jPanel2Layout.createSequentialGroup()
-                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jPanel2Layout.createSequentialGroup()
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(jPanel2Layout.createSequentialGroup()
                                 .add(jLabel4, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                                .add(lblGdp, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
-                            .add(org.jdesktop.layout.GroupLayout.LEADING, jLabel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                                .add(lblGdp, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .add(jLabel3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                             .add(jPanel2Layout.createSequentialGroup()
                                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                                     .add(jLabel11, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
@@ -262,7 +264,7 @@ public class mainpage extends javax.swing.JFrame {
                                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
                                     .add(lblGdpStartDate, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .add(lblGdpEndDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .add(48, 48, 48))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -276,15 +278,14 @@ public class mainpage extends javax.swing.JFrame {
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                     .add(jPanel2Layout.createSequentialGroup()
-                        .add(jLabel10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                        .add(jPanel2Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                            .add(jLabel10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 23, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(lblGdpStartDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(jLabel11))
-                    .add(jPanel2Layout.createSequentialGroup()
-                        .add(lblGdpStartDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 17, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                        .add(lblGdpEndDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)))
+                    .add(lblGdpEndDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 18, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .add(18, 18, 18)
-                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .add(jScrollPane3, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE)
                 .add(31, 31, 31))
         );
 
@@ -343,22 +344,20 @@ public class mainpage extends javax.swing.JFrame {
                         .add(jScrollPane2, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addContainerGap())
                     .add(jPanel4Layout.createSequentialGroup()
-                        .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
-                            .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .add(jLabel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
-                        .add(lblOil, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                        .add(0, 0, Short.MAX_VALUE))
-                    .add(jPanel4Layout.createSequentialGroup()
                         .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(jLabel6, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                            .add(jLabel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                            .add(jLabel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                            .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING, false)
+                                .add(jLabel2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .add(jLabel5, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.UNRELATED)
                         .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                            .add(lblOilStartDate, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .add(jPanel4Layout.createSequentialGroup()
-                                .add(lblOilEndDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
-                                .add(0, 141, Short.MAX_VALUE))
-                            .add(lblOilStartDate, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                                .add(jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                                    .add(lblOilEndDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 150, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                                    .add(lblOil, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
+                                .add(31, 31, 31))))))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -378,7 +377,7 @@ public class mainpage extends javax.swing.JFrame {
                     .add(lblOilEndDate, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 25, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                     .add(jLabel7, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 26, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
+                .add(jScrollPane2, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
                 .add(30, 30, 30))
         );
 
@@ -386,7 +385,13 @@ public class mainpage extends javax.swing.JFrame {
 
         btnAlreadySaved.setBackground(new java.awt.Color(255, 255, 255));
         btnAlreadySaved.setText("Already Saved");
+        btnAlreadySaved.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlreadySavedActionPerformed(evt);
+            }
+        });
 
+        btnPlot.setBackground(new java.awt.Color(255, 255, 255));
         btnPlot.setText("Plot");
         btnPlot.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -394,6 +399,7 @@ public class mainpage extends javax.swing.JFrame {
             }
         });
 
+        btnDelete.setBackground(new java.awt.Color(255, 255, 255));
         btnDelete.setText("Delete");
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -401,6 +407,7 @@ public class mainpage extends javax.swing.JFrame {
             }
         });
 
+        btnSave.setBackground(new java.awt.Color(255, 255, 255));
         btnSave.setText("Save");
         btnSave.setToolTipText("");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
@@ -550,7 +557,7 @@ public class mainpage extends javax.swing.JFrame {
             //Απλά αρχικοποιώ μια μεταβλητή προκειμένου να διαβάσω την κάθε γραμή του αρχείου
             String line = "";            
             //Διαβάζω το αρχείου και το περνάω στο BufferedReader
-            fileReader = new BufferedReader(new FileReader("src/gui/iso-countries.csv"));
+            fileReader = new BufferedReader(new FileReader("src/view/iso-countries.csv"));
             try {
                 //Αδιάζω τις χώρες από το dropdown
                 cbCountries.removeAllItems();
@@ -674,6 +681,14 @@ public class mainpage extends javax.swing.JFrame {
         //Εμφανίζει το γράφημα
         chart.setVisible(true);
     }//GEN-LAST:event_btnPlotActionPerformed
+
+    private void btnAlreadySavedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlreadySavedActionPerformed
+        // TODO add your handling code here:
+        if(btnAlreadySaved.isSelected()==true)
+            btnAlreadySaved.setSelected(true);
+        else
+            btnAlreadySaved.setSelected(false);
+    }//GEN-LAST:event_btnAlreadySavedActionPerformed
 
     /**
      * Υλοποίηση της μεθόδου για σώσιμο των δεδομένων στην βάση δεδομένων     
@@ -905,42 +920,55 @@ public class mainpage extends javax.swing.JFrame {
     }
     
     
+    /**
+     * 
+     * Χρησιμοποιήται σε σημεία του κώδικα προκειμένου να ενεργοποιεί ή να απενεργοποιει
+     * τα κουμπιά save,delete,plot και already saved
+     * 
+     * @param btnsave για το αν θα είναι ενεργό το κουμπί save
+     * @param btndelete  για το αν θα είναι ενεργό το κουμπί delete
+     * @param btnplot  για το αν θα είναι ενεργό το κουμπί plot
+     * @param btnalreadysaved  για το αν θα είναι ενεργό το checkbox alreadysaved
+     */
     private void buttonController(Boolean btnsave, Boolean btndelete, Boolean btnplot, Boolean btnalreadysaved){
-        Boolean enableSave = false;
-        Boolean enableDelete = false;
-        Boolean enablePlot = false;
+        
+        //Απλή αρχικοποίηση μεταβλητών.
+        Boolean enableSave = btnsave;
+        Boolean enableDelete = btndelete;
+        Boolean enablePlot = btnplot;
         Boolean enableAlreadySaved = false;
+        
+        //Διαβάζω την βάση για το αν υπάρχουν δεδομένα στην βάση για την συγκεκριμένη χώρα
         long num = Database.isCountryInDb(this.countryCode);
         
-        if(btnsave==false){            
-            enableSave = (num>0)? true:false;
+        //Αν του έχω πει να εneργοποιηθεί
+        if(btnsave==true){            
+            //Αλλά υπάρχουν δεδομένα στην βάση τότε να μην ενεργοποιείται το save
+            enableSave = (num>0)? false:true;
         }else{
-            enableSave = btnsave;
+            
         }
         
+        //Αν του έχω πει να απενεργοποιηθεί το delete
         if(btndelete==false){            
+            //Αλλά υπάρχουν δεδομένα στην βάση να μην απενεργοποιηθεί
             enableDelete = (num>0)? true:false;
-        }else{
-            enableDelete = btndelete;
         }
         
+        //Αν του έχω πει να απενεργοποιηθεί
         if(btnplot==false){            
+            //Αλλά υπάρχουν δεδομένα στην βάση να μην απενεργοποηθεί.. 
+            //Το plot ποτέ δεν απενεργοποιείτε εκτός από την αρχικοποίηση της εφαρμογής
             enablePlot = (num>0)? true:false;
-        }else{
-            enablePlot = btnplot;
         }
-        
-        if(enableAlreadySaved==false){           
-            enableAlreadySaved = (num>0)? true:false;
-        }else{
-            enableAlreadySaved = btnalreadysaved;
-        }
+                
         
         
         btnSave.setEnabled(enableSave);
         btnDelete.setEnabled(enableDelete);
         btnPlot.setEnabled(enablePlot);
         btnAlreadySaved.setEnabled(enableAlreadySaved);
+        
     }
     /**
      * @param args the command line arguments
