@@ -42,19 +42,21 @@ public class Gdp {
     private Integer database_id;
 
     public Gdp(){}    
-    public Gdp(CountryDataset cd) {            
-        this.name = cd.getName();
-        this.description= cd.getDescription();
+    public Gdp(CountryDataset cd) { 
+        if(cd!=null){
+            this.name = cd.getName();
+            this.description= cd.getDescription();
 
-        Calendar cStart = Calendar.getInstance();
-        cStart.set(Calendar.YEAR, Integer.parseInt(cd.getStartYear()));
-        this.start_date = cStart.getTime();
+            Calendar cStart = Calendar.getInstance();
+            cStart.set(Calendar.YEAR, Integer.parseInt(cd.getStartYear()));
+            this.start_date = cStart.getTime();
 
-        Calendar cEnd = Calendar.getInstance();
-        cEnd.set(Calendar.YEAR, Integer.parseInt(cd.getEndYear()));
-        this.end_date = cEnd.getTime();        
+            Calendar cEnd = Calendar.getInstance();
+            cEnd.set(Calendar.YEAR, Integer.parseInt(cd.getEndYear()));
+            this.end_date = cEnd.getTime();        
 
-        this.countryData = cd.getCountryDataList();
+            this.countryData = cd.getCountryDataList();
+        }
 
     }           
     

@@ -718,12 +718,17 @@ public class mainpage extends javax.swing.JFrame {
             //Τσεκάρισμα του checkbox αφού υπάρχουν τα δεδομένα στην βάση
             btnAlreadySaved.setSelected(true);
             //Μάζεμα τον δεδομένων από την βάση
-            Oil oil = new Oil(Database.getOil(this.countryCode));                        
+            CountryDataset cd = Database.getOil(this.countryCode);
+            
+            if(cd!=null)
+                this.oil = new Oil(cd);    
+            else
+                this.oil = null;
             //List<CountryData> cd = oil.getCountryData();            
             //Collections.sort(cd);
             //Collections.sort(cd,Collections.reverseOrder());
             
-            this.oil =  oil;
+            
         }        
     }
     

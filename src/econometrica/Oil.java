@@ -44,19 +44,21 @@ public class Oil {
     private Integer database_id;
     
     public Oil(){}
-    public Oil(CountryDataset cd) {                
-        this.name = cd.getName();
-        this.description= cd.getDescription();
-        
-        Calendar cStart = Calendar.getInstance();
-        cStart.set(Calendar.YEAR, Integer.parseInt(cd.getStartYear()));
-        this.start_date = cStart.getTime();
-        
-        Calendar cEnd = Calendar.getInstance();
-        cEnd.set(Calendar.YEAR, Integer.parseInt(cd.getEndYear()));
-        this.end_date = cEnd.getTime();        
-                
-        this.countryData = cd.getCountryDataList();
+    public Oil(CountryDataset cd) {     
+        if(cd!=null){
+            this.name = cd.getName();
+            this.description= cd.getDescription();
+
+            Calendar cStart = Calendar.getInstance();
+            cStart.set(Calendar.YEAR, Integer.parseInt(cd.getStartYear()));
+            this.start_date = cStart.getTime();
+
+            Calendar cEnd = Calendar.getInstance();
+            cEnd.set(Calendar.YEAR, Integer.parseInt(cd.getEndYear()));
+            this.end_date = cEnd.getTime();        
+
+            this.countryData = cd.getCountryDataList();
+        }
 
     }
     

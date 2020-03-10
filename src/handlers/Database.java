@@ -22,20 +22,27 @@ public class Database {
       
     public static CountryDataset getOil(String country){
         Country c = new Country(country);
-       
-        TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.name like :name AND c.countryCode = :code", CountryDataset.class);
-        query.setParameter("name", "%Oil Consumption%");
-        query.setParameter("code", c);           
-        return query.getSingleResult();
+        try{
+            TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.name like :name AND c.countryCode = :code", CountryDataset.class);
+            query.setParameter("name", "%Oil Consumption%");
+            query.setParameter("code", c);           
+            return query.getSingleResult();
+        }catch(Exception ex){
+            return null;
+        }
+        
     }
     
     public static CountryDataset getGdp(String country){
         Country c = new Country(country);
-        
-        TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.name like :name AND c.countryCode = :code", CountryDataset.class);
-        query.setParameter("name", "%GDP (current LCU)%");
-        query.setParameter("code", c);
-        return query.getSingleResult();
+        try{
+            TypedQuery<CountryDataset> query = em.createQuery("SELECT c FROM CountryDataset c WHERE c.name like :name AND c.countryCode = :code", CountryDataset.class);
+            query.setParameter("name", "%GDP (current LCU)%");
+            query.setParameter("code", c);
+            return query.getSingleResult();
+        }catch(Exception ex){
+            return null;
+        }
     }
 
     public static long isCountryInDb(String countryCode){
