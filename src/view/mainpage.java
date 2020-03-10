@@ -552,14 +552,15 @@ public class mainpage extends javax.swing.JFrame {
      */
     
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        try {
-            //Χρησιμοποιώ τον BufferReader για να διαβάσω το περιεχόμενο του αρχείου
-            BufferedReader fileReader = null;
-            //Απλά αρχικοποιώ μια μεταβλητή προκειμένου να διαβάσω την κάθε γραμή του αρχείου
-            String line = "";            
-            //Διαβάζω το αρχείου και το περνάω στο BufferedReader
-            fileReader = new BufferedReader(new FileReader("src/view/iso-countries.csv"));
+        
+            
             try {
+                //Χρησιμοποιώ τον BufferReader για να διαβάσω το περιεχόμενο του αρχείου
+                BufferedReader fileReader = null;
+                //Απλά αρχικοποιώ μια μεταβλητή προκειμένου να διαβάσω την κάθε γραμή του αρχείου
+                String line = "";            
+                //Διαβάζω το αρχείου και το περνάω στο BufferedReader
+                fileReader = new BufferedReader(new FileReader("src/view/iso-countries.csv"));
                 //Αδιάζω τις χώρες από το dropdown
                 cbCountries.removeAllItems();
                 //Διαβάζω την πρώτη γραμμή
@@ -586,16 +587,11 @@ public class mainpage extends javax.swing.JFrame {
             } catch (IOException ex) {
                 
                 //Σε περίπτωση που σκάσει το πρόγραμμα επειδή είναι corrupted το αρχείο θα χρησιμοποιήσω τον 
+                //Ή σε περίπτωση που δεν υπάρχει το αρχείο, μια απο τα ίδια...
                 //logger για να καταγράψω το λάθος
                 Logger.getLogger(mainpage.class.getName()).log(Level.SEVERE, null, ex);
-                JOptionPane.showMessageDialog(jPanel1, "Λάθος μέσα στο αρχείο!", "Σφάλμα", JOptionPane.ERROR_MESSAGE);
-            }                        
-
-        } catch (FileNotFoundException ex) {
-            //Σε περίπτωση που δεν υπάρχει το αρχείο, μια απο τα ίδια...
-            Logger.getLogger(mainpage.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(jPanel1, "Το αρχείο δεν βρέθηκε!", "Σφάλμα", JOptionPane.ERROR_MESSAGE);
-        }
+                JOptionPane.showMessageDialog(jPanel1, "Λάθος μέσα στο αρχείο!", "Σφάλμα", JOptionPane.ERROR_MESSAGE);                
+            }
 
     }//GEN-LAST:event_formWindowOpened
 
