@@ -15,7 +15,7 @@ import model.CountryData;
 import model.CountryDataset;
 
 /**
- *
+ * Ομοίως με το GDP
  * @author themhz
  */
 public class Oil {

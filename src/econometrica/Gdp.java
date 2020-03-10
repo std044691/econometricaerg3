@@ -14,6 +14,10 @@ import model.CountryData;
 import model.CountryDataset;
 
 /**
+ * Κλάση υποδοχής για το api της Quandle. 
+ * Παίρνω τα δεδομένα και τα κάνω Gsoν χρησιμοποιόντας αυτή την κλάση
+ * Έπειτα κάνω convert στα pojo. Τυπικά θα μπορούσα να χρησιμοποιήσω τα pojo 
+ * απευθείας αλλά αποφάσισα να το κάνω με δικιές μου κλάσεις
  *
  * @author themhz
  */
@@ -43,6 +47,8 @@ public class Gdp {
 
     public Gdp(){}    
     public Gdp(CountryDataset cd) { 
+        //Κάνω τον έλεγχο γιατί υπάρχει περίπτωση να περαστεί σαν παράμετρο 
+        //Null τιμή. Για αυτό και απλά τότε αρχικοποιό το αντικείμενο ως σαν να ήταν default constructor
         if(cd!=null){
             this.name = cd.getName();
             this.description= cd.getDescription();
@@ -200,7 +206,11 @@ public class Gdp {
         return data;
     }
     
+    //Επιστρέφω τα countryData. 
     public List<CountryData> getCountryData() {
+        //Αν είναι άδεια θα παω και θα τα πάρω από το πεδίο data.
+        //Ο λόγος που το κάνω αυτό είναι επειδή η quandle φέρνει διαφορετικό τύπο 
+        //Από αυτόν που μπορώ να παρσάρω με το Gson κι έτσι φτιάχνω το δικό μου
         if(this.countryData == null){
             this.countryData = new ArrayList<CountryData>();
             for(ArrayList<String> gdpdata: this.data){

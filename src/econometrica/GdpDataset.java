@@ -9,6 +9,11 @@ package econometrica;
  *
  * @author themhz
  */
+
+/**
+ * 
+ * Κλάση υποοχής για το Dataset από την Quandle. 
+ */
 public class GdpDataset {
     private Gdp dataset;
 

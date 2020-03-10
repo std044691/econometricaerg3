@@ -5,6 +5,7 @@
  */
 package view;
 
+import handlers.Quandle;
 import econometrica.*;
 
 import handlers.Database;
@@ -963,7 +964,7 @@ public class mainpage extends javax.swing.JFrame {
         }
                 
         
-        
+        //Ρύθμιση των πεδίων αν είναι enable ή disable
         btnSave.setEnabled(enableSave);
         btnDelete.setEnabled(enableDelete);
         btnPlot.setEnabled(enablePlot);

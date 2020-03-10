@@ -40,15 +40,27 @@ import org.jfree.ui.RefineryUtilities;
 //public class Chart extends ApplicationFrame {
 public class Chart extends JFrame {
     
-  private ArrayList<CountryDataset> countryDatasetList;
+  //private ArrayList<CountryDataset> countryDatasetList;
   private Oil oil;
   private Gdp gdp;
   
+  /**
+   * Constructor της κλάσης Chart, Αρχικοποιεί τις μεταβλητές που θα χρησιμοποιηθούν στο γράφημα όπως ο τίτλος
+   * Περνάω μαζί με αυτά το oil και το gdp για να αρχικοποιήσω τα δεδομένα που θα χρησιμοποιηθούν από τα γραφήματα
+   * 
+   * @param title
+   * @param oil
+   * @param gdp 
+   */
   public Chart(final String title, Oil oil, Gdp gdp) {      
         super(title);
+        
+        //Εδώ γίνεται η αρχικοποίηση των δεδομένων
         this.oil = oil;
         this.gdp = gdp;
-        this.countryDatasetList = countryDatasetList;
+        
+        
+        //this.countryDatasetList = countryDatasetList;
         final String chartTitle = title;
         final XYDataset dataset = createDataset1(); 
 
