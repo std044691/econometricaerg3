@@ -17,7 +17,9 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 /**
- *
+ * Η κλάση χρησιμοποιείται για να καλούμε από την quandle τα endpoints
+ * που αφορούν την χρήση πετρελαίου και Αεπ. Ενσωματώνει το api key καθώς και τα url των διευθύνσεων.
+ * 
  * @author themhz
  */
 
@@ -33,14 +35,22 @@ public class Quandle {
     }
     
     public Quandle(){
+        //Το api key
         this.key = "YF9riQwEK95f-FXBm8Z3";
+        //το url για το Gdp
         this.gdpUrl = "https://www.quandl.com/api/v3/datasets/WWDI/";        
+        //Το url για την χρήση πετρελαίου
         this.oilUrl = "https://www.quandl.com/api/v3/datasets/BP/";       
     }
     
-    public Gdp getGdp(String countryCode){            
-        
-        
+    /**
+     * Χρησιμοποιείται για να καλέσει το endpoint της Quandle κάνοντας χρήση του Link .
+     * Μετά την κλήση θα επιστρέψει ένα GDP object
+     * 
+     * @param countryCode
+     * @return 
+     */
+    public Gdp getGdp(String countryCode){                            
         String result = this.get(this.gdpUrl+countryCode+"_NY_GDP_MKTP_CN.json?api_key="+this.key);
         if (result!= null){
             return this.GDPToObject(result);
@@ -49,6 +59,14 @@ public class Quandle {
         }
     }
     
+    /**
+     * 
+     * Χρησιμοποιείται για να καλέσει το endpoint της quandle και να επιστρέψει την χρήση πετρελαίου
+     * σε μορφή Oil object
+     * 
+     * @param countryCode
+     * @return 
+     */
     public Oil getOil(String countryCode){      
         String result = this.get(this.oilUrl+"OIL_CONSUM_"+countryCode+".json?api_key="+this.key);
         if (result!= null){
@@ -59,7 +77,13 @@ public class Quandle {
         
     }
       
-    
+    /**
+     * Χρησιμοποιταί το okHttp για να καλέσουμε το endpoint της quandle. 
+     * Βέβαια μπορεί να χρησιμοποιηθεί για οποιαδήποτε κλήση
+     * 
+     * @param url
+     * @return 
+     */
     private String get(String url){
         System.out.println(url);
         OkHttpClient client = new OkHttpClient();
@@ -79,7 +103,12 @@ public class Quandle {
         return null;
     }
     
-    
+    /**
+     * Μετασχηματισμός του Json String σε αντικείμενο OIL
+     * 
+     * @param jsonValue
+     * @return 
+     */
     private Oil OilToObject(String jsonValue) {   
         if(!jsonValue.equals(null)){        
             String jsonString = jsonValue;                 
@@ -100,6 +129,12 @@ public class Quandle {
                 
    }     
     
+    /**
+     * Μετασχηματισμός του Json String σε αντικείμενο GDP
+     * 
+     * @param jsonValue
+     * @return 
+     */
     private Gdp GDPToObject(String jsonValue) {         
         if(!jsonValue.equals(null)){   
             String jsonString = jsonValue;         

@@ -4,54 +4,23 @@
  * and open the template in the editor.
  */
 package view;
-
 import handlers.Quandle;
 import econometrica.*;
-
 import handlers.Database;
-import java.awt.Component;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import static jdk.nashorn.internal.runtime.regexp.joni.Syntax.Java;
 import model.Country;
 import model.CountryData;
 import model.CountryDataset;
-import org.apache.derby.client.am.Decimal;
-import org.apache.derby.drda.NetworkServerControl;
 import org.jfree.ui.RefineryUtilities;
 
 
@@ -623,7 +592,7 @@ public class mainpage extends javax.swing.JFrame {
         //Ενημερώνω τον χρήστη ότι σώζει τα δεδομένα
         System.out.println("Saving data...");
         //Το ίδιο αλλά στο label
-        lblAction.setText("Saving data...");        
+        lblAction.setText("Saving data..."); 
         //Σώζω τα δεδομένα κάνοντας κλήση της μεθόδου
         saveCountryDataset();
         buttonController(false,true,true,true);
